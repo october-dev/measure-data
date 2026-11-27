@@ -1,6 +1,6 @@
 ---
 name: measure-data
-description: Count a company's SaaS and business data from local exports (Slack, Discord, Notion, ClickUp, Jira and other ticket CSVs, Gmail/mbox, SQL dumps, BigQuery metadata, Google Drive or any local folder) and write counts only - items and human share, people (hashed, never named) and peak active people per month, date spans, pre-2025 share, characters and tokens, sizes - into measure.json + report.md. Start with --mode simple (sampled, minutes) to see which sources deserve a full run. Use when the user asks to "count our Slack/Notion/email/DB", "inventory company data", "how much data do we have and how old is it", or to prepare inputs for master-valuate. Never reads content into the report.
+description: Count a company's SaaS and business data from local exports (Slack, Discord, Notion, ClickUp, Jira and other ticket CSVs, Gmail/mbox, SQL dumps, BigQuery metadata, Google Drive or any local folder) and write counts only - items and human share, people (hashed, never named) and peak active people per month, date spans, pre-2025 share, characters and tokens, sizes - into measure.json + report.md, ending with a short, clearly labelled "Why this is special" pitch written after the report (dream mode, on by default, --no-dream skips it). Start with --mode simple (sampled, minutes) to see which sources deserve a full run. Use when the user asks to "count our Slack/Notion/email/DB", "inventory company data", "how much data do we have and how old is it", or to prepare inputs for master-valuate. Never reads content into the report.
 ---
 
 # measure-data
@@ -32,8 +32,13 @@ Counts business data **on this machine** from exports the user already has. The 
    ```bash
    python3 <skill-dir>/scripts/measure_data.py report --out <out-dir>
    ```
-5. **Review with the user.** Read `report.md` together. Point out a source that shows `0` where the user expected data, a `dated_share` well under 100%, and `placeholders_not_downloaded` (cloud-only files that were never counted). These usually mean an incomplete export, not a lack of data.
-6. **Hand off.** `measure.json` goes to **master-valuate**. Delete `.state/` before sharing.
+5. **Dream: "Why this is special"** (on by default). Skip this step only if the user passed or asked for `--no-dream` (no pitch); then record the skip with `python3 <skill-dir>/scripts/add_dream.py --no-dream --out <out-dir>`, or pass `--no-dream` to the `report` step. Otherwise, once the full report is complete, dream: re-read `report.md` and recall what you actually saw during the run (which systems the company used, the volumes, the spans, how many people were active), then write a short founder-style pitch for the company's data.
+   - **4 to 6 sentences, casual and simple**, not verbose. Say what the counts miss: ambition, complexity and craft. For example years of a team planning in the open, a live-ops economy whose analytics run for years, or a player base big enough to need a sharded warehouse.
+   - **Grounded only in what you saw in this run** and in the counts. You never read message text, so never describe what people said. No invented facts. No number that is not in the report (quote figures as the report shows them). No superlatives about things you did not inspect.
+   - **Same privacy rules as everything else**: no names of people, channels, tables or files, no paths, emails, URLs, ids or secrets. Describe the product or genre in general terms.
+   - Save it in a draft text file outside the exports, then run `python3 <skill-dir>/scripts/add_dream.py draft.txt --out <out-dir> [--deny "<a name you saw>" ...]`. It checks that the paragraph is not empty, has 4 to 6 sentences and no more than 160 words, holds no email, URL, handle, path, file name, token or denied name, and that every number in it appears in the report or `measure.json`. It warns about superlatives. Then it writes the `dream` block into `measure.json` and adds the **Why this is special** section at the very end of `report.md`, labelled as a pitch and kept apart from the counts. If it refuses, fix what it names and run it again: never loosen a fact to get past a check. `--check` validates without writing. Re-running `report` keeps the paragraph and checks it again. Delete the draft afterwards.
+6. **Review with the user.** Read `report.md` together, including the pitch. Point out a source that shows `0` where the user expected data, a `dated_share` well under 100%, and `placeholders_not_downloaded` (cloud-only files that were never counted). These usually mean an incomplete export, not a lack of data.
+7. **Hand off.** `measure.json` goes to **master-valuate**. Delete `.state/` before sharing.
 
 ## Getting an export (hints, not a tutorial)
 

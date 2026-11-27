@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Measures synthetic exports for every source, in full and simple mode, and checks the output.
+# Measures synthetic exports for every source, in full and simple mode, and checks the output and dream mode.
 set -euo pipefail
 PY="${PY:-python3}"
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
@@ -66,5 +66,46 @@ assert big["counts"]["conversations"] == 1
 text = "".join((w / m / f).read_text() for m in ("full", "simple") for f in ("measure.json", "report.md"))
 for leak in ("example.com", "example.org", "general", "Workspace Home", "budget", "zq_", "analytics_1", "hello team", "crashes"):
     assert leak not in text, leak
-print("selftest: passed")
+print("selftest: counts OK")
 EOF
+# Dream mode: validate and insert "Why this is special", keep it on re-runs, refuse bad drafts, honour --no-dream.
+D="$HERE/scripts/add_dream.py"
+cat > "$WORK/dream.txt" <<'EOF'
+This small export already covers the whole studio: chat, tickets, a wiki, mail, databases and shared files.
+Slack alone holds 4 messages from a real team, with the bot noise counted apart.
+The tickets carry real descriptions, and the mail comes with its attachments.
+It is a compact but complete picture of how the team worked, counted without reading a word of it into the report.
+EOF
+"$PY" "$D" "$WORK/dream.txt" --out "$WORK/full" --check 2>/dev/null
+"$PY" "$D" "$WORK/dream.txt" --out "$WORK/full" --deny "Zq Founder" >/dev/null 2>&1
+"$PY" "$M" report --out "$WORK/full" 2>/dev/null   # a re-run of the report keeps it
+refuse() {
+  printf '%s\n' "$2" > "$WORK/bad.txt"
+  if "$PY" "$D" "$WORK/bad.txt" --out "$WORK/full" --deny "Zq Founder" --check 2>/dev/null; then echo "dream accepted: $1"; exit 1; fi
+}
+refuse empty ""
+refuse too-short "Lots of data. Real team."
+refuse email "Slack holds 4 messages. Mail goes to founder@example.com mostly. It is complete. It is real."
+refuse name "Slack holds 4 messages. Zq Founder wrote most of them. It is complete. It is real."
+refuse path "Slack holds 4 messages. The export sits in /home/someone/exports today. It is complete. It is real."
+refuse file-name "Slack holds 4 messages. The shop lives in shop.sql.gz now. It is complete. It is real."
+refuse invented-number "Slack holds 4 messages. The game had 3,000,000 daily players. It is complete. It is real."
+"$PY" "$M" report --out "$WORK/simple" --no-dream 2>/dev/null
+cp -R "$WORK/full" "$WORK/declined" && "$PY" "$D" --no-dream --out "$WORK/declined" >/dev/null 2>&1
+"$PY" "$D" "$HERE/examples/dream.txt" --out "$HERE/examples" --check 2>/dev/null
+"$PY" - "$WORK" <<'EOF'
+import json, sys, pathlib
+w = pathlib.Path(sys.argv[1])
+d = json.loads((w / "full/measure.json").read_text()); rep = (w / "full/report.md").read_text()
+dr = d["dream"]
+assert dr["status"] == "written" and dr["title"] == "Why this is special" and dr["sentences"] == 4, dr
+assert rep.rstrip().endswith("into the report.") and rep.index("## Why this is special") > rep.index("## Caveats"), rep[-400:]
+assert "not a measurement" in rep.split("## Why this is special")[1]
+s = json.loads((w / "simple/measure.json").read_text())
+assert s["dream"]["status"] == "skipped" and "Why this is special" not in (w / "simple/report.md").read_text()
+dc = json.loads((w / "declined/measure.json").read_text())
+assert dc["dream"]["status"] == "skipped" and "Why this is special" not in (w / "declined/report.md").read_text()
+assert json.loads((w / "bigsimple/sources/slack--slack.json").read_text()).get("dream") is None, "the pitch belongs to the report, not a source"
+print("selftest: dream mode OK")
+EOF
+echo "selftest: passed"

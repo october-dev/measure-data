@@ -1,6 +1,6 @@
 # measure-data
 
-A Claude Code skill that counts a company's SaaS and business data **from local exports**: Slack, Discord, Notion, ClickUp, Jira (and any ticket CSV), Gmail/mbox, SQL dumps, BigQuery metadata, and Drive or any other folder. It writes counts, date spans, the pre-2025 share and sizes. It never writes content.
+A Claude Code skill that counts a company's SaaS and business data **from local exports**: Slack, Discord, Notion, ClickUp, Jira (and any ticket CSV), Gmail/mbox, SQL dumps, BigQuery metadata, and Drive or any other folder. It writes counts, date spans, the pre-2025 share and sizes. It never writes content. The report ends with a short, clearly labelled **"Why this is special"** pitch that Claude writes after the report (dream mode).
 
 Part of the October measurement skills: [measure-code](https://github.com/october-dev/measure-code) · **measure-data** · [measure-art](https://github.com/october-dev/measure-art) · [master-valuate](https://github.com/october-dev/master-valuate)
 
@@ -58,11 +58,22 @@ Output:
 measure-out/data/
 ├── sources/<source>--<label>.json   # one per run
 ├── measure.json                     # all sources, schema october.measure/v1, kind "data"
-├── report.md
+├── report.md                        # ends with "Why this is special" once the pitch is added
+├── dream.json                       # the pitch, kept for re-runs of `report`
 └── .state/                          # checkpoints for resuming; delete before sharing
 ```
 
 See [`examples/`](examples/) for output built from **synthetic** data.
+
+## Dream mode: "Why this is special"
+
+Counts miss ambition, complexity and craft. So after the report, Claude re-reads it and writes a 4-6 sentence founder-style pitch for the company's data. It is on by default; `report --no-dream` (or telling Claude you don't want a pitch) skips it.
+
+The pitch must be grounded only in what the run saw and in the counts; message text is never read, so it never describes what people said. `scripts/add_dream.py` validates it before inserting it: 4-6 sentences and no more than 160 words, no emails, URLs, handles, paths, file names, tokens or names you pass with `--deny`, and every number must already appear in the report. It is written to `measure.json` as `dream` and rendered as the last section of `report.md`, labelled as a pitch, so the counts stay neutral and credible. See [`examples/`](examples/) for a synthetic one.
+
+```bash
+python3 ~/.claude/skills/measure-data/scripts/add_dream.py draft.txt --out ./measure-out/data
+```
 
 ## Privacy
 
@@ -82,7 +93,7 @@ Every source checkpoints finished units (a channel, a mailbox, a dump, a top-lev
 bash tests/selftest.sh
 ```
 
-It builds synthetic exports for every source, measures them and checks the counts and that nothing leaks.
+It builds synthetic exports for every source, measures them and checks the counts and that nothing leaks, and covers dream mode: insert, validation, re-runs and `--no-dream`.
 
 ## License
 

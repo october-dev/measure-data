@@ -3,7 +3,7 @@
 
 Usage:
   measure_data.py <source> <path> --out DIR [--mode simple|full] [--label NAME] [--cutoff 2025-01-01] [--force]
-  measure_data.py report --out DIR
+  measure_data.py report --out DIR [--no-dream]
 
 Modes:
   simple  listing and metadata, sampled: up to --sample-files files are parsed (or the first
@@ -25,6 +25,11 @@ Sources (each reads a LOCAL export; the script makes no network calls):
 
 Each run writes <out>/sources/<source>--<label>.json. `report` merges every
 source file into <out>/measure.json and <out>/report.md.
+
+Dream mode: after the report the agent writes a short "Why this is special"
+pitch with add_dream.py. It lands in the `dream` block of measure.json and in
+the last section of report.md, labelled and kept apart from the counts.
+`report --no-dream` skips it.
 
 Never written: message or page text, titles, subjects, file names, paths,
 table or channel names, people's names, ids or email addresses. People are
@@ -53,7 +58,7 @@ from email.utils import parsedate_to_datetime
 from pathlib import Path
 
 TOOL = "measure-data"
-VERSION = "0.2.0"
+VERSION = "0.3.0"
 SCHEMA = "october.measure/v1"
 SKETCH_K = 256
 csv.field_size_limit(min(sys.maxsize, 2**31 - 1))
@@ -1136,7 +1141,7 @@ def human_bytes(n) -> str:
         n /= 1024
 
 
-def render(docs: list, cutoff: str) -> str:
+def render(docs: list, cutoff: str, dream: dict | None = None) -> str:
     modes = {d.get("mode", "full") for d in docs}
     lines = ["# Business data measurement", "",
              f"Produced with {TOOL} {VERSION} ({', '.join(sorted(modes))} mode). Counts only: no content, names, titles, paths or ids. "
@@ -1208,7 +1213,17 @@ def render(docs: list, cutoff: str) -> str:
               "- Peak active people counts distinct humans with a dated item in a month; sources that record only creators give a floor.",
               "- `items_with_email_pattern` and `items_with_phone_pattern` count items that contain such a pattern. Matches are never stored.",
               "- Attachment bytes are what the export references; files that are not in the export were not downloaded.", ""]
+    lines += dream_mod().section(dream)
     return "\n".join(lines)
+
+
+def dream_mod():
+    """add_dream.py next to this script: the "Why this is special" slot, its validation and its report section."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("add_dream", Path(__file__).resolve().parent / "add_dream.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
 
 
 def privacy_scan(doc) -> list:
@@ -1239,6 +1254,8 @@ def main(argv=None) -> int:
     ap.add_argument("--sample-files", type=int, default=200, help="simple mode: files parsed per source")
     ap.add_argument("--sample-mb", type=int, default=64, help="simple mode: MB read from each mailbox or dump")
     ap.add_argument("--force", action="store_true", help="discard checkpoints and recount")
+    ap.add_argument("--no-dream", action="store_true",
+                    help="report: skip dream mode (no 'Why this is special' pitch after the report)")
     a = ap.parse_args(argv)
     out = a.out.expanduser().resolve()
     cutoff = dt.datetime.strptime(a.cutoff, "%Y-%m-%d").replace(tzinfo=dt.timezone.utc)
@@ -1253,8 +1270,15 @@ def main(argv=None) -> int:
         bundle = {"schema": SCHEMA, "kind": "data", "tool": TOOL, "tool_version": VERSION,
                   "measured_at": dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
                   "cutoff": a.cutoff, "sources": docs}
+        dm = dream_mod()
+        bundle["dream"] = dm.pending()
+        bundle["dream"] = dm.resolve(out, dm.ground_text(bundle, render(docs, a.cutoff)), a.no_dream)
+        bad = privacy_scan(bundle)
+        if bad:
+            log("privacy check FAILED, nothing written: " + ", ".join(bad[:10]))
+            return 2
         atomic_write(out / "measure.json", json.dumps(bundle, indent=2))
-        atomic_write(out / "report.md", render(docs, a.cutoff))
+        atomic_write(out / "report.md", render(docs, a.cutoff, bundle["dream"]))
         log(f"wrote {out / 'measure.json'} and {out / 'report.md'} ({len(docs)} sources)")
         return 0
 

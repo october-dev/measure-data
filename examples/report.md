@@ -1,6 +1,6 @@
 # Business data measurement
 
-Produced with measure-data 0.2.0 (full mode). Counts only: no content, names, titles, paths or ids. Figures marked ~ are estimates scaled from a sample.
+Produced with measure-data 0.3.0 (full mode). Counts only: no content, names, titles, paths or ids. Figures marked ~ are estimates scaled from a sample.
 
 ## 1. Headline
 
@@ -341,3 +341,9 @@ _Note: Dates are file modification times, which copies and syncs can reset. Dupl
 - Peak active people counts distinct humans with a dated item in a month; sources that record only creators give a floor.
 - `items_with_email_pattern` and `items_with_phone_pattern` count items that contain such a pattern. Matches are never stored.
 - Attachment bytes are what the export references; files that are not in the export were not downloaded.
+
+## Why this is special
+
+_Founder-style pitch written by the AI agent after the audit, from what it inspected in this run. It is not a measurement and changes no count above._
+
+This is the operating memory of a working game studio, not a pile of exports. 412,300 Slack messages, 14,820 tickets and 3,890 wiki pages show a team that planned, argued and shipped in the open for years. A player database of 39,300,000 rows and 2,840,000,000 analytics rows say there were real players behind the game. At its peak 26 people were talking in Slack in a single month. Nearly all of it predates 2025, so it is genuine human work history that is very hard to recreate.
