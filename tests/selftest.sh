@@ -108,6 +108,112 @@ assert dc["dream"]["status"] == "skipped" and "Why this is special" not in (w / 
 assert json.loads((w / "bigsimple/sources/slack--slack.json").read_text()).get("dream") is None, "the pitch belongs to the report, not a source"
 print("selftest: dream mode OK")
 EOF
+# Studio assessment: labels, both cutoffs, restriction flags, category status, connectors, traceable work,
+# version history and the studio file detectors.
+SA="$WORK/studio"
+"$PY" "$M" files    "$FX/studio" --out "$SA" --label studio-nas --version-history retained_not_exported 2>/dev/null
+"$PY" "$M" jira     "$FX/jira.csv" --out "$SA" --flag staff_personal_data 2>/dev/null
+"$PY" "$M" clickup  "$FX/cu.csv"   --out "$SA" --tag connector:PlayFab --ownership client_owned 2>/dev/null
+"$PY" "$M" tickets  "$FX/gh.csv"   --out "$SA" --label gh-issues 2>/dev/null
+"$PY" "$M" sql      "$FX/shop.sql.gz" --out "$SA" --label shop 2>/dev/null
+"$PY" "$M" notion   "$FX/notion" --out "$SA" 2>/dev/null
+"$PY" "$M" clickup  "$FX/cu.csv"   --out "$WORK/cusimple" --mode simple 2>/dev/null
+"$PY" "$M" jira     "$FX/jira.csv" --out "$WORK/salted" --link-salt zqsalt 2>/dev/null
+"$PY" "$M" status --out "$SA" --category audio=confirmed_not_used --category telemetry=self_reported \
+  --category work_tracking=unknown --connector "Mixpanel=self_reported" --connector "steam (steamworks)=confirmed_not_used" 2>/dev/null
+if "$PY" "$M" status --out "$SA" --category made_up=inspected 2>/dev/null; then echo "bad category accepted"; exit 1; fi
+if "$PY" "$M" status --out "$SA" --connector "NotATool=inspected" 2>/dev/null; then echo "bad connector accepted"; exit 1; fi
+if "$PY" "$M" jira "$FX/jira.csv" --out "$WORK/badflag" --flag nonsense 2>/dev/null; then echo "bad flag accepted"; exit 1; fi
+"$PY" "$M" report --out "$SA" --no-dream 2>/dev/null
+# An older source file (no labels, cutoffs or restrictions) still loads; the blocks are added, numbers unchanged.
+mkdir -p "$WORK/old/sources" && cp "$HERE/examples/sources/jira--starfall-jira.json" "$WORK/old/sources/"
+"$PY" - "$WORK/old/sources/jira--starfall-jira.json" <<'PYOLD'
+import json, sys
+d = json.load(open(sys.argv[1]))
+for k in ("labels", "cutoffs", "restrictions", "version_history", "cutoff_early", "pre_chatgpt", "pre_chatgpt_share", "traceable"):
+    d.pop(k, None)
+json.dump(d, open(sys.argv[1], "w"))
+PYOLD
+"$PY" "$M" report --out "$WORK/old" --no-dream 2>/dev/null
+"$PY" - "$WORK" "$HERE" <<'PYCHK'
+import hashlib, json, sys, pathlib, importlib.util
+w, here = pathlib.Path(sys.argv[1]), pathlib.Path(sys.argv[2])
+spec = importlib.util.spec_from_file_location("measure_data", here / "scripts" / "measure_data.py")
+m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
+b = json.loads((w / "studio/measure.json").read_text()); rep = (w / "studio/report.md").read_text()
+S = {d["label"]: d for d in b["sources"]}
+assert b["cutoff_early"] == "2022-11-30" and b["cutoff"] == "2025-01-01"
+# category status: all 18 keys in order, never dropped; precedence keeps inspected over a weaker answer
+assert list(b["category_status"]) == list(m.CATEGORY_KEYS) and len(m.CATEGORY_KEYS) == 18
+cs = {k: v["status"] for k, v in b["category_status"].items()}
+assert cs["work_tracking"] == "inspected" and cs["design_knowledge"] == "inspected" and cs["liveops_backend"] == "inspected", cs
+assert cs["servers_storage"] == "inspected" and cs["builds_ci"] == "inspected" and cs["crash_reports"] == "inspected", cs
+assert cs["profiling"] == cs["qa_playtest"] == cs["narrative_localisation"] == cs["engine_content"] == "inspected", cs
+assert cs["source_control"] == "inspected" and cs["audio"] == "inspected", ("files found beat the owner's 'not used'", cs)
+assert cs["telemetry"] == "self_reported" and cs["communication"] == "unknown" and cs["business_systems"] == "unknown", cs
+assert all(v["label"] in m.LABELS for v in b["category_status"].values())
+# connectors: every prompt has a status; tags and owner answers land
+cn = b["connectors"]
+tools = json.loads((here / "docs/tools.json").read_text())
+assert set(cn) == {n for g in tools["connector_prompts"].values() for n in g}
+assert cn["PlayFab"]["status"] == "inspected" and cn["PlayFab"]["group"] == "backends"
+assert cn["Mixpanel"]["status"] == "self_reported" and cn["Steam (Steamworks)"]["status"] == "confirmed_not_used"
+assert cn["Supabase"]["status"] == "unknown" and cn["Supabase"]["label"] == "unknown"
+# traceable work: ticket types, resolved counts and hashed keys that measure-code can match
+tr = S["jira"]["traceable"]
+assert tr["by_type"]["bug"] == {"total": 1, "resolved": 1} and tr["by_type"]["story"] == {"total": 1, "resolved": 0}, tr
+lh = lambda k, salt="": hashlib.sha256(f"{salt}|ticket|{k}".encode()).hexdigest()[:16]
+assert tr["resolved_key_hashes"]["bug"] == [lh("AB-1")] and m.link_hash("ticket", "AB-1") == lh("AB-1")
+assert tr["key_salt_used"] is False
+sl = json.loads((w / "salted/sources/jira--jira.json").read_text())["traceable"]
+assert sl["key_salt_used"] is True and sl["resolved_key_hashes"]["bug"] == [lh("AB-1", "zqsalt")]
+cu = S["clickup"]["traceable"]
+assert cu["by_type"]["bug"] == {"total": 2, "resolved": 2} and cu["by_type"]["story"]["resolved"] == 0, cu
+assert sorted(cu["resolved_key_hashes"]["bug"]) == sorted([lh("CU-ABC1"), lh("CU-ABC3")]), cu
+gh = S["gh-issues"]["traceable"]
+assert gh["resolved_key_hashes"]["bug"] == [lh("#17")] and gh["by_type"]["other"]["total"] == 1, gh
+assert json.loads((w / "cusimple/sources/clickup--clickup.json").read_text())["traceable"]["label"] == "estimated"
+assert "traceable" not in S["shop"]
+# labels and both cutoffs
+j = S["jira"]
+assert j["cutoffs"]["pre_2025"] == {"date": "2025-01-01", "count": 1, "share": 0.5, "label": "verified"}, j["cutoffs"]
+assert j["cutoffs"]["pre_chatgpt"] == {"date": "2022-11-30", "count": 1, "share": 0.5, "label": "verified"}, j["cutoffs"]
+assert j["labels"]["primary_count"]["label"] == "verified" and j["labels"]["text.token_estimate"]["method"]
+assert S["shop"]["labels"]["pre_chatgpt"]["label"] == "estimated" and S["shop"]["cutoffs"]["pre_chatgpt"]["count"] == 1
+assert S["studio-nas"]["labels"]["span"]["label"] == "estimated"
+for d in b["sources"]:
+    for k, v in d["labels"].items():
+        assert v["label"] in m.LABELS and (v["label"] != "estimated" or v.get("method")), (d["label"], k, v)
+# restrictions: recorded, not ruled on; default ownership own; flags measured or self-reported
+r = S["jira"]["restrictions"]
+assert r["ownership"] == "own" and r["flags"]["staff_personal_data"] == {"value": True, "label": "self_reported"}
+assert r["flags"]["client_owned"] == {"value": None, "label": "unknown"} and set(r["flags"]) == set(m.FLAG_KEYS)
+assert S["clickup"]["restrictions"]["ownership"] == "client_owned" and S["clickup"]["restrictions"]["flags"]["client_owned"]["value"] is True
+sf = S["studio-nas"]["restrictions"]["flags"]
+assert sf["secrets"]["value"] is True and sf["secrets"]["count"] == 1 and sf["secrets"]["label"] == "estimated", sf
+assert sf["platform_nda"]["value"] is True and sf["third_party_middleware"]["count"] == 3, sf
+assert S["shop"]["restrictions"]["flags"]["player_personal_data"]["value"] is True
+# version history
+assert S["studio-nas"]["version_history"] == {"status": "retained_not_exported", "label": "self_reported"}
+assert S["notion"]["version_history"]["status"] == "unknown" and S["jira"]["version_history"]["status"] == "not_applicable"
+# studio detectors
+st = S["studio-nas"]["studio_files"]
+assert st["build_ci"] == {"build_logs": 2, "ci_configs": 1, "jenkins_homes": 1, "horde_ugs": 0}, st["build_ci"]
+assert st["crash_dumps"] == {"dumps": 1, "crash_reports": 1, "crash_exports": 1}, st["crash_dumps"]
+assert st["profiling"] == {"captures": 2, "by_format": {"renderdoc": 1, "unreal_insights": 1}}, st["profiling"]
+assert st["qa_cert_docs"] == 2 and st["certification_docs"] == 1, st
+assert st["audio_middleware"] == {"wwise_projects": 1, "fmod_projects": 0, "sound_banks": 1}, st["audio_middleware"]
+assert st["localisation"] == {"files": 3, "by_format": {"gettext": 1, "ink": 1}, "string_tables_by_header": 1}, st["localisation"]
+assert st["engine_content"][".uasset"] == 1 and st["engine_content"][".umap"] == 1 and st["vcs"]["svn_working_copies"] == 1, st
+assert "## Category status" in rep and "## Connectors check" in rep and "pre-ChatGPT" in rep and "| bug | 2 | 2 | 2 |" in rep
+o = json.loads((w / "old/measure.json").read_text())["sources"][0]
+assert o["primary_count"] == 14820 and o["cutoffs"]["pre_chatgpt"]["label"] == "unknown" and o["cutoffs"]["pre_chatgpt"]["count"] is None
+assert o["restrictions"]["ownership"] == "own" and o["labels"]["primary_count"]["label"] == "verified"
+text = (w / "studio/measure.json").read_text() + rep + (w / "salted/sources/jira--jira.json").read_text()
+for leak in ("zq", "Zq", "AB-1", "abc1", "CU-ABC", "Bonjour", "Test Plan", "TRC checklist", "wc.db", "ZQ_KEY"):
+    assert leak not in text, leak
+print("selftest: studio assessment (labels, cutoffs, restrictions, categories, connectors, traceable, studio files) OK")
+PYCHK
 # Buyer tool list: docs/tools.json parses, has no duplicates, and maps every tool to a real source.
 "$PY" - "$HERE" <<'EOF'
 import json, sys, pathlib, importlib.util
@@ -200,6 +306,15 @@ assert by["Slack"] and {"HubSpot", "Stripe", "Mixpanel"} <= {t["tool"] for t in 
 assert "slack.com" in [t for t in tools if t["tool"] == "Slack"][0]["mail_domains"]
 assert nd >= 150 and nm >= 90, (nd, nm)
 assert "`domains`" in md and "`mail_domains`" in md
+cp_ = doc["connector_prompts"]; scm = doc["studio_category_map"]
+assert set(cp_) == {"telemetry", "backends", "stores", "ads"} and all(set(v) <= set(by) for v in cp_.values()), cp_
+for need in ("Mixpanel", "Amplitude", "Google Analytics", "GameAnalytics", "Unity Analytics", "PostHog", "Supabase", "Firebase",
+             "PlayFab", "Nakama", "Cloudflare R2", "Cloudflare D1", "Cloudflare Workers", "Google Play Console",
+             "App Store Connect", "Steam (Steamworks)", "AdMob", "Google Ads", "Meta Ads", "AppLovin", "Unity Ads"):
+    assert any(need in v for v in cp_.values()), need
+assert set(scm["by_category"]) == set(cats) and set(scm["by_tool"]) <= set(by), "studio_category_map"
+assert set(scm["by_category"].values()) | set(scm["by_tool"].values()) <= set(m.CATEGORY_KEYS)
+print("connectors and studio category map OK")
 print("selftest: domains OK (%d tools with web domains, %d with mail sender domains)" % (nd, nm))
 EOF
 echo "selftest: passed"

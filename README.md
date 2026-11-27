@@ -25,17 +25,9 @@ The commands below use `$SKILL` for the folder you cloned into, for example `SKI
 
 ## Use
 
-**Not sure what the company has?** [`docs/TOOLS.md`](docs/TOOLS.md) lists 226 tools and data sources that data buyers commonly ask about, in 13 categories (messaging, email, project management, support, CRM, finance, analytics, databases, document storage, code, design, automation and other), with the source to use for each one and what to export. The agent walks you through it before measuring. [`docs/tools.json`](docs/tools.json) has the same list for scripts and is the master copy: its `local_signals` field lists the file, folder and app-data traces a tool leaves on disk, which [measure-disk](https://github.com/october-dev/measure-disk) uses to detect tools on a laptop or drive (see [Local signals](docs/TOOLS.md#local-signals)). Its `domains` and `mail_domains` fields list each tool's web-app hosts and mail sender domains, for measure-disk's opt-in browser-history and mail-header discovery.
+**Not sure what the company has?** [`docs/TOOLS.md`](docs/TOOLS.md) lists 249 tools and data sources that data buyers commonly ask about, in 13 categories (messaging, email, project management, support, CRM, finance, analytics, databases, document storage, code, design, automation and other), with the source to use for each one and what to export. The agent walks you through it before measuring. [`docs/tools.json`](docs/tools.json) has the same list for scripts and is the master copy: its `local_signals` field lists the file, folder and app-data traces a tool leaves on disk, which [measure-disk](https://github.com/october-dev/measure-disk) uses to detect tools on a laptop or drive (see [Local signals](docs/TOOLS.md#local-signals)). Its `domains` and `mail_domains` fields list each tool's web-app hosts and mail sender domains, for measure-disk's opt-in browser-history and mail-header discovery.
 
-**Start with simple mode.** It samples each export, takes minutes, and recommends which sources deserve a full run:
-
-```bash
-S=$SKILL/scripts/measure_data.py
-python3 $S slack ~/exports/slack.zip --out ./measure-out/data-simple --mode simple
-python3 $S report --out ./measure-out/data-simple
-```
-
-Then run the full pass (the default mode) on the sources worth it.
+Full mode is the default and reads every record. **Simple mode (optional): a fast sampled pass, used only when asked to do a quick look** (`--mode simple`); every figure it writes is labelled `estimated`.
 
 In your coding agent (Claude Code, Codex, Grok, Hermes ...):
 
@@ -49,8 +41,22 @@ python3 $S slack ~/exports/slack.zip       --out ./measure-out/data
 python3 $S mbox  ~/exports/mail            --out ./measure-out/data --label founder-mail
 python3 $S sql   ~/backups/shop.sql.gz     --out ./measure-out/data --label shop-db --tag project:shop
 python3 $S files ~/Google\ Drive/Shared    --out ./measure-out/data --label drive-shared
+python3 $S status --out ./measure-out/data --connector "Mixpanel=exists_inaccessible" --category audio=self_reported
 python3 $S report --out ./measure-out/data
 ```
+
+### Studio assessment
+
+measure-data also covers what a games-studio data assessment asks for:
+
+- **A label on every number** (`labels`): verified, estimated (with a method), self-reported, unknown (null, never 0) or not applicable.
+- **Two cutoffs** (`cutoffs`): before 2025-01-01 (`--cutoff`) and before ChatGPT, 2022-11-30 (`--cutoff-early`).
+- **Category status** (`category_status`): all 18 studio data categories, each `inspected`, `exists_inaccessible`, `self_reported`, `confirmed_not_used` or `unknown`. None is ever dropped.
+- **Connectors check** (`connectors`): telemetry (Mixpanel, Amplitude, GA4/BigQuery, GameAnalytics, Unity Analytics, PostHog), backends (Supabase, Firebase, PlayFab, Nakama, AWS, Google Cloud, Cloudflare R2/D1/Workers), stores (Play Console, App Store Connect, Steam) and ads (AdMob, Google Ads, Meta, AppLovin, Unity Ads), from `connector_prompts` in `docs/tools.json`. Record answers with `status`; `--tag connector:<tool>` marks a measured export.
+- **Restriction flags** (`restrictions`): client-owned, platform NDA, third-party middleware, player personal data, staff personal data, secrets. Recorded, not ruled on; ownership defaults to `own`. `--ownership` and `--flag` take the owner's answers.
+- **Traceable work** (`traceable` on ticket sources): tickets by type (bug, task, story, other), resolved counts, and one-way hashes of resolved ticket keys (`PROJ-123`, `CU-<id>`, `#123`), which master-valuate matches to measure-code's hashed commit references to count bug-to-fix links.
+- **Studio files** (`studio_files` on the `files` source): build and CI logs, crash dumps and exports, profiling captures (`.utrace`, PIX, RenderDoc, Tracy, Superluminal, Unity profiler), QA and certification documents by file name, Wwise and FMOD projects and banks, localisation files (`.po`, XLIFF, Ink, Yarn, string-table CSVs by header) and engine content counts (`.uasset`, `.umap`, `.unity`, `.prefab`, `.tscn`).
+- **Version history** (`version_history`) for document sources.
 
 | source | reads |
 |---|---|
@@ -62,6 +68,7 @@ python3 $S report --out ./measure-out/data
 | `sql` | MySQL or PostgreSQL plain dumps, optionally `.gz` |
 | `bigquery` | table metadata from `bq ls/show --format=json` or `INFORMATION_SCHEMA` |
 | `files` | any folder |
+| `status` | records the owner's category and connector answers in `status.json` (not a source) |
 
 Tools without a direct parser (CRMs, finance, analytics and most others in [`docs/TOOLS.md`](docs/TOOLS.md)) are measured as `export then files`: export their data into a folder and run `files` on it.
 
@@ -108,7 +115,7 @@ Every source checkpoints finished units (a channel, a mailbox, a dump, a top-lev
 bash tests/selftest.sh
 ```
 
-It builds synthetic exports for every source, measures them and checks the counts and that nothing leaks, and covers dream mode: insert, validation, re-runs and `--no-dream`. It also checks that `docs/tools.json` parses, has no duplicate tools, maps every tool to a valid source that every `local_signals` entry is well formed (known kinds, valid globs and regular expressions, no absolute paths), and that `domains` and `mail_domains` are bare host names owned by one tool each.
+It builds synthetic exports for every source, measures them and checks the counts and that nothing leaks, and covers dream mode: insert, validation, re-runs and `--no-dream`. It covers the studio-assessment blocks (labels, both cutoffs, restriction flags, category status, connectors, traceable ticket hashes, version history and the studio file detectors) and older source files. It also checks that `docs/tools.json` parses, has no duplicate tools, maps every tool to a valid source that every `local_signals` entry is well formed (known kinds, valid globs and regular expressions, no absolute paths), and that `domains` and `mail_domains` are bare host names owned by one tool each.
 
 ## License
 

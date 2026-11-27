@@ -79,3 +79,38 @@ fdir.mkdir(parents=True, exist_ok=True)
 (fdir / "budget copy.xlsx").write_bytes(b"fake spreadsheet")
 (root / "drive" / "Notes.gdoc").write_text('{"doc_id": "x"}')
 print("fixtures written to", root)
+
+# A studio folder for the studio detectors (build logs, crashes, profiling, QA and cert docs, audio middleware,
+# localisation, engine content, VCS metadata, a credential-like file). Names are made up.
+s = root / "studio"
+for sub in ("Build/Logs", "Crashes", "Profiling", "QA", "Audio/ZqWwise", "Loc", "Game/Content", "Depot/.svn", "Ci",
+            "Jenkins/jobs"):
+    (s / sub).mkdir(parents=True, exist_ok=True)
+(s / "Build/Logs/zq_build_1042.log").write_text("ok")
+(s / "Build/Logs/zq_cook_1043.log").write_text("ok")
+(s / "Ci/Jenkinsfile").write_text("pipeline {}")
+(s / "Jenkins/config.xml").write_text("<zq/>")
+(s / "Crashes/zq_client.dmp").write_bytes(b"MDMP")
+(s / "Crashes/zq_client.crash").write_text("x")
+(s / "Crashes/zq_sentry_export.csv").write_text("id,count\n1,2\n")
+(s / "Profiling/zq_frame.utrace").write_bytes(b"x")
+(s / "Profiling/zq_gpu.rdc").write_bytes(b"x")
+(s / "QA/zq Test Plan v3.xlsx").write_bytes(b"x")
+(s / "QA/zq TRC checklist.pdf").write_bytes(b"x")
+(s / "Audio/ZqWwise/ZqWwise.wproj").write_text("<x/>")
+(s / "Audio/zq_music.bank").write_bytes(b"x")
+(s / "Loc/zq_strings.po").write_text("msgid \"\"")
+(s / "Loc/zq_dialogue.ink").write_text("== start ==")
+(s / "Loc/zq_table.csv").write_text("Key,en,fr-FR,de\nzq_hello,Hello,Bonjour,Hallo\n")
+(s / "Game/Content/ZqHero.uasset").write_bytes(b"x")
+(s / "Game/Content/ZqLevel.umap").write_bytes(b"x")
+(s / "Depot/.svn/wc.db").write_bytes(b"x")
+(s / "Depot/.env").write_text("ZQ_KEY=1")
+(s / "Depot/zq.unitypackage").write_bytes(b"x")
+
+# ClickUp-style tickets with a status column (traceable-work hashes) and a ticket CSV with numeric ids
+(root / "cu.csv").write_text("Task ID,Task Name,Status,Task Type,Date Created\n"
+                             "abc1,Fix crash,complete,bug,2022-05-01\nabc2,Add menu,open,feature,2023-05-01\n"
+                             "abc3,Fix save,closed,Bug,2024-05-01\n")
+(root / "gh.csv").write_text("id,title,state,type,created_at,closed_at\n"
+                             "17,Crash,closed,bug,2021-01-01,2021-01-02\n18,Idea,open,,2021-02-01,\n")

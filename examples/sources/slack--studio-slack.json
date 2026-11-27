@@ -2,7 +2,7 @@
   "schema": "october.measure/v1",
   "kind": "data",
   "tool": "measure-data",
-  "tool_version": "0.2.0",
+  "tool_version": "0.4.0",
   "measured_at": "2026-11-20T10:00:00Z",
   "source": "slack",
   "label": "studio-slack",
@@ -338,5 +338,101 @@
     "user_accounts": 52,
     "bot_accounts": 7,
     "deactivated_accounts": 19
+  },
+  "cutoff_early": "2022-11-30",
+  "pre_chatgpt": 360652,
+  "pre_chatgpt_share": 0.875,
+  "labels": {
+    "primary_count": {
+      "label": "verified",
+      "scope": "this slack export only"
+    },
+    "human_count": {
+      "label": "verified",
+      "scope": "this slack export only"
+    },
+    "people.distinct": {
+      "label": "verified",
+      "scope": "this slack export only"
+    },
+    "people.peak_active_in_a_month": {
+      "label": "verified",
+      "scope": "this slack export only"
+    },
+    "text.token_estimate": {
+      "label": "estimated",
+      "method": "characters / 4"
+    },
+    "span": {
+      "label": "verified",
+      "scope": "this slack export only"
+    },
+    "pre_cutoff": {
+      "label": "verified",
+      "scope": "this slack export only"
+    },
+    "pre_cutoff_share": {
+      "label": "verified",
+      "scope": "this slack export only"
+    },
+    "pre_chatgpt": {
+      "label": "verified",
+      "scope": "this slack export only"
+    },
+    "pre_chatgpt_share": {
+      "label": "verified",
+      "scope": "this slack export only"
+    }
+  },
+  "cutoffs": {
+    "pre_2025": {
+      "date": "2025-01-01",
+      "count": 412300,
+      "share": 1.0,
+      "label": "verified"
+    },
+    "pre_chatgpt": {
+      "date": "2022-11-30",
+      "count": 360652,
+      "share": 0.875,
+      "label": "verified"
+    }
+  },
+  "restrictions": {
+    "ownership": "own",
+    "ownership_basis": "default (the seller owns its data)",
+    "flags": {
+      "client_owned": {
+        "value": null,
+        "label": "unknown"
+      },
+      "platform_nda": {
+        "value": null,
+        "label": "unknown"
+      },
+      "third_party_middleware": {
+        "value": null,
+        "label": "unknown"
+      },
+      "player_personal_data": {
+        "value": null,
+        "label": "unknown"
+      },
+      "staff_personal_data": {
+        "value": true,
+        "label": "estimated",
+        "method": "items holding email or phone patterns (personal data of staff or contacts)",
+        "count": 2440
+      },
+      "secrets": {
+        "value": null,
+        "label": "unknown"
+      }
+    }
+  },
+  "version_history": {
+    "status": "not_applicable",
+    "label": "not_applicable",
+    "method": "not a document source"
   }
 }

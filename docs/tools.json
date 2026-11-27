@@ -1,5 +1,5 @@
 {
- "schema": "october.measure-data.tools/v3",
+ "schema": "october.measure-data.tools/v4",
  "sources": [
   "slack",
   "discord",
@@ -28,6 +28,127 @@
   "Automation",
   "Other"
  ],
+ "local_signal_kinds": [
+  "files",
+  "folders",
+  "folder_contains",
+  "zip_contains",
+  "csv_header",
+  "file_head",
+  "app_data"
+ ],
+ "connector_prompts": {
+  "telemetry": [
+   "Mixpanel",
+   "Amplitude",
+   "Google Analytics",
+   "BigQuery",
+   "GameAnalytics",
+   "Unity Analytics",
+   "PostHog"
+  ],
+  "backends": [
+   "Supabase",
+   "Firebase",
+   "Firestore",
+   "PlayFab",
+   "Nakama",
+   "AWS S3",
+   "DynamoDB",
+   "Google Cloud Storage",
+   "Cloudflare R2",
+   "Cloudflare D1",
+   "Cloudflare Workers"
+  ],
+  "stores": [
+   "Google Play Console",
+   "App Store Connect",
+   "Steam (Steamworks)"
+  ],
+  "ads": [
+   "AdMob",
+   "Google Ads",
+   "Meta Ads",
+   "AppLovin",
+   "Unity Ads"
+  ]
+ },
+ "studio_category_map": {
+  "by_category": {
+   "Messaging": "communication",
+   "Emailing": "communication",
+   "Project management": "work_tracking",
+   "Support": "player_support_community",
+   "CRM": "business_systems",
+   "Finance": "business_systems",
+   "Analytics": "telemetry",
+   "Infra & databases": "liveops_backend",
+   "Document storage": "design_knowledge",
+   "Code management": "source_control",
+   "Design": "art_source",
+   "Automation": "business_systems",
+   "Other": "business_systems"
+  },
+  "by_tool": {
+   "AWS S3": "servers_storage",
+   "AdMob": "business_systems",
+   "App Store Connect": "business_systems",
+   "AppLovin": "business_systems",
+   "Backtrace": "crash_reports",
+   "Box": "servers_storage",
+   "BugSplat": "crash_reports",
+   "Citrix ShareFile": "servers_storage",
+   "Cloudflare R2": "servers_storage",
+   "Connecteam": "business_systems",
+   "Crowdin": "narrative_localisation",
+   "Discord": "communication",
+   "DocHub": "production_client",
+   "DocuSign": "production_client",
+   "Dropbox": "servers_storage",
+   "FMOD": "audio",
+   "Facebook Messenger": "player_support_community",
+   "Fathom": "communication",
+   "Firebase": "liveops_backend",
+   "Fireflies": "communication",
+   "Firestore": "liveops_backend",
+   "Godot": "engine_content",
+   "Google Ads": "business_systems",
+   "Google Calendar": "communication",
+   "Google Cloud Storage": "servers_storage",
+   "Google Drive": "servers_storage",
+   "Google Play Console": "business_systems",
+   "Hubstaff": "business_systems",
+   "Humanity": "business_systems",
+   "Instagram": "player_support_community",
+   "Jenkins": "builds_ci",
+   "Legal drive": "servers_storage",
+   "Local storage / PDF files": "servers_storage",
+   "Lokalise": "narrative_localisation",
+   "Loom": "communication",
+   "Meta Ads": "business_systems",
+   "Microsoft Excel": "servers_storage",
+   "Nakama": "liveops_backend",
+   "Otter": "communication",
+   "PlayFab": "liveops_backend",
+   "Procore": "production_client",
+   "Read AI": "communication",
+   "Research corpus": "servers_storage",
+   "Sentry": "crash_reports",
+   "Steam (Steamworks)": "business_systems",
+   "Supabase": "liveops_backend",
+   "SurveyMonkey": "qa_playtest",
+   "TeamCity": "builds_ci",
+   "TestRail": "qa_playtest",
+   "Unity": "engine_content",
+   "Unity Ads": "business_systems",
+   "Unreal Engine": "engine_content",
+   "Unreal Horde / UnrealGameSync": "builds_ci",
+   "Wwise": "audio",
+   "YouTube Analytics": "player_support_community",
+   "Zoom": "communication",
+   "articy:draft": "narrative_localisation"
+  }
+ },
  "tools": [
   {
    "tool": "ChatGPT",
@@ -963,6 +1084,20 @@
    "mail_domains": [
     "teamwork.com"
    ]
+  },
+  {
+   "tool": "TestRail",
+   "category": "Project management",
+   "categories": [
+    "Project management"
+   ],
+   "source": "tickets",
+   "export": "Test cases, runs and results exported as CSV.",
+   "local_signals": {},
+   "domains": [
+    "testrail.io"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Ticketing and project management (generic, tool-agnostic)",
@@ -2197,6 +2332,21 @@
    "mail_domains": []
   },
   {
+   "tool": "AdMob",
+   "category": "Analytics",
+   "categories": [
+    "Analytics",
+    "Finance"
+   ],
+   "source": "export then files",
+   "export": "Network and mediation reports as CSV.",
+   "local_signals": {},
+   "domains": [
+    "admob.google.com"
+   ],
+   "mail_domains": []
+  },
+  {
    "tool": "Amplitude",
    "category": "Analytics",
    "categories": [
@@ -2213,6 +2363,53 @@
    ]
   },
   {
+   "tool": "App Store Connect",
+   "category": "Analytics",
+   "categories": [
+    "Analytics",
+    "Finance"
+   ],
+   "source": "export then files",
+   "export": "Sales and Trends, App Analytics and payments reports as CSV.",
+   "local_signals": {},
+   "domains": [
+    "appstoreconnect.apple.com"
+   ],
+   "mail_domains": []
+  },
+  {
+   "tool": "AppLovin",
+   "category": "Analytics",
+   "categories": [
+    "Analytics",
+    "Finance"
+   ],
+   "source": "export then files",
+   "export": "MAX revenue and user-level ad reports as CSV.",
+   "local_signals": {},
+   "domains": [
+    "dash.applovin.com"
+   ],
+   "mail_domains": [
+    "applovin.com"
+   ]
+  },
+  {
+   "tool": "Backtrace",
+   "category": "Analytics",
+   "categories": [
+    "Analytics",
+    "Code management"
+   ],
+   "source": "export then files",
+   "export": "Crash and error groups from the API as JSON or CSV (counts by build and month).",
+   "local_signals": {},
+   "domains": [
+    "backtrace.io"
+   ],
+   "mail_domains": []
+  },
+  {
    "tool": "BigQuery",
    "category": "Analytics",
    "categories": [
@@ -2223,6 +2420,21 @@
    "export": "Table metadata only: `bq ls/show --format=json`, or INFORMATION_SCHEMA rows.",
    "local_signals": {},
    "domains": [],
+   "mail_domains": []
+  },
+  {
+   "tool": "BugSplat",
+   "category": "Analytics",
+   "categories": [
+    "Analytics",
+    "Code management"
+   ],
+   "source": "export then files",
+   "export": "Crash groups and reports from the API as JSON or CSV.",
+   "local_signals": {},
+   "domains": [
+    "bugsplat.com"
+   ],
    "mail_domains": []
   },
   {
@@ -2241,6 +2453,22 @@
    ],
    "mail_domains": [
     "datadoghq.com"
+   ]
+  },
+  {
+   "tool": "GameAnalytics",
+   "category": "Analytics",
+   "categories": [
+    "Analytics"
+   ],
+   "source": "export then files",
+   "export": "Raw event export (JSON) or dashboard reports as CSV.",
+   "local_signals": {},
+   "domains": [
+    "gameanalytics.com"
+   ],
+   "mail_domains": [
+    "gameanalytics.com"
    ]
   },
   {
@@ -2270,6 +2498,19 @@
    "domains": [
     "analytics.google.com"
    ],
+   "mail_domains": []
+  },
+  {
+   "tool": "Google Play Console",
+   "category": "Analytics",
+   "categories": [
+    "Analytics",
+    "Finance"
+   ],
+   "source": "export then files",
+   "export": "Statistics, installs, ratings and earnings reports (Cloud Storage bucket download) as CSV.",
+   "local_signals": {},
+   "domains": [],
    "mail_domains": []
   },
   {
@@ -2439,6 +2680,26 @@
    ]
   },
   {
+   "tool": "Steam (Steamworks)",
+   "category": "Analytics",
+   "categories": [
+    "Analytics",
+    "Finance"
+   ],
+   "source": "export then files",
+   "export": "Steamworks sales, wishlist, player and review reports as CSV.",
+   "local_signals": {
+    "files": [
+     "steam_appid.txt",
+     "app_build_*.vdf"
+    ]
+   },
+   "domains": [
+    "partner.steamgames.com"
+   ],
+   "mail_domains": []
+  },
+  {
    "tool": "SurveyMonkey",
    "category": "Analytics",
    "categories": [
@@ -2474,6 +2735,19 @@
    "domains": [
     "online.tableau.com"
    ],
+   "mail_domains": []
+  },
+  {
+   "tool": "Unity Ads",
+   "category": "Analytics",
+   "categories": [
+    "Analytics",
+    "Finance"
+   ],
+   "source": "export then files",
+   "export": "Monetization and acquisition reports as CSV from the Unity dashboard or the stats API.",
+   "local_signals": {},
+   "domains": [],
    "mail_domains": []
   },
   {
@@ -2528,6 +2802,18 @@
    "mail_domains": []
   },
   {
+   "tool": "Cloudflare D1",
+   "category": "Infra & databases",
+   "categories": [
+    "Infra & databases"
+   ],
+   "source": "export then files",
+   "export": "`wrangler d1 export` of each database (SQLite SQL), plus table row counts.",
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
+  },
+  {
    "tool": "Cloudflare R2",
    "category": "Infra & databases",
    "categories": [
@@ -2535,6 +2821,19 @@
    ],
    "source": "files",
    "export": "Sync the bucket locally with an S3-compatible client.",
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
+  },
+  {
+   "tool": "Cloudflare Workers",
+   "category": "Infra & databases",
+   "categories": [
+    "Infra & databases",
+    "Analytics"
+   ],
+   "source": "export then files",
+   "export": "Worker scripts go to measure-code; Workers Analytics and logs as JSON.",
    "local_signals": {},
    "domains": [],
    "mail_domains": []
@@ -2578,6 +2877,27 @@
    "export": "Export to S3 (DynamoDB JSON), then sync it locally.",
    "local_signals": {},
    "domains": [],
+   "mail_domains": []
+  },
+  {
+   "tool": "Firebase",
+   "category": "Infra & databases",
+   "categories": [
+    "Infra & databases",
+    "Analytics"
+   ],
+   "source": "export then files",
+   "export": "Auth users export, Realtime Database JSON, Crashlytics and Analytics via the BigQuery export (then bigquery).",
+   "local_signals": {
+    "files": [
+     "firebase.json",
+     "google-services.json",
+     "GoogleService-Info.plist"
+    ]
+   },
+   "domains": [
+    "firebase.com"
+   ],
    "mail_domains": []
   },
   {
@@ -2668,6 +2988,20 @@
    "mail_domains": []
   },
   {
+   "tool": "Nakama",
+   "category": "Infra & databases",
+   "categories": [
+    "Infra & databases"
+   ],
+   "source": "sql",
+   "export": "`pg_dump` (or `cockroach dump`) of the Nakama database: accounts, storage, leaderboards, wallets.",
+   "local_signals": {},
+   "domains": [
+    "heroiclabs.com"
+   ],
+   "mail_domains": []
+  },
+  {
    "tool": "Noloco",
    "category": "Infra & databases",
    "categories": [
@@ -2693,6 +3027,23 @@
    "local_signals": {},
    "domains": [],
    "mail_domains": []
+  },
+  {
+   "tool": "PlayFab",
+   "category": "Infra & databases",
+   "categories": [
+    "Infra & databases",
+    "Analytics"
+   ],
+   "source": "export then files",
+   "export": "Player, economy and event data via Data Connections or the Admin API, saved as JSON or CSV.",
+   "local_signals": {},
+   "domains": [
+    "playfab.com"
+   ],
+   "mail_domains": [
+    "playfab.com"
+   ]
   },
   {
    "tool": "PostgreSQL",
@@ -2874,6 +3225,28 @@
    "mail_domains": []
   },
   {
+   "tool": "Crowdin",
+   "category": "Document storage",
+   "categories": [
+    "Document storage",
+    "Design"
+   ],
+   "source": "export then files",
+   "export": "Project translations and string reports (XLIFF, CSV or JSON).",
+   "local_signals": {
+    "files": [
+     "crowdin.yml",
+     "crowdin.yaml"
+    ]
+   },
+   "domains": [
+    "crowdin.com"
+   ],
+   "mail_domains": [
+    "crowdin.com"
+   ]
+  },
+  {
    "tool": "DocHub",
    "category": "Document storage",
    "categories": [
@@ -2977,6 +3350,23 @@
    "local_signals": {},
    "domains": [],
    "mail_domains": []
+  },
+  {
+   "tool": "Lokalise",
+   "category": "Document storage",
+   "categories": [
+    "Document storage",
+    "Design"
+   ],
+   "source": "export then files",
+   "export": "Key and translation export (JSON, XLIFF or CSV) per project.",
+   "local_signals": {},
+   "domains": [
+    "lokalise.com"
+   ],
+   "mail_domains": [
+    "lokalise.com"
+   ]
   },
   {
    "tool": "Loom",
@@ -3237,6 +3627,24 @@
    "mail_domains": []
   },
   {
+   "tool": "Plastic SCM / Unity Version Control",
+   "category": "Code management",
+   "categories": [
+    "Code management"
+   ],
+   "source": "export then files",
+   "export": "Repository history (`cm log`, `cm find changeset`) or a git export, then measure-code.",
+   "local_signals": {
+    "folders": [
+     ".plastic"
+    ]
+   },
+   "domains": [
+    "plasticscm.com"
+   ],
+   "mail_domains": []
+  },
+  {
    "tool": "Subversion (SVN)",
    "category": "Code management",
    "categories": [
@@ -3258,6 +3666,30 @@
      ]
     ]
    },
+   "domains": [],
+   "mail_domains": []
+  },
+  {
+   "tool": "TeamCity",
+   "category": "Code management",
+   "categories": [
+    "Code management"
+   ],
+   "source": "export then files",
+   "export": "Build configurations and build history from the REST API as JSON; retained build logs.",
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
+  },
+  {
+   "tool": "Unreal Horde / UnrealGameSync",
+   "category": "Code management",
+   "categories": [
+    "Code management"
+   ],
+   "source": "export then files",
+   "export": "Job and build history from the Horde API as JSON; UGS badge and CIS history.",
+   "local_signals": {},
    "domains": [],
    "mail_domains": []
   },
@@ -3308,6 +3740,21 @@
     ]
    },
    "domains": [],
+   "mail_domains": []
+  },
+  {
+   "tool": "articy:draft",
+   "category": "Design",
+   "categories": [
+    "Design",
+    "Document storage"
+   ],
+   "source": "files",
+   "export": "The articy project folder and its JSON or XML export; dialogue and story counts.",
+   "local_signals": {},
+   "domains": [
+    "articy.com"
+   ],
    "mail_domains": []
   },
   {
@@ -3375,6 +3822,24 @@
    "mail_domains": [
     "figma.com"
    ]
+  },
+  {
+   "tool": "FMOD",
+   "category": "Design",
+   "categories": [
+    "Design"
+   ],
+   "source": "files",
+   "export": "The FMOD Studio project folder (.fspro, metadata, assets); measure-art counts the audio.",
+   "local_signals": {
+    "files": [
+     "*.fspro"
+    ]
+   },
+   "domains": [
+    "fmod.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Godot",
@@ -3487,6 +3952,25 @@
     ]
    },
    "domains": [],
+   "mail_domains": []
+  },
+  {
+   "tool": "Wwise",
+   "category": "Design",
+   "categories": [
+    "Design"
+   ],
+   "source": "files",
+   "export": "The Wwise project folder (.wproj, work units, originals); measure-art counts the audio.",
+   "local_signals": {
+    "files": [
+     "*.wproj",
+     "*.wwu"
+    ]
+   },
+   "domains": [
+    "audiokinetic.com"
+   ],
    "mail_domains": []
   },
   {
@@ -3794,14 +4278,5 @@
     "zoom.us"
    ]
   }
- ],
- "local_signal_kinds": [
-  "files",
-  "folders",
-  "folder_contains",
-  "zip_contains",
-  "csv_header",
-  "file_head",
-  "app_data"
  ]
 }

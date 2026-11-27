@@ -1,0 +1,19 @@
+{
+  "categories": {
+    "art_source": "self_reported",
+    "audio": "self_reported",
+    "builds_ci": "exists_inaccessible",
+    "crash_reports": "self_reported",
+    "engine_content": "self_reported",
+    "player_support_community": "confirmed_not_used",
+    "source_control": "self_reported"
+  },
+  "connectors": {
+    "AdMob": "self_reported",
+    "App Store Connect": "exists_inaccessible",
+    "Firebase": "self_reported",
+    "Google Play Console": "exists_inaccessible",
+    "Mixpanel": "confirmed_not_used",
+    "Unity Ads": "confirmed_not_used"
+  }
+}

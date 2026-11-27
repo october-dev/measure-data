@@ -1,6 +1,6 @@
 # Tools data buyers ask about
 
-A checklist of 226 tools and data sources across 13 categories. Go through it with the person who knows the company's stack and mark the ones in use. For each one, the table says which `measure-data` source reads it and what to export.
+A checklist of 249 tools and data sources across 13 categories. Go through it with the person who knows the company's stack and mark the ones in use. For each one, the table says which `measure-data` source reads it and what to export.
 
 - **source** is the `measure_data.py` source to run. `export then files` means there is no direct parser: export the data (CSV, JSON, PDF, ...) into a folder and run `files` on that folder, which counts files, sizes, dates and working documents.
 - **category** lists every category the tool fits; the table is grouped by the first one shown in bold.
@@ -29,19 +29,25 @@ Only names, header lines and the first bytes of a file are read, in memory. Tool
 
 Each tool also has `domains` (hosts of its web app, e.g. `app.hubspot.com` is matched by `hubspot.com`) and `mail_domains` (domains its notification and billing mail comes from, e.g. `slack.com`, `atlassian.net`). A host matches itself and its subdomains, and each host belongs to one tool only. measure-disk's opt-in `--discover-tools` counts browser-history visits and mail by sender domain against these lists, and writes only tool names, counts and years. Both lists are empty where the tool has no dedicated domain (for example, tools that live under a shared google.com or microsoft.com host). Jira and Confluence Cloud share `atlassian.net`; it is listed under Jira.
 
+### Connector prompts and studio categories
+
+`connector_prompts` lists the connectors the agent must ask about explicitly before any output, in four groups: `telemetry`, `backends`, `stores` and `ads`. measure-data's `status` step records an answer for each one, and its report shows every connector with a status, so none is skipped silently.
+
+`studio_category_map` maps each tool to one of the 18 studio data categories (source control, work tracking, design and knowledge, builds and CI, crash reports, profiling, telemetry, QA and playtest, art source, engine content, audio, narrative and localisation, production and client, communication, player support and community, live ops and backend, business systems, servers and storage): `by_category` gives the default for each of the 13 list categories and `by_tool` overrides it for single tools (for example Jenkins → builds and CI, Wwise → audio). measure-disk uses it to turn detected and owner-reported tools into category statuses.
+
 ## Categories
 
 - [Messaging](#messaging) (20)
 - [Emailing](#emailing) (15)
-- [Project management](#project-management) (19)
+- [Project management](#project-management) (20)
 - [Support](#support) (14)
 - [CRM](#crm) (33)
 - [Finance](#finance) (28)
-- [Analytics](#analytics) (19)
-- [Infra & databases](#infra--databases) (19)
-- [Document storage](#document-storage) (16)
-- [Code management](#code-management) (11)
-- [Design](#design) (12)
+- [Analytics](#analytics) (28)
+- [Infra & databases](#infra--databases) (24)
+- [Document storage](#document-storage) (18)
+- [Code management](#code-management) (14)
+- [Design](#design) (15)
 - [Automation](#automation) (2)
 - [Other](#other) (18)
 
@@ -110,6 +116,7 @@ Each tool also has `domains` (hosts of its web app, e.g. `app.hubspot.com` is ma
 | Shortcut | **Project management** | `tickets` | Stories CSV export from the workspace settings. |
 | Smartsheet | **Project management** | `tickets` | Each sheet exported as CSV or Excel. |
 | Teamwork | **Project management** | `tickets` | Tasks exported as CSV per project. |
+| TestRail | **Project management** | `tickets` | Test cases, runs and results exported as CSV. |
 | Ticketing and project management (generic, tool-agnostic) | **Project management** | `tickets` | Any ticket or task CSV with created, status and description columns. |
 | Trello | **Project management** | `tickets` | Board JSON export (or CSV on paid plans). |
 | Wrike | **Project management** | `tickets` | Task table exported to CSV or Excel. |
@@ -208,11 +215,18 @@ Each tool also has `domains` (hosts of its web app, e.g. `app.hubspot.com` is ma
 
 | tool | category | source | what to export |
 |---|---|---|---|
+| AdMob | **Analytics**, Finance | `export then files` | Network and mediation reports as CSV. |
 | Amplitude | **Analytics** | `export then files` | Raw event export (JSON) or charts as CSV. |
+| App Store Connect | **Analytics**, Finance | `export then files` | Sales and Trends, App Analytics and payments reports as CSV. |
+| AppLovin | **Analytics**, Finance | `export then files` | MAX revenue and user-level ad reports as CSV. |
+| Backtrace | **Analytics**, Code management | `export then files` | Crash and error groups from the API as JSON or CSV (counts by build and month). |
 | BigQuery | **Analytics**, Infra & databases | `bigquery` | Table metadata only: `bq ls/show --format=json`, or INFORMATION_SCHEMA rows. |
+| BugSplat | **Analytics**, Code management | `export then files` | Crash groups and reports from the API as JSON or CSV. |
 | Datadog | **Analytics**, Infra & databases | `export then files` | Dashboards, monitors and log archive metadata as JSON. |
+| GameAnalytics | **Analytics** | `export then files` | Raw event export (JSON) or dashboard reports as CSV. |
 | Google Ads | **Analytics**, Other | `export then files` | Campaign, ad group and keyword reports as CSV. |
 | Google Analytics | **Analytics** | `export then files` | Reports as CSV, or the BigQuery event export (then use bigquery). |
+| Google Play Console | **Analytics**, Finance | `export then files` | Statistics, installs, ratings and earnings reports (Cloud Storage bucket download) as CSV. |
 | Grafana | **Analytics** | `export then files` | Dashboard JSON models. |
 | Meta Ads | **Analytics**, Other | `export then files` | Ads Manager reports as CSV. |
 | Metabase | **Analytics** | `export then files` | Saved questions as CSV, plus the app database dump. |
@@ -223,8 +237,10 @@ Each tool also has `domains` (hosts of its web app, e.g. `app.hubspot.com` is ma
 | Semrush | **Analytics** | `export then files` | Project and position-tracking reports as CSV. |
 | Sentry | **Analytics**, Code management | `export then files` | Issue lists and event data pulled from the API as JSON. |
 | Snowflake | **Analytics**, Infra & databases | `export then files` | INFORMATION_SCHEMA.TABLES rows as CSV (sizes, row counts, dates). |
+| Steam (Steamworks) | **Analytics**, Finance | `export then files` | Steamworks sales, wishlist, player and review reports as CSV. |
 | SurveyMonkey | **Analytics** | `export then files` | Survey responses as CSV. |
 | Tableau | **Analytics** | `export then files` | Workbooks (.twbx) and their data extracts. |
+| Unity Ads | **Analytics**, Finance | `export then files` | Monetization and acquisition reports as CSV from the Unity dashboard or the stats API. |
 | Unity Analytics | **Analytics** | `export then files` | Raw data export of events as JSON or CSV. |
 | YouTube Analytics | **Analytics**, Other | `export then files` | Channel reports from YouTube Studio as CSV. |
 
@@ -234,17 +250,22 @@ Each tool also has `domains` (hosts of its web app, e.g. `app.hubspot.com` is ma
 |---|---|---|---|
 | AWS S3 | **Infra & databases** | `files` | Sync the bucket to a local folder (`aws s3 sync`). |
 | Azure AI Search | **Infra & databases** | `export then files` | Index definitions and document counts as JSON. |
+| Cloudflare D1 | **Infra & databases** | `export then files` | `wrangler d1 export` of each database (SQLite SQL), plus table row counts. |
 | Cloudflare R2 | **Infra & databases** | `files` | Sync the bucket locally with an S3-compatible client. |
+| Cloudflare Workers | **Infra & databases**, Analytics | `export then files` | Worker scripts go to measure-code; Workers Analytics and logs as JSON. |
 | Databases (generic) | **Infra & databases** | `sql` | MySQL or PostgreSQL plain-SQL dumps; other engines as table CSVs. |
 | DynamoDB | **Infra & databases** | `export then files` | Export to S3 (DynamoDB JSON), then sync it locally. |
+| Firebase | **Infra & databases**, Analytics | `export then files` | Auth users export, Realtime Database JSON, Crashlytics and Analytics via the BigQuery export (then bigquery). |
 | Firestore | **Infra & databases** | `export then files` | Managed export to Cloud Storage, or collections dumped as JSON. |
 | Google Cloud Storage | **Infra & databases** | `files` | Copy the bucket locally (`gcloud storage cp -r`). |
 | In-house platform database (generic) | **Infra & databases**, CRM, Support | `sql` | A plain SQL dump (MySQL or PostgreSQL). |
 | Member portal | **Infra & databases**, CRM | `sql` | A plain SQL dump of the portal's database. |
 | MongoDB | **Infra & databases** | `export then files` | `mongoexport` to JSON per collection. |
 | MuleSoft | **Infra & databases** | `export then files` | API specs and flow definitions from the project files. |
+| Nakama | **Infra & databases** | `sql` | `pg_dump` (or `cockroach dump`) of the Nakama database: accounts, storage, leaderboards, wallets. |
 | Noloco | **Infra & databases**, Other | `export then files` | Collections as CSV. |
 | OpenSearch | **Infra & databases** | `export then files` | Index stats and mappings as JSON, or a snapshot. |
+| PlayFab | **Infra & databases**, Analytics | `export then files` | Player, economy and event data via Data Connections or the Admin API, saved as JSON or CSV. |
 | PostgreSQL | **Infra & databases** | `sql` | `pg_dump` plain-SQL dump, gzipped is fine. |
 | Redis | **Infra & databases** | `export then files` | Key counts and an RDB snapshot listing, not raw values. |
 | SQL Server | **Infra & databases** | `export then files` | Tables as CSV (bcp or the export wizard); measure-data reads MySQL and PostgreSQL dumps only. |
@@ -260,6 +281,7 @@ Each tool also has `domains` (hosts of its web app, e.g. `app.hubspot.com` is ma
 | Citrix ShareFile | **Document storage** | `files` | Download the folders, or sync them locally. |
 | Coda | **Document storage**, Project management | `export then files` | Doc export (Markdown or HTML) and tables as CSV. |
 | Confluence | **Document storage** | `export then files` | Space export as HTML or XML. |
+| Crowdin | **Document storage**, Design | `export then files` | Project translations and string reports (XLIFF, CSV or JSON). |
 | DocHub | **Document storage** | `export then files` | Documents downloaded as PDF. |
 | DocuSign | **Document storage** | `export then files` | Completed envelopes downloaded as PDF, plus envelope reports as CSV. |
 | Dropbox | **Document storage** | `files` | The synced Dropbox folder, files made available offline. |
@@ -267,6 +289,7 @@ Each tool also has `domains` (hosts of its web app, e.g. `app.hubspot.com` is ma
 | Labstep | **Document storage**, Other | `export then files` | Experiments and protocols exported as PDF or JSON. |
 | Legal drive | **Document storage** | `files` | The folder or synced drive holding the documents. |
 | Local storage / PDF files | **Document storage** | `files` | Point it at the folder. |
+| Lokalise | **Document storage**, Design | `export then files` | Key and translation export (JSON, XLIFF or CSV) per project. |
 | Loom | **Document storage** | `export then files` | Video downloads plus transcripts. |
 | Microsoft Excel | **Document storage** | `files` | The folder holding the workbooks. |
 | Notion | **Document storage**, Project management | `notion` | Workspace export as Markdown & CSV, or page JSON saved from the API. |
@@ -287,7 +310,10 @@ Each tool also has `domains` (hosts of its web app, e.g. `app.hubspot.com` is ma
 | Helix Swarm | **Code management** | `export then files` | Review records from the API as JSON. |
 | Jenkins | **Code management** | `export then files` | Job configs and build history (the jobs folder). |
 | Perforce | **Code management** | `export then files` | Depot history converted to git (git-p4), then measure-code. |
+| Plastic SCM / Unity Version Control | **Code management** | `export then files` | Repository history (`cm log`, `cm find changeset`) or a git export, then measure-code. |
 | Subversion (SVN) | **Code management** | `export then files` | Repository converted to git (git svn clone), then measure-code. |
+| TeamCity | **Code management** | `export then files` | Build configurations and build history from the REST API as JSON; retained build logs. |
+| Unreal Horde / UnrealGameSync | **Code management** | `export then files` | Job and build history from the Horde API as JSON; UGS badge and CIS history. |
 
 ## Design
 
@@ -295,16 +321,19 @@ Each tool also has `domains` (hosts of its web app, e.g. `app.hubspot.com` is ma
 |---|---|---|---|
 | 3D CAD files | **Design**, Document storage | `files` | The folder or share holding the models; measure-art counts them. |
 | Adobe After Effects / Creative Cloud | **Design** | `files` | The project folders; measure-art counts them. |
+| articy:draft | **Design**, Document storage | `files` | The articy project folder and its JSON or XML export; dialogue and story counts. |
 | Blender | **Design** | `files` | The folder holding the .blend files; measure-art counts them. |
 | Canva | **Design** | `export then files` | Designs downloaded as PDF or PNG; measure-art counts them. |
 | Centric PLM | **Design**, Other, Project management | `export then files` | Product, material and style records as CSV or Excel. |
 | Figma | **Design** | `export then files` | Files saved as .fig, plus comments from the API; measure-art counts the files. |
+| FMOD | **Design** | `files` | The FMOD Studio project folder (.fspro, metadata, assets); measure-art counts the audio. |
 | Godot | **Design**, Code management | `files` | The project folder; measure-art counts the assets and measure-code the scripts. |
 | Lucid | **Design** | `export then files` | Documents exported as PDF or Visio, plus CSV of shape data. |
 | Miro | **Design** | `export then files` | Boards exported as PDF or image, and CSV where offered. |
 | Production asset files | **Design**, Document storage | `files` | The folder or NAS share; measure-art counts creative formats. |
 | Unity | **Design**, Code management | `files` | The project folder; measure-art counts the assets and measure-code the scripts. |
 | Unreal Engine | **Design**, Code management | `files` | The project folder; measure-art counts the assets and measure-code the C++ and config. |
+| Wwise | **Design** | `files` | The Wwise project folder (.wproj, work units, originals); measure-art counts the audio. |
 
 ## Automation
 

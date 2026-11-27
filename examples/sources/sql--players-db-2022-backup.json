@@ -2,7 +2,7 @@
   "schema": "october.measure/v1",
   "kind": "data",
   "tool": "measure-data",
-  "tool_version": "0.2.0",
+  "tool_version": "0.4.0",
   "measured_at": "2026-11-20T10:00:00Z",
   "source": "sql",
   "label": "players-db-2022-backup",
@@ -418,5 +418,103 @@
       ]
     }
   ],
-  "note": "A row's date is the first date-like value in it, so dates are an approximation of when rows were written."
+  "note": "A row's date is the first date-like value in it, so dates are an approximation of when rows were written.",
+  "cutoff_early": "2022-11-30",
+  "pre_chatgpt": 20000000,
+  "pre_chatgpt_share": 0.513,
+  "labels": {
+    "primary_count": {
+      "label": "verified",
+      "scope": "this sql export only"
+    },
+    "human_count": {
+      "label": "unknown"
+    },
+    "people.distinct": {
+      "label": "verified",
+      "scope": "this sql export only"
+    },
+    "people.peak_active_in_a_month": {
+      "label": "unknown"
+    },
+    "text.token_estimate": {
+      "label": "estimated",
+      "method": "characters / 4"
+    },
+    "span": {
+      "label": "estimated",
+      "method": "a row's date is the first date-like value in it (year-granular)"
+    },
+    "pre_cutoff": {
+      "label": "estimated",
+      "method": "a row's date is the first date-like value in it (year-granular)"
+    },
+    "pre_cutoff_share": {
+      "label": "estimated",
+      "method": "a row's date is the first date-like value in it (year-granular)"
+    },
+    "pre_chatgpt": {
+      "label": "estimated",
+      "method": "year-granular row dates: rows from the cutoff's own year are not counted (a floor)"
+    },
+    "pre_chatgpt_share": {
+      "label": "estimated",
+      "method": "a row's date is the first date-like value in it (year-granular)"
+    },
+    "counts.dump_bytes": {
+      "label": "verified",
+      "scope": "bytes on disk of this export"
+    }
+  },
+  "cutoffs": {
+    "pre_2025": {
+      "date": "2025-01-01",
+      "count": 39000000,
+      "share": 1.0,
+      "label": "estimated"
+    },
+    "pre_chatgpt": {
+      "date": "2022-11-30",
+      "count": 20000000,
+      "share": 0.513,
+      "label": "estimated"
+    }
+  },
+  "restrictions": {
+    "ownership": "own",
+    "ownership_basis": "default (the seller owns its data)",
+    "flags": {
+      "client_owned": {
+        "value": null,
+        "label": "unknown"
+      },
+      "platform_nda": {
+        "value": null,
+        "label": "unknown"
+      },
+      "third_party_middleware": {
+        "value": null,
+        "label": "unknown"
+      },
+      "player_personal_data": {
+        "value": true,
+        "label": "estimated",
+        "method": "user-like tables or email/phone patterns found; the database may hold player accounts",
+        "count": 1
+      },
+      "staff_personal_data": {
+        "value": null,
+        "label": "unknown"
+      },
+      "secrets": {
+        "value": null,
+        "label": "unknown"
+      }
+    }
+  },
+  "version_history": {
+    "status": "not_applicable",
+    "label": "not_applicable",
+    "method": "not a document source"
+  }
 }

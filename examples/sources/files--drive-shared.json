@@ -2,7 +2,7 @@
   "schema": "october.measure/v1",
   "kind": "data",
   "tool": "measure-data",
-  "tool_version": "0.2.0",
+  "tool_version": "0.4.0",
   "measured_at": "2026-11-20T10:00:00Z",
   "source": "files",
   "label": "drive-shared",
@@ -357,5 +357,149 @@
     "bytes": 12900000000
   },
   "media_bytes_share": 0.85,
-  "note": "Dates are file modification times, which copies and syncs can reset. Duplicates are counted within this source only."
+  "note": "Dates are file modification times, which copies and syncs can reset. Duplicates are counted within this source only.",
+  "cutoff_early": "2022-11-30",
+  "pre_chatgpt": 20516,
+  "pre_chatgpt_share": 0.916,
+  "studio_files": {
+    "build_ci": {
+      "build_logs": 0,
+      "ci_configs": 0,
+      "jenkins_homes": 0,
+      "horde_ugs": 0
+    },
+    "crash_dumps": {
+      "dumps": 0,
+      "crash_reports": 0,
+      "crash_exports": 2
+    },
+    "profiling": {
+      "captures": 0,
+      "by_format": {}
+    },
+    "qa_cert_docs": 14,
+    "certification_docs": 3,
+    "audio_middleware": {
+      "wwise_projects": 0,
+      "fmod_projects": 0,
+      "sound_banks": 0
+    },
+    "localisation": {
+      "files": 22,
+      "by_format": {
+        "xliff": 16
+      },
+      "string_tables_by_header": 6
+    },
+    "engine_content": {
+      ".uasset": 0,
+      ".umap": 0,
+      ".unity": 0,
+      ".prefab": 0,
+      ".tscn": 0
+    },
+    "vcs": {
+      "perforce_workspaces": 0,
+      "svn_working_copies": 0,
+      "plastic_workspaces": 0,
+      "git_repos": 0
+    },
+    "secret_like_files": 0,
+    "asset_store_packages": 0
+  },
+  "labels": {
+    "primary_count": {
+      "label": "verified",
+      "scope": "this files export only"
+    },
+    "human_count": {
+      "label": "unknown"
+    },
+    "people.distinct": {
+      "label": "verified",
+      "scope": "this files export only"
+    },
+    "people.peak_active_in_a_month": {
+      "label": "unknown"
+    },
+    "text.token_estimate": {
+      "label": "estimated",
+      "method": "characters / 4"
+    },
+    "span": {
+      "label": "estimated",
+      "method": "file modification times, which copies and syncs can reset"
+    },
+    "pre_cutoff": {
+      "label": "estimated",
+      "method": "file modification times, which copies and syncs can reset"
+    },
+    "pre_cutoff_share": {
+      "label": "estimated",
+      "method": "file modification times, which copies and syncs can reset"
+    },
+    "pre_chatgpt": {
+      "label": "estimated",
+      "method": "file modification times, which copies and syncs can reset"
+    },
+    "pre_chatgpt_share": {
+      "label": "estimated",
+      "method": "file modification times, which copies and syncs can reset"
+    },
+    "counts.bytes": {
+      "label": "verified",
+      "scope": "bytes on disk of this export"
+    }
+  },
+  "cutoffs": {
+    "pre_2025": {
+      "date": "2025-01-01",
+      "count": 21900,
+      "share": 0.978,
+      "label": "estimated"
+    },
+    "pre_chatgpt": {
+      "date": "2022-11-30",
+      "count": 20516,
+      "share": 0.916,
+      "label": "estimated"
+    }
+  },
+  "restrictions": {
+    "ownership": "own",
+    "ownership_basis": "default (the seller owns its data)",
+    "flags": {
+      "client_owned": {
+        "value": null,
+        "label": "unknown"
+      },
+      "platform_nda": {
+        "value": true,
+        "label": "estimated",
+        "method": "platform certification documents by file name",
+        "count": 3
+      },
+      "third_party_middleware": {
+        "value": null,
+        "label": "unknown"
+      },
+      "player_personal_data": {
+        "value": null,
+        "label": "unknown"
+      },
+      "staff_personal_data": {
+        "value": null,
+        "label": "unknown"
+      },
+      "secrets": {
+        "value": null,
+        "label": "unknown"
+      }
+    }
+  },
+  "version_history": {
+    "status": "unknown",
+    "label": "unknown",
+    "method": "file listings show the current version only; ask whether the storage keeps versions"
+  }
 }

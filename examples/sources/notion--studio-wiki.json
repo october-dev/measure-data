@@ -2,7 +2,7 @@
   "schema": "october.measure/v1",
   "kind": "data",
   "tool": "measure-data",
-  "tool_version": "0.2.0",
+  "tool_version": "0.4.0",
   "measured_at": "2026-11-20T10:00:00Z",
   "source": "notion",
   "label": "studio-wiki",
@@ -322,5 +322,98 @@
       "0fd8df9cade1b6bb",
       "0fd93a9f4463b02b"
     ]
+  },
+  "cutoff_early": "2022-11-30",
+  "pre_chatgpt": 3284,
+  "pre_chatgpt_share": 0.844,
+  "labels": {
+    "primary_count": {
+      "label": "verified",
+      "scope": "this notion export only"
+    },
+    "human_count": {
+      "label": "unknown"
+    },
+    "people.distinct": {
+      "label": "verified",
+      "scope": "this notion export only"
+    },
+    "people.peak_active_in_a_month": {
+      "label": "unknown"
+    },
+    "text.token_estimate": {
+      "label": "estimated",
+      "method": "characters / 4"
+    },
+    "span": {
+      "label": "verified",
+      "scope": "this notion export only"
+    },
+    "pre_cutoff": {
+      "label": "verified",
+      "scope": "this notion export only"
+    },
+    "pre_cutoff_share": {
+      "label": "verified",
+      "scope": "this notion export only"
+    },
+    "pre_chatgpt": {
+      "label": "verified",
+      "scope": "this notion export only"
+    },
+    "pre_chatgpt_share": {
+      "label": "verified",
+      "scope": "this notion export only"
+    }
+  },
+  "cutoffs": {
+    "pre_2025": {
+      "date": "2025-01-01",
+      "count": 3890,
+      "share": 1.0,
+      "label": "verified"
+    },
+    "pre_chatgpt": {
+      "date": "2022-11-30",
+      "count": 3284,
+      "share": 0.844,
+      "label": "verified"
+    }
+  },
+  "restrictions": {
+    "ownership": "own",
+    "ownership_basis": "default (the seller owns its data)",
+    "flags": {
+      "client_owned": {
+        "value": null,
+        "label": "unknown"
+      },
+      "platform_nda": {
+        "value": null,
+        "label": "unknown"
+      },
+      "third_party_middleware": {
+        "value": null,
+        "label": "unknown"
+      },
+      "player_personal_data": {
+        "value": null,
+        "label": "unknown"
+      },
+      "staff_personal_data": {
+        "value": true,
+        "label": "estimated",
+        "method": "items holding email or phone patterns (personal data of staff or contacts)",
+        "count": 160
+      },
+      "secrets": {
+        "value": null,
+        "label": "unknown"
+      }
+    }
+  },
+  "version_history": {
+    "status": "retained_not_exported",
+    "label": "self_reported"
   }
 }

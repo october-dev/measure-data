@@ -4,12 +4,16 @@
 Usage:
   measure_data.py <source> <path> --out DIR [--mode simple|full] [--label NAME] [--cutoff 2025-01-01] [--force]
   measure_data.py report --out DIR [--no-dream]
+  measure_data.py status --out DIR [--category KEY=STATUS ...] [--connector "TOOL=STATUS" ...]
+
+Each source also takes --cutoff-early (default 2022-11-30, pre-ChatGPT), --ownership, --flag NAME (restriction
+flags), --version-history and --link-salt (hashed ticket keys, shared with measure-code).
 
 Modes:
-  simple  listing and metadata, sampled: up to --sample-files files are parsed (or the first
-          --sample-mb of one big mailbox or dump) and counts are scaled by size and marked
-          as estimates. Minutes, not hours. Each source gets a full-run recommendation.
   full    (default) every record is read.
+  simple  optional, only when a quick look is asked for: listing and metadata, sampled: up to --sample-files files are parsed (or the first
+          --sample-mb of one big mailbox or dump) and counts are scaled by size and marked
+          as estimates. Minutes, not hours.
 
 Sources (each reads a LOCAL export; the script makes no network calls):
   slack      Slack workspace export (folder or .zip)
@@ -57,8 +61,11 @@ from email.parser import BytesHeaderParser
 from email.utils import parsedate_to_datetime
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import studio_signals  # noqa: E402
+
 TOOL = "measure-data"
-VERSION = "0.3.0"
+VERSION = "0.4.0"
 SCHEMA = "october.measure/v1"
 SKETCH_K = 256
 csv.field_size_limit(min(sys.maxsize, 2**31 - 1))
@@ -73,6 +80,9 @@ class Opts:
     sample_files = 200
     sample_bytes = 64 * 1024 * 1024
     seed = 7
+    cutoff_early = dt.datetime(2022, 11, 30, tzinfo=dt.timezone.utc)
+    source = ""
+    link_salt = ""
 
 
 OPTS = Opts()
@@ -145,6 +155,7 @@ class Acc:
         self.first = self.last = self.last_human = None
         self.dated = 0
         self.pre = 0
+        self.pre_early = 0
         self.people = Counter()
         self.bots = set()
         self.chars = 0
@@ -171,6 +182,8 @@ class Acc:
                 self.month_people.setdefault(mon, set()).add(h(person, 12))
             if when < self.cutoff:
                 self.pre += 1
+            if when < OPTS.cutoff_early:
+                self.pre_early += 1
         if person:
             hp = h(person)
             if bot:
@@ -196,6 +209,7 @@ class Acc:
         return {"c": dict(self.c), "years": dict(self.years), "months": dict(self.months),
                 "month_people": {k: sorted(v) for k, v in self.month_people.items()}, "first": self.first,
                 "last": self.last, "last_human": self.last_human, "dated": self.dated, "pre": self.pre,
+                "pre_early": self.pre_early,
                 "people": dict(self.people), "bots": sorted(self.bots), "chars": self.chars,
                 "sketch": sorted(self.sketch)[:SKETCH_K], "exts": dict(self.exts)}
 
@@ -205,6 +219,7 @@ class Acc:
         for k, v in d.get("month_people", {}).items():
             self.month_people.setdefault(k, set()).update(v)
         self.dated += d["dated"]; self.pre += d["pre"]; self.chars += d["chars"]
+        self.pre_early += d.get("pre_early", 0)
         for k, newer in (("first", False), ("last", True), ("last_human", True)):
             v = d.get(k)
             if v:
@@ -244,6 +259,8 @@ class Acc:
             "last_12_months": last12,
             "pre_cutoff": self.pre,
             "pre_cutoff_share": round(self.pre / self.dated, 3) if self.dated else None,
+            "pre_chatgpt": self.pre_early,
+            "pre_chatgpt_share": round(self.pre_early / self.dated, 3) if self.dated else None,
             "people": {"distinct": len(counts), "bots": len(self.bots),
                        "top1_share": round(counts[0] / tot, 3) if counts else None,
                        "top5_share": round(sum(counts[:5]) / tot, 3) if counts else None,
@@ -586,17 +603,73 @@ TICKET_COLS = {
     "type": ("issue type", "type", "task type", "issuetype"),
     "key": ("issue key", "task id", "id", "key", "issue id", "task_id"),
     "comments": ("comments", "comment count", "comment"),
+    "status": ("status", "state", "list", "column"),
     "text": ("summary", "description", "task name", "name", "title", "content", "text", "notes", "comment", "comments"),
 }
 KNOWN_TYPES = {"bug", "story", "task", "epic", "sub-task", "subtask", "feature", "improvement", "incident", "milestone", "spike"}
 
 
-def ticket_row(acc: Acc, created, updated, closed, person, parent, typ, key, comments, description="", text=""):
+TICKET_KEY_RX = re.compile(r"^[A-Z][A-Z0-9]+-\d+$")
+DONE_STATUSES = {"done", "closed", "resolved", "complete", "completed", "fixed", "released", "shipped", "verified"}
+TRACE_TYPES = ("bug", "task", "story", "other")
+TRACE_CAP = 50_000
+
+
+def link_hash(kind: str, value: str, salt: str = "") -> str:
+    """One-way key shared with measure-code: the same ticket key hashes the same way on both sides."""
+    return hashlib.sha256(f"{salt}|{kind}|{value}".encode("utf-8", "replace")).hexdigest()[:16]
+
+
+def trace_type(typ) -> str:
+    t = (typ or "").strip().lower()
+    if t in ("bug", "defect", "crash", "incident", "regression", "issue - bug") or "bug" in t:
+        return "bug"
+    if t in ("story", "user story", "feature", "improvement", "enhancement", "epic"):
+        return "story"
+    if t in ("task", "sub-task", "subtask", "chore", "spike", "technical task"):
+        return "task"
+    return "other"
+
+
+def linkable_key(key) -> str | None:
+    """The ticket key a commit message would carry: PROJ-123 (Jira, Linear, YouTrack), CU-<id> (ClickUp), #123."""
+    if key is None or isinstance(key, (dict, list)):
+        return None
+    k = str(key).strip().upper()
+    if not k:
+        return None
+    if OPTS.source == "clickup":
+        return k if k.startswith("CU-") else "CU-" + k
+    if TICKET_KEY_RX.match(k):
+        return k
+    if k.isdigit():
+        return "#" + k
+    return None
+
+
+def new_trace() -> dict:
+    return {"by_type": {t: {"total": 0, "resolved": 0} for t in TRACE_TYPES}, "keys": {t: [] for t in TRACE_TYPES},
+            "unlinkable": 0}
+
+
+def ticket_row(acc: Acc, created, updated, closed, person, parent, typ, key, comments, description="", text="",
+               status=None, trace=None):
     acc.item(to_dt(created), person=person, key=key, kind="tickets", text=text or "")
     if parent:
         acc.c["subtasks"] += 1
     if closed:
         acc.c["tickets_closed"] += 1
+    if trace is not None:
+        tt = trace_type(typ)
+        resolved = bool(closed) or str(status or "").strip().lower() in DONE_STATUSES
+        trace["by_type"][tt]["total"] += 1
+        if resolved:
+            trace["by_type"][tt]["resolved"] += 1
+            lk = linkable_key(key)
+            if lk is None:
+                trace["unlinkable"] += 1
+            else:
+                trace["keys"][tt].append(link_hash("ticket", lk, OPTS.link_salt))
     if updated and created and str(updated) != str(created):
         acc.c["tickets_edited_after_creation"] += 1
     t = (typ or "").strip().lower()
@@ -606,6 +679,27 @@ def ticket_row(acc: Acc, created, updated, closed, person, parent, typ, key, com
         acc.c["tickets_with_comments"] += 1
     if len((description or "").strip()) >= 20 or comments:
         acc.c["tickets_with_description_or_comment"] += 1
+
+
+def merge_traces(traces: list) -> dict:
+    """Ticket counts by type and the hashed keys of resolved tickets, for bug -> fix links in master-valuate."""
+    by_type = {t: {"total": 0, "resolved": 0} for t in TRACE_TYPES}
+    keys = {t: set() for t in TRACE_TYPES}
+    unlinkable = 0
+    for tr in traces:
+        for t in TRACE_TYPES:
+            by_type[t]["total"] += tr["by_type"][t]["total"]
+            by_type[t]["resolved"] += tr["by_type"][t]["resolved"]
+            keys[t].update(tr["keys"][t])
+        unlinkable += tr.get("unlinkable", 0)
+    capped = any(len(v) > TRACE_CAP for v in keys.values())
+    return {"label": "estimated" if OPTS.simple else "verified",
+            "method": "ticket type and resolution from the export's type, status and resolved-date columns; keys of "
+                      "resolved tickets hashed one-way (link_hash) so master-valuate can match them to commit messages"
+                      + ("; simple mode reads a sample, so the sets are partial" if OPTS.simple else ""),
+            "key_salt_used": bool(OPTS.link_salt), "by_type": by_type,
+            "resolved_key_hashes": {t: sorted(v)[:TRACE_CAP] for t, v in keys.items()},
+            "resolved_without_linkable_key": unlinkable, "capped": capped}
 
 
 def src_tickets(path: Path, ck: Checkpoint, cutoff) -> dict:
@@ -618,6 +712,7 @@ def src_tickets(path: Path, ck: Checkpoint, cutoff) -> dict:
         acc = Acc(cutoff)
         acc.c["export_files"] += 1
         acc.c["export_bytes"] += size
+        tr = new_trace()
         try:
             if low.endswith(".csv"):
                 with t.open(f) as raw:
@@ -633,7 +728,7 @@ def src_tickets(path: Path, ck: Checkpoint, cutoff) -> dict:
                         ticket_row(acc, first(row, "created"), first(row, "updated"), first(row, "closed"),
                                    first(row, "person"), first(row, "parent"), first(row, "type"), first(row, "key"),
                                    first(row, "comments"), " ".join(row[i] for i in desc if i < len(row)),
-                                   " ".join(row[i] for i in idx["text"] if i < len(row)))
+                                   " ".join(row[i] for i in idx["text"] if i < len(row)), first(row, "status"), tr)
             elif low.endswith(".json"):
                 data = t.read_json(f)
                 items = (data.get("tasks") or data.get("issues") or data.get("data") or []) if isinstance(data, dict) else data
@@ -647,22 +742,27 @@ def src_tickets(path: Path, ck: Checkpoint, cutoff) -> dict:
                     typ = typ.get("name") if isinstance(typ, dict) else typ
                     desc = fl.get("description") or it.get("text_content") or ""
                     desc = desc if isinstance(desc, str) else json.dumps(desc)
+                    stt = fl.get("status") or it.get("status")
+                    stt = (stt.get("name") or stt.get("status") or stt.get("type")) if isinstance(stt, dict) else stt
                     ticket_row(acc, fl.get("created") or it.get("date_created"), fl.get("updated") or it.get("date_updated"),
                                fl.get("resolutiondate") or it.get("date_closed") or it.get("date_done"), who,
-                               fl.get("parent") or it.get("parent"), typ, it.get("id") or it.get("key"),
-                               fl.get("comment") or it.get("comments"), desc, (fl.get("summary") or it.get("name") or "") + " " + desc)
+                               fl.get("parent") or it.get("parent"), typ, it.get("key") or it.get("custom_id") or it.get("id"),
+                               fl.get("comment") or it.get("comments"), desc, (fl.get("summary") or it.get("name") or "") + " " + desc,
+                               stt, tr)
             else:  # Jira RSS/XML, read with regexes so no XML parser is needed
                 text = t.open(f).read().decode("utf-8", "replace")
                 for item in re.findall(r"<item>(.*?)</item>", text, re.S):
                     g = lambda tag: (re.search(rf"<{tag}[^>]*>(.*?)</{tag}>", item, re.S) or [None, None])[1]  # noqa: E731
                     desc = re.sub(r"<[^>]+>|&\w+;", " ", g("description") or "")
                     ticket_row(acc, g("created"), g("updated"), g("resolved"), g("reporter"), g("parent"),
-                               g("type"), g("key"), "<comment" in item, desc, (g("summary") or "") + " " + desc)
+                               g("type"), g("key"), "<comment" in item, desc, (g("summary") or "") + " " + desc,
+                               g("status"), tr)
         except (ValueError, OSError, UnicodeDecodeError, csv.Error):
             acc.c["unreadable_files"] += 1
-        ck.save(f, acc)
-    acc, _ = ck.merged(cutoff)
+        ck.save(f, acc, {"trace": tr})
+    acc, extras = ck.merged(cutoff)
     out = acc.summary("tickets")
+    out["traceable"] = merge_traces([e.get("trace") for e in extras if e.get("trace")])
     n = out["primary_count"]
     out["description_or_comment_share"] = round(acc.c["tickets_with_description_or_comment"] / n, 3) if n else None
     factor = (n + acc.c["_rows_not_read"]) / n if n else 1.0
@@ -822,6 +922,8 @@ def _sql_row(acc: Acc, tb: dict, year) -> None:
     acc.years[str(year)] += 1
     if year < acc.cutoff.year:  # row dates are year-granular
         acc.pre += 1
+    if year < OPTS.cutoff_early.year:  # a floor: rows from the cutoff's own year are not counted
+        acc.pre_early += 1
     s, e = f"{year}-01-01", f"{year}-12-31"
     acc.first = s if acc.first is None or s < acc.first else acc.first
     acc.last = e if acc.last is None or e > acc.last else acc.last
@@ -1011,6 +1113,29 @@ def _quick_fp(p: Path, size: int) -> str | None:
         return None
 
 
+def _first_line(p: Path) -> str | None:
+    """The header line of a CSV, read in memory to recognise string tables. Never stored."""
+    st = p.stat()
+    if st.st_size > 0 and getattr(st, "st_blocks", 1) == 0:
+        return None  # a cloud placeholder: reading it would download it
+    with p.open("rb") as f:
+        return f.read(4096).split(b"\n", 1)[0].decode("utf-8-sig", "replace")
+
+
+def sum_nested(items: list):
+    """Add up dicts of counts (nested dicts allowed)."""
+    if not items:
+        return None
+    out = {}
+    for d in items:
+        for k, v in d.items():
+            if isinstance(v, dict):
+                out[k] = sum_nested([out.get(k) or {}, v])
+            else:
+                out[k] = out.get(k, 0) + v
+    return out
+
+
 def src_files(path: Path, ck: Checkpoint, cutoff) -> dict:
     tops = sorted(p for p in path.iterdir() if not p.name.startswith(".")) if path.is_dir() else [path]
     for top in tops:
@@ -1019,12 +1144,15 @@ def src_files(path: Path, ck: Checkpoint, cutoff) -> dict:
             continue
         acc = Acc(cutoff)
         seen = set()
+        studio = studio_signals.StudioCounter()
         walker = [(str(top.parent), [], [top.name])] if top.is_file() else os.walk(top)
         for root, dirs, files in walker:
+            studio.folder(Path(root).name, list(dirs) + list(files))
             dirs[:] = [d for d in dirs if not d.startswith(".") and d not in ("node_modules", "__pycache__")]
             acc.c["folders"] += 1
             for name in files:
                 p = Path(root, name)
+                studio.file(name, None if OPTS.simple else (lambda p=p: _first_line(p)))
                 try:
                     st = p.lstat()
                 except OSError:
@@ -1059,9 +1187,10 @@ def src_files(path: Path, ck: Checkpoint, cutoff) -> dict:
                         acc.c["duplicate_files"] += 1
                         acc.c["duplicate_bytes"] += st.st_size
                     seen.add(fp)
-        ck.save(unit, acc)
-    acc, _ = ck.merged(cutoff)
+        ck.save(unit, acc, {"studio": studio.result()})
+    acc, extras = ck.merged(cutoff)
     out = acc.summary("files")
+    out["studio_files"] = sum_nested([e["studio"] for e in extras if e.get("studio")]) or studio_signals.StudioCounter().result()
     fams = {k[6:]: v for k, v in acc.c.items() if k.startswith("files_")}
     out["by_family"] = {f: {"files": n, "bytes": acc.c.get("bytes_" + f, 0)} for f, n in sorted(fams.items(), key=lambda kv: -kv[1])}
     total = acc.c["bytes"] or 1
@@ -1095,6 +1224,8 @@ def finish(out: dict, factor: float, note: str | None, keep=()) -> dict:
         out["counts"] = {k: (v if k.startswith(tuple(STRUCTURAL)) or k in keep else sc(v)) for k, v in out["counts"].items()}
         out["by_year"] = {k: sc(v) for k, v in out["by_year"].items()}
         out["pre_cutoff"] = sc(out["pre_cutoff"])
+        if out.get("pre_chatgpt") is not None:
+            out["pre_chatgpt"] = sc(out["pre_chatgpt"])
         out["last_12_months"] = sc(out["last_12_months"])
         out["text"] = {k: sc(v) for k, v in out["text"].items()}
         out["people"]["note"] = "people counts come from a sample and are a floor"
@@ -1120,6 +1251,240 @@ def finish(out: dict, factor: float, note: str | None, keep=()) -> dict:
 
 
 # --------------------------------------------------------------------------
+# labels, cutoffs, restrictions, version history, category status (studio assessment)
+# --------------------------------------------------------------------------
+
+LABELS = ("verified", "estimated", "self_reported", "unknown", "not_applicable")
+CATEGORY_KEYS = ("source_control", "work_tracking", "design_knowledge", "builds_ci", "crash_reports", "profiling",
+                 "telemetry", "qa_playtest", "art_source", "engine_content", "audio", "narrative_localisation",
+                 "production_client", "communication", "player_support_community", "liveops_backend",
+                 "business_systems", "servers_storage")
+CATEGORY_STATUSES = ("inspected", "exists_inaccessible", "self_reported", "confirmed_not_used", "unknown")
+STATUS_RANK = {s: i for i, s in enumerate(reversed(CATEGORY_STATUSES))}  # unknown 0 ... inspected 4
+STATUS_LABEL = {"inspected": "verified", "exists_inaccessible": "unknown", "self_reported": "self_reported",
+                "confirmed_not_used": "self_reported", "unknown": "unknown"}
+SOURCE_CATEGORY = {"slack": "communication", "discord": "communication", "mbox": "communication",
+                   "notion": "design_knowledge", "clickup": "work_tracking", "jira": "work_tracking",
+                   "tickets": "work_tracking", "sql": "liveops_backend", "bigquery": "telemetry", "files": "servers_storage"}
+FLAG_KEYS = ("client_owned", "platform_nda", "third_party_middleware", "player_personal_data", "staff_personal_data", "secrets")
+OWNERSHIP = ("own", "client_owned", "unclear")
+VERSION_HISTORY = ("exported", "retained_not_exported", "not_retained", "unknown", "not_applicable")
+DOC_SOURCES = {"notion", "files"}
+SIZE_KEYS = ("export_bytes", "bytes", "dump_bytes", "mailbox_bytes")
+
+
+def lab(label: str, method: str | None = None, scope: str | None = None) -> dict:
+    out = {"label": label}
+    if method:
+        out["method"] = method
+    if scope:
+        out["scope"] = scope
+    return out
+
+
+def source_labels(doc: dict) -> dict:
+    """Label every material number of one source (SPEC section 1). Unknown numbers are null with label unknown."""
+    src = doc.get("source")
+    est = bool(doc.get("estimate"))
+    sample = doc.get("sample_note") or "simple mode: a sample of the export, scaled by size"
+    base = lab("estimated", sample) if est else lab("verified", scope=f"this {src} export only")
+    dates = base
+    if src == "sql":
+        dates = lab("estimated", "a row's date is the first date-like value in it (year-granular)")
+    elif src == "files":
+        dates = lab("estimated", "file modification times, which copies and syncs can reset")
+    people = dict(base)
+    if est:
+        people = lab("estimated", "people seen in a sample; a floor")
+    out = {"primary_count": base, "human_count": base if doc.get("human_count") is not None else lab("unknown"),
+           "people.distinct": people if (doc.get("people") or {}).get("distinct") is not None else lab("unknown"),
+           "people.peak_active_in_a_month": people if (doc.get("people") or {}).get("peak_active_in_a_month") is not None else lab("unknown"),
+           "text.token_estimate": lab("estimated", "characters / 4"),
+           "span": dates if (doc.get("span") or {}).get("first") else lab("unknown"),
+           "pre_cutoff": dates, "pre_cutoff_share": dates,
+           "pre_chatgpt": dates if doc.get("pre_chatgpt") is not None else lab("unknown"),
+           "pre_chatgpt_share": dates if doc.get("pre_chatgpt_share") is not None else lab("unknown")}
+    for k in SIZE_KEYS:
+        if k in (doc.get("counts") or {}):
+            out["counts." + k] = lab("verified", scope="bytes on disk of this export")
+    if src == "sql":
+        out["pre_chatgpt"] = lab("estimated", "year-granular row dates: rows from the cutoff's own year are not counted (a floor)")
+    if doc.get("traceable"):
+        out["traceable.by_type"] = lab(doc["traceable"]["label"], doc["traceable"]["method"])
+    return out
+
+
+def cutoffs_block(doc: dict, early: str) -> dict:
+    lb = doc.get("labels") or source_labels(doc)
+    late = {"date": doc.get("cutoff"), "count": doc.get("pre_cutoff"), "share": doc.get("pre_cutoff_share"),
+            "label": lb["pre_cutoff"]["label"] if doc.get("pre_cutoff_share") is not None else "unknown"}
+    e = {"date": doc.get("cutoff_early") or early, "count": doc.get("pre_chatgpt"), "share": doc.get("pre_chatgpt_share"),
+         "label": lb["pre_chatgpt"]["label"] if doc.get("pre_chatgpt") is not None else "unknown"}
+    return {"pre_2025": late, "pre_chatgpt": e}
+
+
+def flag(value=None, label="unknown", method=None, count=None) -> dict:
+    out = {"value": value, "label": label}
+    if method:
+        out["method"] = method
+    if count is not None:
+        out["count"] = count
+    return out
+
+
+def parse_flags(items: list) -> dict:
+    """--flag NAME or --flag NAME=yes|no, self-reported by the owner."""
+    out = {}
+    for it in items or []:
+        name, _, val = it.partition("=")
+        name = name.strip().lower()
+        if name not in FLAG_KEYS:
+            raise ValueError(f"unknown restriction flag {name!r}; use one of {', '.join(FLAG_KEYS)}")
+        v = val.strip().lower()
+        if v not in ("", "yes", "true", "no", "false"):
+            raise ValueError(f"--flag {name}= takes yes or no")
+        out[name] = v in ("", "yes", "true")
+    return out
+
+
+def restrictions_block(doc: dict, ownership: str | None = None, flags: dict | None = None) -> dict:
+    """Restriction flags (SPEC section 4): recorded, not ruled on. Unknown unless measured or self-reported."""
+    f = {k: flag() for k in FLAG_KEYS}
+    src, c = doc.get("source"), doc.get("counts") or {}
+    pii = (c.get("items_with_email_pattern") or 0) + (c.get("items_with_phone_pattern") or 0)
+    users_tables = sum(1 for d in doc.get("dumps") or [] for t in d.get("top_tables") or [] if t.get("category") == "users")
+    if src in ("sql", "bigquery") and (users_tables or pii):
+        f["player_personal_data"] = flag(True, "estimated", "user-like tables or email/phone patterns found; the database "
+                                         "may hold player accounts", count=users_tables or pii)
+    elif src in ("slack", "discord", "mbox", "jira", "clickup", "tickets", "notion") and pii:
+        f["staff_personal_data"] = flag(True, "estimated", "items holding email or phone patterns (personal data of "
+                                        "staff or contacts)", count=pii)
+    sf = doc.get("studio_files") or {}
+    if sf.get("secret_like_files"):
+        f["secrets"] = flag(True, "estimated", "credential-like file names (.env, keys, keystores, password vaults)",
+                            count=sf["secret_like_files"])
+    if sf.get("certification_docs"):
+        f["platform_nda"] = flag(True, "estimated", "platform certification documents by file name", count=sf["certification_docs"])
+    am = sf.get("audio_middleware") or {}
+    mw = sum(am.values()) + sf.get("asset_store_packages", 0) if sf else 0
+    if mw:
+        f["third_party_middleware"] = flag(True, "estimated", "audio middleware projects or Asset Store packages", count=mw)
+    own = ownership or "own"
+    for k, v in (flags or {}).items():
+        f[k] = flag(v, "self_reported")
+    if own == "client_owned":
+        f["client_owned"] = flag(True, "self_reported")
+    return {"ownership": own, "ownership_basis": "self_reported" if ownership else "default (the seller owns its data)",
+            "flags": f}
+
+
+def version_history_block(doc: dict, status: str | None = None) -> dict:
+    src = doc.get("source")
+    if status:
+        return {"status": status, "label": "self_reported"}
+    if src not in DOC_SOURCES:
+        return {"status": "not_applicable", "label": "not_applicable", "method": "not a document source"}
+    note = ("a Markdown/CSV export carries the current version of each page only; ask whether page history is kept in the tool"
+            if src == "notion" else "file listings show the current version only; ask whether the storage keeps versions")
+    return {"status": "unknown", "label": "unknown", "method": note}
+
+
+def annotate(doc: dict, early: str, ownership=None, flags=None, version_history=None) -> dict:
+    """Add the studio-assessment blocks to one source doc. Old flat fields are kept as they are."""
+    doc.setdefault("cutoff_early", early)
+    if "pre_chatgpt" not in doc:
+        doc["pre_chatgpt"] = None
+        doc["pre_chatgpt_share"] = None
+    doc["labels"] = source_labels(doc)
+    doc["cutoffs"] = cutoffs_block(doc, early)
+    if "restrictions" not in doc or ownership or flags:
+        doc["restrictions"] = restrictions_block(doc, ownership, flags)
+    if "version_history" not in doc or version_history:
+        doc["version_history"] = version_history_block(doc, version_history)
+    return doc
+
+
+def load_status(out: Path) -> dict:
+    p = out / "status.json"
+    if p.exists():
+        return json.loads(p.read_text("utf-8"))
+    return {"categories": {}, "connectors": {}}
+
+
+def tool_list() -> dict:
+    return json.loads((Path(__file__).resolve().parent.parent / "docs" / "tools.json").read_text("utf-8"))
+
+
+def best(a: str, b: str) -> str:
+    return a if STATUS_RANK[a] >= STATUS_RANK[b] else b
+
+
+def category_status(docs: list, status: dict) -> dict:
+    """Every category of the studio checklist with a status (SPEC section 3). Never drops one."""
+    cs = {k: {"status": "unknown", "evidence": "not established", "sources": 0} for k in CATEGORY_KEYS}
+    for d in docs:
+        tag = next((t.split(":", 1)[1] for t in d.get("tags") or [] if t.startswith("category:")), None)
+        key = tag if tag in cs else SOURCE_CATEGORY.get(d.get("source"))
+        found = {key: 1} if key else {}
+        if d.get("studio_files"):
+            for k in studio_signals.categories_found(d["studio_files"]):
+                found.setdefault(k, 1)
+        for k in found:
+            cs[k]["sources"] += 1
+            if cs[k]["status"] != "inspected":
+                cs[k].update(status="inspected", evidence="measured export" if k == key else "files found in a measured folder")
+    for k, st in (status.get("categories") or {}).items():
+        if k in cs:
+            new = best(cs[k]["status"], st)
+            if new != cs[k]["status"]:
+                cs[k].update(status=new, evidence={"exists_inaccessible": "exists, not accessible to this run",
+                                                   "self_reported": "reported by the owner",
+                                                   "confirmed_not_used": "owner confirmed it is not used"}.get(new, cs[k]["evidence"]))
+    for v in cs.values():
+        v["label"] = STATUS_LABEL[v["status"]]
+    return cs
+
+
+def connectors_block(docs: list, status: dict, tools: dict) -> dict:
+    """The explicit connector check (SPEC section 8): telemetry, backends, stores and ads, each with a status."""
+    tagged = {t.split(":", 1)[1].lower() for d in docs for t in d.get("tags") or [] if t.startswith("connector:")}
+    out = {}
+    reported = {k.lower(): v for k, v in (status.get("connectors") or {}).items()}
+    for group, names in tools.get("connector_prompts", {}).items():
+        for n in names:
+            st = "inspected" if n.lower() in tagged else "unknown"
+            st = best(st, reported.get(n.lower(), "unknown"))
+            out[n] = {"group": group, "status": st, "label": STATUS_LABEL[st]}
+    return out
+
+
+def cmd_status(out: Path, cats: list, conns: list) -> int:
+    """Record owner answers: category statuses and connector statuses, merged into <out>/status.json."""
+    tools = tool_list()
+    names = {t["tool"].lower(): t["tool"] for t in tools["tools"]}
+    st = load_status(out)
+    for item in cats or []:
+        k, _, v = item.partition("=")
+        k, v = k.strip(), v.strip()
+        if k not in CATEGORY_KEYS or v not in CATEGORY_STATUSES:
+            log(f"refused {item!r}: use KEY=STATUS with KEY one of {', '.join(CATEGORY_KEYS)} and STATUS one of {', '.join(CATEGORY_STATUSES)}")
+            return 2
+        st.setdefault("categories", {})[k] = v
+    for item in conns or []:
+        k, _, v = item.rpartition("=")
+        k, v = k.strip(), v.strip()
+        if k.lower() not in names or v not in CATEGORY_STATUSES:
+            log(f"refused {item!r}: use \"TOOL=STATUS\" with a tool name from docs/tools.json and STATUS one of {', '.join(CATEGORY_STATUSES)}")
+            return 2
+        st.setdefault("connectors", {})[names[k.lower()]] = v
+    out.mkdir(parents=True, exist_ok=True)
+    atomic_write(out / "status.json", json.dumps(st, indent=2, sort_keys=True))
+    log(f"wrote {out / 'status.json'} ({len(st.get('categories', {}))} categories, {len(st.get('connectors', {}))} connectors); "
+        "run `report` to merge")
+    return 0
+
+
+# --------------------------------------------------------------------------
 # report
 # --------------------------------------------------------------------------
 
@@ -1141,7 +1506,8 @@ def human_bytes(n) -> str:
         n /= 1024
 
 
-def render(docs: list, cutoff: str, dream: dict | None = None) -> str:
+def render(docs: list, cutoff: str, dream: dict | None = None, cats: dict | None = None, conns: dict | None = None,
+           early: str = "2022-11-30") -> str:
     modes = {d.get("mode", "full") for d in docs}
     lines = ["# Business data measurement", "",
              f"Produced with {TOOL} {VERSION} ({', '.join(sorted(modes))} mode). Counts only: no content, names, titles, paths or ids. "
@@ -1158,6 +1524,23 @@ def render(docs: list, cutoff: str, dream: dict | None = None) -> str:
                      f"{fmt(d['people'].get('peak_active_in_a_month'))} | {est}{fmt(d['text']['token_estimate'])} | {human_bytes(size)} | "
                      f"{d.get('recommendation', {}).get('full_run', 'n/a')} |")
     lines += ["", f"Pre-cutoff = share of dated items before {cutoff}. Tokens = characters / 4.", ""]
+    lines += ["| source | label | pre-2025 items | pre-2025 share | pre-ChatGPT items | pre-ChatGPT share | label |",
+              "|---|---|---|---|---|---|---|"]
+    for d in docs:
+        co = d.get("cutoffs") or {}
+        a, b = co.get("pre_2025") or {}, co.get("pre_chatgpt") or {}
+        lines.append(f"| {d['source']} | {d['label']} | {fmt(a.get('count'))} | {fmt(a.get('share'))} | {fmt(b.get('count'))} | "
+                     f"{fmt(b.get('share'))} | {b.get('label', 'unknown')} |")
+    lines += ["", f"Pre-2025 = before {cutoff}; pre-ChatGPT = before {early}. Unknown is shown as n/a, never as 0.", ""]
+    if cats:
+        lines += ["## Category status", "", "Every category of the studio checklist, with a status. None is dropped.", "",
+                  "| category | status | evidence | sources | label |", "|---|---|---|---|---|"]
+        lines += [f"| {k.replace('_', ' ')} | {v['status'].replace('_', ' ')} | {v['evidence']} | {v['sources']} | {v['label']} |"
+                  for k, v in cats.items()] + [""]
+    if conns:
+        lines += ["## Connectors check", "", "Telemetry, backends, stores and ads the agent asked about explicitly.", "",
+                  "| group | connector | status | label |", "|---|---|---|---|"]
+        lines += [f"| {v['group']} | {k} | {v['status'].replace('_', ' ')} | {v['label']} |" for k, v in conns.items()] + [""]
     for i, d in enumerate(docs, 2):
         lines += [f"## {i}. {d['source']}: {d['label']}" + (" (estimate)" if d.get("estimate") else ""), ""]
         if d.get("sample_note"):
@@ -1176,6 +1559,29 @@ def render(docs: list, cutoff: str, dream: dict | None = None) -> str:
                   f"| characters / token estimate | {fmt(d['text']['characters'])} / {fmt(d['text']['token_estimate'])} |",
                   f"| dated share | {fmt(d['dated_share'])} |", f"| active months | {fmt(d['active_months'])} |",
                   f"| items in last 12 active months | {fmt(d['last_12_months'])} |", ""]
+        tr = d.get("traceable")
+        if tr:
+            bt = tr["by_type"]
+            lines += ["| ticket type | total | resolved | hashed resolved keys |", "|---|---|---|---|"]
+            lines += [f"| {t} | {fmt(bt[t]['total'])} | {fmt(bt[t]['resolved'])} | {fmt(len(tr['resolved_key_hashes'][t]))} |"
+                      for t in bt] + ["", f"_Traceable work: {tr['method']} ({tr['label']})._", ""]
+        sf = d.get("studio_files")
+        if sf:
+            bits = [f"build logs {fmt(sf['build_ci']['build_logs'])}", f"CI configs {fmt(sf['build_ci']['ci_configs'])}",
+                    f"crash dumps {fmt(sf['crash_dumps']['dumps'])}", f"profiling captures {fmt(sf['profiling']['captures'])}",
+                    f"QA and certification documents {fmt(sf['qa_cert_docs'])}",
+                    f"Wwise/FMOD projects {fmt(sf['audio_middleware']['wwise_projects'] + sf['audio_middleware']['fmod_projects'])}",
+                    f"localisation files {fmt(sf['localisation']['files'])}",
+                    "engine content " + ", ".join(f"{k} {fmt(v)}" for k, v in sf["engine_content"].items())]
+            lines += ["Studio files: " + "; ".join(bits) + ".", ""]
+        rs = d.get("restrictions")
+        if rs:
+            on = [f"{k.replace('_', ' ')} ({v['label']})" for k, v in rs["flags"].items() if v["value"]]
+            lines += [f"Restrictions (recorded, not ruled on): ownership {rs['ownership'].replace('_', ' ')}; "
+                      + ("flags: " + ", ".join(on) if on else "no flag established") + ".", ""]
+        vh = d.get("version_history")
+        if vh and vh.get("status") != "not_applicable":
+            lines += [f"Version history: {vh['status'].replace('_', ' ')} ({vh['label']}).", ""]
         if d.get("description_or_comment_share") is not None:
             lines += [f"Tickets with a real description or comment: {fmt(d['description_or_comment_share'])}.", ""]
         if d.get("dedupe"):
@@ -1212,7 +1618,9 @@ def render(docs: list, cutoff: str, dream: dict | None = None) -> str:
               "- People are counted by hashed account id or email; one person with two accounts counts twice.",
               "- Peak active people counts distinct humans with a dated item in a month; sources that record only creators give a floor.",
               "- `items_with_email_pattern` and `items_with_phone_pattern` count items that contain such a pattern. Matches are never stored.",
-              "- Attachment bytes are what the export references; files that are not in the export were not downloaded.", ""]
+              "- Attachment bytes are what the export references; files that are not in the export were not downloaded.",
+              "- Every number carries a label in measure.json (`labels`): verified, estimated (with a method), self-reported, "
+              "unknown or not applicable. Unknown is null, never 0.", ""]
     lines += dream_mod().section(dream)
     return "\n".join(lines)
 
@@ -1243,14 +1651,23 @@ def privacy_scan(doc) -> list:
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description="Count company data exports locally. Counts only.")
-    ap.add_argument("source", choices=sorted(SOURCES) + ["report"])
+    ap.add_argument("source", choices=sorted(SOURCES) + ["report", "status"])
     ap.add_argument("path", nargs="?", type=Path)
     ap.add_argument("--out", type=Path, required=True)
     ap.add_argument("--mode", choices=["simple", "full"], default="full",
-                    help="simple = sampled listing and metadata, minutes (recommended first run); full = every record (default)")
+                    help="full = every record (default); simple = optional fast sampled pass, only when a quick look is asked for")
     ap.add_argument("--label", help="name for this source in the report (default: source name)")
     ap.add_argument("--tag", action="append", default=[], help="free-form tag for cross-linking, e.g. project:alpha")
-    ap.add_argument("--cutoff", default="2025-01-01")
+    ap.add_argument("--cutoff", default="2025-01-01", help="later cutoff for pre-cutoff counts (default 2025-01-01)")
+    ap.add_argument("--cutoff-early", default="2022-11-30",
+                    help="earlier cutoff for pre-ChatGPT counts (default 2022-11-30, the public release of ChatGPT)")
+    ap.add_argument("--link-salt", default="", help="optional salt for hashed ticket keys; use the same one in measure-code")
+    ap.add_argument("--ownership", choices=OWNERSHIP, help="who owns this source (default: own)")
+    ap.add_argument("--flag", action="append", default=[],
+                    help="self-reported restriction flag, repeatable: " + ", ".join(FLAG_KEYS) + " (NAME or NAME=no)")
+    ap.add_argument("--version-history", choices=VERSION_HISTORY, help="self-reported version history for a document source")
+    ap.add_argument("--category", action="append", default=[], help="status: KEY=STATUS for a studio category (repeatable)")
+    ap.add_argument("--connector", action="append", default=[], help="status: \"TOOL=STATUS\" for a connector (repeatable)")
     ap.add_argument("--sample-files", type=int, default=200, help="simple mode: files parsed per source")
     ap.add_argument("--sample-mb", type=int, default=64, help="simple mode: MB read from each mailbox or dump")
     ap.add_argument("--force", action="store_true", help="discard checkpoints and recount")
@@ -1259,6 +1676,15 @@ def main(argv=None) -> int:
     a = ap.parse_args(argv)
     out = a.out.expanduser().resolve()
     cutoff = dt.datetime.strptime(a.cutoff, "%Y-%m-%d").replace(tzinfo=dt.timezone.utc)
+    OPTS.cutoff_early = dt.datetime.strptime(a.cutoff_early, "%Y-%m-%d").replace(tzinfo=dt.timezone.utc)
+    OPTS.link_salt = a.link_salt
+    OPTS.source = a.source
+    try:
+        flags = parse_flags(a.flag)
+    except ValueError as e:
+        ap.error(str(e))
+    if a.source == "status":
+        return cmd_status(out, a.category, a.connector)
     OPTS.simple = a.mode == "simple"
     OPTS.sample_files = a.sample_files
     OPTS.sample_bytes = a.sample_mb * 2**20
@@ -1267,18 +1693,25 @@ def main(argv=None) -> int:
         docs = [json.loads(p.read_text("utf-8")) for p in sorted((out / "sources").glob("*.json"))]
         if not docs:
             ap.error(f"no source files in {out / 'sources'}")
+        for d in docs:  # source files from older versions get the new blocks; their numbers are not changed
+            annotate(d, a.cutoff_early)
+        st = load_status(out)
+        cats = category_status(docs, st)
+        conns = connectors_block(docs, st, tool_list())
         bundle = {"schema": SCHEMA, "kind": "data", "tool": TOOL, "tool_version": VERSION,
                   "measured_at": dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-                  "cutoff": a.cutoff, "sources": docs}
+                  "cutoff": a.cutoff, "cutoff_early": a.cutoff_early, "category_status": cats, "connectors": conns,
+                  "sources": docs}
+        rend = lambda dr=None: render(docs, a.cutoff, dr, cats, conns, a.cutoff_early)  # noqa: E731
         dm = dream_mod()
         bundle["dream"] = dm.pending()
-        bundle["dream"] = dm.resolve(out, dm.ground_text(bundle, render(docs, a.cutoff)), a.no_dream)
+        bundle["dream"] = dm.resolve(out, dm.ground_text(bundle, rend()), a.no_dream)
         bad = privacy_scan(bundle)
         if bad:
             log("privacy check FAILED, nothing written: " + ", ".join(bad[:10]))
             return 2
         atomic_write(out / "measure.json", json.dumps(bundle, indent=2))
-        atomic_write(out / "report.md", render(docs, a.cutoff, bundle["dream"]))
+        atomic_write(out / "report.md", rend(bundle["dream"]))
         log(f"wrote {out / 'measure.json'} and {out / 'report.md'} ({len(docs)} sources)")
         return 0
 
@@ -1290,7 +1723,8 @@ def main(argv=None) -> int:
     result = SOURCES[a.source](a.path.expanduser().resolve(), ck, cutoff)
     doc = {"schema": SCHEMA, "kind": "data", "tool": TOOL, "tool_version": VERSION,
            "measured_at": dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-           "source": a.source, "label": label, "tags": a.tag, "cutoff": a.cutoff, **result}
+           "source": a.source, "label": label, "tags": a.tag, "cutoff": a.cutoff, "cutoff_early": a.cutoff_early, **result}
+    annotate(doc, a.cutoff_early, a.ownership, flags, a.version_history)
     bad = privacy_scan(doc)
     if bad:
         log("privacy check FAILED, nothing written: " + ", ".join(bad[:10]))
