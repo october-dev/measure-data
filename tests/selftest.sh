@@ -128,10 +128,53 @@ for t in tools:
     assert t["category"] in t["categories"] and set(t["categories"]) <= set(cats), t
     assert t["export"].strip() and "\n" not in t["export"], t
 md = (here / "docs" / "TOOLS.md").read_text(encoding="utf-8")
-rows = [l for l in md.splitlines() if l.startswith("| ") and not l.startswith("| tool |")]
+rows = [l for l in md.split("\n## Categories\n", 1)[1].splitlines() if l.startswith("| ") and not l.startswith("| tool |")]
 assert len(rows) == len(tools), (len(rows), len(tools))
 for t in tools:
     assert "| %s |" % t["tool"] in md and "`%s`" % t["source"] in md, t["tool"]
 print("selftest: tool list OK (%d tools, %d categories)" % (len(tools), len(cats)))
+# local_signals: every tool has the field; only known kinds; patterns are valid and never absolute paths.
+import fnmatch, re
+kinds = doc["local_signal_kinds"]
+assert kinds == ["files", "folders", "folder_contains", "zip_contains", "csv_header", "file_head", "app_data"], kinds
+def pat_ok(p, slash_ok):
+    assert isinstance(p, str) and p and p.strip() == p, p
+    body = p[3:] if p.startswith("re:") else p
+    assert not body.startswith(("/", "~")) and not re.match(r"[A-Za-z]:", body), p
+    assert p.startswith("re:") or "\\" not in p, p
+    if p.startswith("re:"):
+        re.compile(p[3:])
+    else:
+        fnmatch.translate(p)
+        assert slash_ok or "/" not in p, p
+with_signals = 0
+for t in tools:
+    sig = t["local_signals"]
+    assert isinstance(sig, dict) and set(sig) <= set(kinds), t["tool"]
+    with_signals += bool(sig)
+    for k, v in sig.items():
+        assert isinstance(v, list) and v, (t["tool"], k)
+        for item in v:
+            if k in ("files", "folders"):
+                pat_ok(item, False)
+            elif k == "app_data":
+                pat_ok(item, True)
+                assert not item.startswith("re:") and ".." not in item.split("/"), item
+            elif k in ("folder_contains", "zip_contains", "csv_header"):
+                assert isinstance(item, list) and item, (t["tool"], k)
+                for p in item:
+                    pat_ok(p, k in ("zip_contains", "csv_header"))
+            else:
+                assert set(item) == {"files", "contains"} and item["contains"].strip(), (t["tool"], item)
+                pat_ok(item["files"], False)
+# spot checks: a Slack export zip, an mbox and a Unity project are recognisable
+by = {t["tool"]: t["local_signals"] for t in tools}
+assert ["channels.json", "users.json"] in by["Slack"]["zip_contains"]
+assert any(fnmatch.fnmatch("founder.mbox", p) for p in by["Email archives (generic mbox / eml)"]["files"])
+assert ["Assets", "ProjectSettings"] in by["Unity"]["folder_contains"]
+assert by["QuickBooks Desktop"]["files"] and by["Microsoft Teams"]["app_data"] and by["HubSpot"]["csv_header"]
+assert with_signals >= 40, with_signals
+assert "Local signals" in md and "`local_signals`" in md
+print("selftest: local_signals OK (%d of %d tools have local signals)" % (with_signals, len(tools)))
 EOF
 echo "selftest: passed"

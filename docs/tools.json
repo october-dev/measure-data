@@ -1,5 +1,5 @@
 {
- "schema": "october.measure-data.tools/v1",
+ "schema": "october.measure-data.tools/v2",
  "sources": [
   "slack",
   "discord",
@@ -37,7 +37,21 @@
     "Other"
    ],
    "source": "export then files",
-   "export": "Settings data export: the conversations JSON in the zip."
+   "export": "Settings data export: the conversations JSON in the zip.",
+   "local_signals": {
+    "folder_contains": [
+     [
+      "conversations.json",
+      "chat.html"
+     ]
+    ],
+    "zip_contains": [
+     [
+      "conversations.json",
+      "chat.html"
+     ]
+    ]
+   }
   },
   {
    "tool": "Claude",
@@ -47,7 +61,8 @@
     "Other"
    ],
    "source": "export then files",
-   "export": "Account data export: the conversations JSON in the zip."
+   "export": "Account data export: the conversations JSON in the zip.",
+   "local_signals": {}
   },
   {
    "tool": "Connecteam",
@@ -57,7 +72,8 @@
     "Other"
    ],
    "source": "export then files",
-   "export": "CSV exports of chats, time clock and task records."
+   "export": "CSV exports of chats, time clock and task records.",
+   "local_signals": {}
   },
   {
    "tool": "Discord",
@@ -66,7 +82,25 @@
     "Messaging"
    ],
    "source": "discord",
-   "export": "Per-channel JSON from DiscordChatExporter, or the account data package."
+   "export": "Per-channel JSON from DiscordChatExporter, or the account data package.",
+   "local_signals": {
+    "folder_contains": [
+     [
+      "account",
+      "messages",
+      "servers"
+     ]
+    ],
+    "zip_contains": [
+     [
+      "messages/index.json",
+      "servers/index.json"
+     ]
+    ],
+    "app_data": [
+     "discord"
+    ]
+   }
   },
   {
    "tool": "Facebook Messenger",
@@ -76,7 +110,8 @@
     "Support"
    ],
    "source": "export then files",
-   "export": "Page inbox conversations via Meta Business data download (JSON)."
+   "export": "Page inbox conversations via Meta Business data download (JSON).",
+   "local_signals": {}
   },
   {
    "tool": "Gemini",
@@ -86,7 +121,8 @@
     "Other"
    ],
    "source": "export then files",
-   "export": "Google Takeout 'My Activity' for Gemini apps."
+   "export": "Google Takeout 'My Activity' for Gemini apps.",
+   "local_signals": {}
   },
   {
    "tool": "Google Chat",
@@ -95,7 +131,14 @@
     "Messaging"
    ],
    "source": "export then files",
-   "export": "Google Takeout (or Vault) export of spaces and DMs as JSON."
+   "export": "Google Takeout (or Vault) export of spaces and DMs as JSON.",
+   "local_signals": {
+    "zip_contains": [
+     [
+      "Takeout/Google Chat/Groups/*"
+     ]
+    ]
+   }
   },
   {
    "tool": "Grok",
@@ -105,7 +148,8 @@
     "Other"
    ],
    "source": "export then files",
-   "export": "Account data export of conversations."
+   "export": "Account data export of conversations.",
+   "local_signals": {}
   },
   {
    "tool": "HipChat",
@@ -114,7 +158,8 @@
     "Messaging"
    ],
    "source": "export then files",
-   "export": "The legacy data export archive, if it was kept before shutdown."
+   "export": "The legacy data export archive, if it was kept before shutdown.",
+   "local_signals": {}
   },
   {
    "tool": "Humanity",
@@ -123,7 +168,8 @@
     "Messaging"
    ],
    "source": "export then files",
-   "export": "CSV reports of shifts, schedules and staff messages."
+   "export": "CSV reports of shifts, schedules and staff messages.",
+   "local_signals": {}
   },
   {
    "tool": "Lark",
@@ -132,7 +178,8 @@
     "Messaging"
    ],
    "source": "export then files",
-   "export": "Admin data export of chats and docs."
+   "export": "Admin data export of chats and docs.",
+   "local_signals": {}
   },
   {
    "tool": "Microsoft Teams",
@@ -141,7 +188,16 @@
     "Messaging"
    ],
    "source": "export then files",
-   "export": "Admin eDiscovery or Graph export of chats and channel posts as JSON or HTML."
+   "export": "Admin eDiscovery or Graph export of chats and channel posts as JSON or HTML.",
+   "local_signals": {
+    "app_data": [
+     "Microsoft/Teams",
+     "Microsoft/Microsoft Teams",
+     "com.microsoft.teams",
+     "com.microsoft.teams2",
+     "Packages/MSTeams_8wekyb3d8bbwe"
+    ]
+   }
   },
   {
    "tool": "OneSignal",
@@ -150,7 +206,8 @@
     "Messaging"
    ],
    "source": "export then files",
-   "export": "CSV of notifications sent and delivery stats."
+   "export": "CSV of notifications sent and delivery stats.",
+   "local_signals": {}
   },
   {
    "tool": "Perplexity",
@@ -160,7 +217,8 @@
     "Other"
    ],
    "source": "export then files",
-   "export": "Thread export or account data request."
+   "export": "Thread export or account data request.",
+   "local_signals": {}
   },
   {
    "tool": "Pumble",
@@ -169,7 +227,8 @@
     "Messaging"
    ],
    "source": "export then files",
-   "export": "Workspace message export (admin) as JSON or CSV."
+   "export": "Workspace message export (admin) as JSON or CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Skype",
@@ -178,7 +237,12 @@
     "Messaging"
    ],
    "source": "export then files",
-   "export": "Account data export of conversations (JSON inside a tar)."
+   "export": "Account data export of conversations (JSON inside a tar).",
+   "local_signals": {
+    "app_data": [
+     "Microsoft/Skype for Desktop"
+    ]
+   }
   },
   {
    "tool": "Slack",
@@ -187,7 +251,25 @@
     "Messaging"
    ],
    "source": "slack",
-   "export": "Workspace export zip from the admin settings; DMs and private channels need a plan that allows them."
+   "export": "Workspace export zip from the admin settings; DMs and private channels need a plan that allows them.",
+   "local_signals": {
+    "folder_contains": [
+     [
+      "channels.json",
+      "users.json"
+     ]
+    ],
+    "zip_contains": [
+     [
+      "channels.json",
+      "users.json"
+     ]
+    ],
+    "app_data": [
+     "Slack",
+     "com.tinyspeck.slackmacgap"
+    ]
+   }
   },
   {
    "tool": "Telegram",
@@ -196,7 +278,21 @@
     "Messaging"
    ],
    "source": "export then files",
-   "export": "Telegram Desktop 'Export chat history' in machine-readable JSON."
+   "export": "Telegram Desktop 'Export chat history' in machine-readable JSON.",
+   "local_signals": {
+    "files": [
+     "export_results.html"
+    ],
+    "folders": [
+     "ChatExport_*",
+     "DataExport_*"
+    ],
+    "app_data": [
+     "Telegram Desktop",
+     "TelegramDesktop",
+     "*.ru.keepcoder.Telegram"
+    ]
+   }
   },
   {
    "tool": "WhatsApp",
@@ -205,7 +301,25 @@
     "Messaging"
    ],
    "source": "export then files",
-   "export": "Per-chat 'Export chat' text files, or the Business API message log."
+   "export": "Per-chat 'Export chat' text files, or the Business API message log.",
+   "local_signals": {
+    "files": [
+     "WhatsApp Chat with *.txt",
+     "WhatsApp Chat - *.txt",
+     "WhatsApp Chat with *.zip",
+     "WhatsApp Chat - *.zip"
+    ],
+    "zip_contains": [
+     [
+      "_chat.txt"
+     ]
+    ],
+    "app_data": [
+     "WhatsApp",
+     "group.net.whatsapp.WhatsApp.shared",
+     "Packages/5319275A.WhatsAppDesktop_*"
+    ]
+   }
   },
   {
    "tool": "Ytel",
@@ -214,7 +328,8 @@
     "Messaging"
    ],
    "source": "export then files",
-   "export": "Call and SMS logs as CSV."
+   "export": "Call and SMS logs as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Attentive",
@@ -224,7 +339,8 @@
     "Emailing"
    ],
    "source": "export then files",
-   "export": "Subscriber and campaign performance CSVs."
+   "export": "Subscriber and campaign performance CSVs.",
+   "local_signals": {}
   },
   {
    "tool": "Cordial",
@@ -233,7 +349,8 @@
     "Emailing"
    ],
    "source": "export then files",
-   "export": "Contact and message-event exports from the data jobs area."
+   "export": "Contact and message-event exports from the data jobs area.",
+   "local_signals": {}
   },
   {
    "tool": "Customer.io",
@@ -242,7 +359,25 @@
     "Emailing"
    ],
    "source": "export then files",
-   "export": "People and segment CSVs, plus delivery data exports."
+   "export": "People and segment CSVs, plus delivery data exports.",
+   "local_signals": {}
+  },
+  {
+   "tool": "Email archives (generic mbox / eml)",
+   "category": "Emailing",
+   "categories": [
+    "Emailing"
+   ],
+   "source": "mbox",
+   "export": "Any mailbox saved as .mbox or .eml files (Thunderbird, Apple Mail export, old backups).",
+   "local_signals": {
+    "files": [
+     "*.mbox",
+     "*.mbx",
+     "*.eml",
+     "*.emlx"
+    ]
+   }
   },
   {
    "tool": "Gmail",
@@ -251,7 +386,17 @@
     "Emailing"
    ],
    "source": "mbox",
-   "export": "Google Takeout Mail as .mbox files, one per label."
+   "export": "Google Takeout Mail as .mbox files, one per label.",
+   "local_signals": {
+    "files": [
+     "All mail Including Spam and Trash.mbox"
+    ],
+    "zip_contains": [
+     [
+      "Takeout/Mail/*.mbox"
+     ]
+    ]
+   }
   },
   {
    "tool": "Google Workspace",
@@ -261,7 +406,8 @@
     "Emailing"
    ],
    "source": "mbox",
-   "export": "Admin data export or Vault: mail as mbox, Drive as a synced folder."
+   "export": "Admin data export or Vault: mail as mbox, Drive as a synced folder.",
+   "local_signals": {}
   },
   {
    "tool": "Klaviyo",
@@ -271,7 +417,8 @@
     "Emailing"
    ],
    "source": "export then files",
-   "export": "Profiles, lists and campaign or flow metrics as CSV."
+   "export": "Profiles, lists and campaign or flow metrics as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Mailchimp",
@@ -280,7 +427,16 @@
     "Emailing"
    ],
    "source": "export then files",
-   "export": "Audience, campaign and report CSV exports."
+   "export": "Audience, campaign and report CSV exports.",
+   "local_signals": {
+    "csv_header": [
+     [
+      "Email Address",
+      "MEMBER_RATING",
+      "OPTIN_TIME"
+     ]
+    ]
+   }
   },
   {
    "tool": "Mailmodo",
@@ -289,7 +445,8 @@
     "Emailing"
    ],
    "source": "export then files",
-   "export": "Contact lists and campaign reports as CSV."
+   "export": "Contact lists and campaign reports as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Microsoft 365",
@@ -300,7 +457,8 @@
     "Messaging"
    ],
    "source": "mbox",
-   "export": "Mailboxes exported as PST and converted to mbox; OneDrive and SharePoint as a synced folder."
+   "export": "Mailboxes exported as PST and converted to mbox; OneDrive and SharePoint as a synced folder.",
+   "local_signals": {}
   },
   {
    "tool": "Outlook / Exchange Online",
@@ -309,7 +467,18 @@
     "Emailing"
    ],
    "source": "mbox",
-   "export": "Export mailboxes to PST, then convert each to mbox."
+   "export": "Export mailboxes to PST, then convert each to mbox.",
+   "local_signals": {
+    "files": [
+     "*.pst",
+     "*.ost",
+     "*.olm"
+    ],
+    "app_data": [
+     "UBF8T346G9.Office/Outlook",
+     "Microsoft/Outlook"
+    ]
+   }
   },
   {
    "tool": "Postscript",
@@ -319,7 +488,8 @@
     "Emailing"
    ],
    "source": "export then files",
-   "export": "Subscriber list and campaign report CSVs."
+   "export": "Subscriber list and campaign report CSVs.",
+   "local_signals": {}
   },
   {
    "tool": "SendGrid",
@@ -328,7 +498,8 @@
     "Emailing"
    ],
    "source": "export then files",
-   "export": "Contacts CSV plus the email activity feed export."
+   "export": "Contacts CSV plus the email activity feed export.",
+   "local_signals": {}
   },
   {
    "tool": "SiteGround Mail",
@@ -337,7 +508,8 @@
     "Emailing"
    ],
    "source": "mbox",
-   "export": "Pull the mailbox over IMAP into a local client, then save it as mbox."
+   "export": "Pull the mailbox over IMAP into a local client, then save it as mbox.",
+   "local_signals": {}
   },
   {
    "tool": "Zoho Mail",
@@ -346,7 +518,8 @@
     "Emailing"
    ],
    "source": "mbox",
-   "export": "Per-folder export in EML or mbox format from the mail settings."
+   "export": "Per-folder export in EML or mbox format from the mail settings.",
+   "local_signals": {}
   },
   {
    "tool": "Airtable",
@@ -356,7 +529,8 @@
     "Project management"
    ],
    "source": "export then files",
-   "export": "Each table's grid view downloaded as CSV."
+   "export": "Each table's grid view downloaded as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Asana",
@@ -365,7 +539,15 @@
     "Project management"
    ],
    "source": "tickets",
-   "export": "Per-project CSV export of tasks."
+   "export": "Per-project CSV export of tasks.",
+   "local_signals": {
+    "csv_header": [
+     [
+      "Task ID",
+      "Section/Column"
+     ]
+    ]
+   }
   },
   {
    "tool": "Avaza",
@@ -374,7 +556,8 @@
     "Project management"
    ],
    "source": "tickets",
-   "export": "Task and timesheet reports as CSV."
+   "export": "Task and timesheet reports as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Basecamp",
@@ -384,7 +567,8 @@
     "Project management"
    ],
    "source": "tickets",
-   "export": "Account export archive; to-dos and messages as CSV or JSON."
+   "export": "Account export archive; to-dos and messages as CSV or JSON.",
+   "local_signals": {}
   },
   {
    "tool": "ClickUp",
@@ -393,7 +577,8 @@
     "Project management"
    ],
    "source": "clickup",
-   "export": "Workspace CSV export, or task JSON pulled from the API."
+   "export": "Workspace CSV export, or task JSON pulled from the API.",
+   "local_signals": {}
   },
   {
    "tool": "FunctionFox",
@@ -402,7 +587,8 @@
     "Project management"
    ],
    "source": "tickets",
-   "export": "Project, task and timesheet reports as CSV."
+   "export": "Project, task and timesheet reports as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Jira",
@@ -411,7 +597,34 @@
     "Project management"
    ],
    "source": "jira",
-   "export": "Issue search export as CSV with all fields, or XML."
+   "export": "Issue search export as CSV with all fields, or XML.",
+   "local_signals": {
+    "folder_contains": [
+     [
+      "entities.xml",
+      "activeobjects.xml"
+     ]
+    ],
+    "zip_contains": [
+     [
+      "entities.xml",
+      "activeobjects.xml"
+     ]
+    ],
+    "csv_header": [
+     [
+      "Summary",
+      "Issue key",
+      "Issue id"
+     ]
+    ],
+    "file_head": [
+     {
+      "files": "*.xml",
+      "contains": "RSS generated by JIRA"
+     }
+    ]
+   }
   },
   {
    "tool": "Kantata",
@@ -420,7 +633,8 @@
     "Project management"
    ],
    "source": "tickets",
-   "export": "Project and task reports as CSV."
+   "export": "Project and task reports as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Linear",
@@ -429,7 +643,8 @@
     "Project management"
    ],
    "source": "tickets",
-   "export": "Workspace CSV export of issues."
+   "export": "Workspace CSV export of issues.",
+   "local_signals": {}
   },
   {
    "tool": "Mantis",
@@ -438,7 +653,8 @@
     "Project management"
    ],
    "source": "tickets",
-   "export": "Issues view exported as CSV."
+   "export": "Issues view exported as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Monday.com",
@@ -447,7 +663,8 @@
     "Project management"
    ],
    "source": "tickets",
-   "export": "Board export to Excel, saved as CSV."
+   "export": "Board export to Excel, saved as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Procore",
@@ -457,7 +674,8 @@
     "Project management"
    ],
    "source": "export then files",
-   "export": "Project documents and RFI or submittal logs as CSV and PDF."
+   "export": "Project documents and RFI or submittal logs as CSV and PDF.",
+   "local_signals": {}
   },
   {
    "tool": "Redmine",
@@ -466,7 +684,8 @@
     "Project management"
    ],
    "source": "tickets",
-   "export": "Issues list exported as CSV with all columns."
+   "export": "Issues list exported as CSV with all columns.",
+   "local_signals": {}
   },
   {
    "tool": "Shortcut",
@@ -475,7 +694,8 @@
     "Project management"
    ],
    "source": "tickets",
-   "export": "Stories CSV export from the workspace settings."
+   "export": "Stories CSV export from the workspace settings.",
+   "local_signals": {}
   },
   {
    "tool": "Smartsheet",
@@ -484,7 +704,8 @@
     "Project management"
    ],
    "source": "tickets",
-   "export": "Each sheet exported as CSV or Excel."
+   "export": "Each sheet exported as CSV or Excel.",
+   "local_signals": {}
   },
   {
    "tool": "Teamwork",
@@ -493,7 +714,8 @@
     "Project management"
    ],
    "source": "tickets",
-   "export": "Tasks exported as CSV per project."
+   "export": "Tasks exported as CSV per project.",
+   "local_signals": {}
   },
   {
    "tool": "Ticketing and project management (generic, tool-agnostic)",
@@ -502,7 +724,8 @@
     "Project management"
    ],
    "source": "tickets",
-   "export": "Any ticket or task CSV with created, status and description columns."
+   "export": "Any ticket or task CSV with created, status and description columns.",
+   "local_signals": {}
   },
   {
    "tool": "Trello",
@@ -511,7 +734,8 @@
     "Project management"
    ],
    "source": "tickets",
-   "export": "Board JSON export (or CSV on paid plans)."
+   "export": "Board JSON export (or CSV on paid plans).",
+   "local_signals": {}
   },
   {
    "tool": "Wrike",
@@ -520,7 +744,8 @@
     "Project management"
    ],
    "source": "tickets",
-   "export": "Task table exported to CSV or Excel."
+   "export": "Task table exported to CSV or Excel.",
+   "local_signals": {}
   },
   {
    "tool": "Aircall",
@@ -530,7 +755,8 @@
     "Support"
    ],
    "source": "export then files",
-   "export": "Call history CSV, plus recordings if they are wanted."
+   "export": "Call history CSV, plus recordings if they are wanted.",
+   "local_signals": {}
   },
   {
    "tool": "Freshchat",
@@ -540,7 +766,8 @@
     "Support"
    ],
    "source": "tickets",
-   "export": "Conversation reports exported as CSV."
+   "export": "Conversation reports exported as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Freshdesk",
@@ -549,7 +776,8 @@
     "Support"
    ],
    "source": "tickets",
-   "export": "Ticket export from the tickets view as CSV."
+   "export": "Ticket export from the tickets view as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Help Scout",
@@ -559,7 +787,8 @@
     "Support"
    ],
    "source": "tickets",
-   "export": "Conversations exported as CSV from reports or via the API."
+   "export": "Conversations exported as CSV from reports or via the API.",
+   "local_signals": {}
   },
   {
    "tool": "Helpwise",
@@ -568,7 +797,8 @@
     "Support"
    ],
    "source": "tickets",
-   "export": "Conversation and contact exports as CSV."
+   "export": "Conversation and contact exports as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "In-house support platform",
@@ -577,7 +807,8 @@
     "Support"
    ],
    "source": "tickets",
-   "export": "A CSV or JSON dump of tickets with created dates and descriptions."
+   "export": "A CSV or JSON dump of tickets with created dates and descriptions.",
+   "local_signals": {}
   },
   {
    "tool": "Intercom",
@@ -586,7 +817,8 @@
     "Support"
    ],
    "source": "tickets",
-   "export": "Conversation export (CSV) from the reports or data settings."
+   "export": "Conversation export (CSV) from the reports or data settings.",
+   "local_signals": {}
   },
   {
    "tool": "JustCall",
@@ -596,7 +828,8 @@
     "Support"
    ],
    "source": "export then files",
-   "export": "Call and SMS logs as CSV."
+   "export": "Call and SMS logs as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "LeadDesk",
@@ -606,7 +839,8 @@
     "Support"
    ],
    "source": "export then files",
-   "export": "Call and campaign reports as CSV."
+   "export": "Call and campaign reports as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Plain",
@@ -615,7 +849,8 @@
     "Support"
    ],
    "source": "tickets",
-   "export": "Thread and customer data pulled from the API as JSON."
+   "export": "Thread and customer data pulled from the API as JSON.",
+   "local_signals": {}
   },
   {
    "tool": "ProductFruits",
@@ -624,7 +859,8 @@
     "Support"
    ],
    "source": "export then files",
-   "export": "Usage and feedback reports as CSV."
+   "export": "Usage and feedback reports as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "RingCentral",
@@ -634,7 +870,8 @@
     "Support"
    ],
    "source": "export then files",
-   "export": "Call log and message reports as CSV."
+   "export": "Call log and message reports as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Ringover",
@@ -644,7 +881,8 @@
     "Support"
    ],
    "source": "export then files",
-   "export": "Call history as CSV."
+   "export": "Call history as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Zendesk",
@@ -653,7 +891,8 @@
     "Support"
    ],
    "source": "tickets",
-   "export": "Admin data export of tickets (JSON or CSV)."
+   "export": "Admin data export of tickets (JSON or CSV).",
+   "local_signals": {}
   },
   {
    "tool": "Amazon",
@@ -663,7 +902,8 @@
     "Support"
    ],
    "source": "export then files",
-   "export": "Seller Central order, inventory and business reports as CSV."
+   "export": "Seller Central order, inventory and business reports as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Ankorstore",
@@ -673,7 +913,8 @@
     "Other"
    ],
    "source": "export then files",
-   "export": "Order and retailer exports as CSV."
+   "export": "Order and retailer exports as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Attio",
@@ -682,7 +923,8 @@
     "CRM"
    ],
    "source": "export then files",
-   "export": "Each list or object exported as CSV."
+   "export": "Each list or object exported as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "BigCommerce",
@@ -692,7 +934,8 @@
     "Other"
    ],
    "source": "export then files",
-   "export": "Orders, customers and products as CSV."
+   "export": "Orders, customers and products as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Breely",
@@ -702,7 +945,8 @@
     "Support"
    ],
    "source": "export then files",
-   "export": "Bookings and client records as CSV."
+   "export": "Bookings and client records as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "ClickFunnels",
@@ -712,7 +956,8 @@
     "Other"
    ],
    "source": "export then files",
-   "export": "Contacts and order data as CSV."
+   "export": "Contacts and order data as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Close CRM",
@@ -721,7 +966,8 @@
     "CRM"
    ],
    "source": "export then files",
-   "export": "Leads, opportunities and activities as CSV or JSON."
+   "export": "Leads, opportunities and activities as CSV or JSON.",
+   "local_signals": {}
   },
   {
    "tool": "Copper",
@@ -730,7 +976,8 @@
     "CRM"
    ],
    "source": "export then files",
-   "export": "Records exported as CSV from settings."
+   "export": "Records exported as CSV from settings.",
+   "local_signals": {}
   },
   {
    "tool": "CRM (generic, any CRM)",
@@ -739,7 +986,8 @@
     "CRM"
    ],
    "source": "export then files",
-   "export": "Every object (contacts, companies, deals, activities) as CSV."
+   "export": "Every object (contacts, companies, deals, activities) as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "DebtManager / CFT Pay",
@@ -749,7 +997,8 @@
     "Finance"
    ],
    "source": "export then files",
-   "export": "Account, payment and collections reports as CSV."
+   "export": "Account, payment and collections reports as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Deltek Vantagepoint",
@@ -760,7 +1009,8 @@
     "Project management"
    ],
    "source": "export then files",
-   "export": "Project, billing and CRM reports as CSV."
+   "export": "Project, billing and CRM reports as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Dynamics 365",
@@ -769,7 +1019,8 @@
     "CRM"
    ],
    "source": "export then files",
-   "export": "Entity views exported to Excel or CSV, or a Dataverse export."
+   "export": "Entity views exported to Excel or CSV, or a Dataverse export.",
+   "local_signals": {}
   },
   {
    "tool": "FieldRoutes",
@@ -778,7 +1029,8 @@
     "CRM"
    ],
    "source": "export then files",
-   "export": "Customer, appointment and billing reports as CSV."
+   "export": "Customer, appointment and billing reports as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "GoHighLevel",
@@ -788,7 +1040,8 @@
     "Emailing"
    ],
    "source": "export then files",
-   "export": "Contacts, opportunities and conversations as CSV."
+   "export": "Contacts, opportunities and conversations as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Gorgias",
@@ -798,7 +1051,8 @@
     "Support"
    ],
    "source": "tickets",
-   "export": "Ticket export as CSV from the views."
+   "export": "Ticket export as CSV from the views.",
+   "local_signals": {}
   },
   {
    "tool": "HousecallPro",
@@ -807,7 +1061,8 @@
     "CRM"
    ],
    "source": "export then files",
-   "export": "Customers, jobs and invoices as CSV."
+   "export": "Customers, jobs and invoices as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "HubSpot",
@@ -816,7 +1071,27 @@
     "CRM"
    ],
    "source": "export then files",
-   "export": "Export all records per object (contacts, companies, deals, tickets) as CSV."
+   "export": "Export all records per object (contacts, companies, deals, tickets) as CSV.",
+   "local_signals": {
+    "csv_header": [
+     [
+      "Record ID",
+      "Contact owner"
+     ],
+     [
+      "Record ID",
+      "Deal owner"
+     ],
+     [
+      "Record ID",
+      "Company owner"
+     ],
+     [
+      "Record ID",
+      "Ticket owner"
+     ]
+    ]
+   }
   },
   {
    "tool": "iClosed",
@@ -825,7 +1100,8 @@
     "CRM"
    ],
    "source": "export then files",
-   "export": "Bookings and contacts as CSV."
+   "export": "Bookings and contacts as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "iON Pool Care",
@@ -835,7 +1111,8 @@
     "Support"
    ],
    "source": "export then files",
-   "export": "Customer and service history reports as CSV."
+   "export": "Customer and service history reports as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "JobNimbus",
@@ -845,7 +1122,8 @@
     "Project management"
    ],
    "source": "export then files",
-   "export": "Contacts, jobs and tasks as CSV."
+   "export": "Contacts, jobs and tasks as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "LeadSquared",
@@ -854,7 +1132,8 @@
     "CRM"
    ],
    "source": "export then files",
-   "export": "Leads and activities as CSV."
+   "export": "Leads and activities as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "LeadTruffle",
@@ -863,7 +1142,8 @@
     "CRM"
    ],
    "source": "export then files",
-   "export": "Lead lists as CSV."
+   "export": "Lead lists as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Luma",
@@ -873,7 +1153,8 @@
     "Other"
    ],
    "source": "export then files",
-   "export": "Event guest lists and registrations as CSV."
+   "export": "Event guest lists and registrations as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Pipedrive",
@@ -882,7 +1163,8 @@
     "CRM"
    ],
    "source": "export then files",
-   "export": "Deals, people, organizations and activities as CSV."
+   "export": "Deals, people, organizations and activities as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Salesflare",
@@ -891,7 +1173,8 @@
     "CRM"
    ],
    "source": "export then files",
-   "export": "Contacts, accounts and opportunities as CSV."
+   "export": "Contacts, accounts and opportunities as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Salesforce",
@@ -900,7 +1183,16 @@
     "CRM"
    ],
    "source": "export then files",
-   "export": "Setup > Data Export: the weekly CSV zip of all objects."
+   "export": "Setup > Data Export: the weekly CSV zip of all objects.",
+   "local_signals": {
+    "csv_header": [
+     [
+      "Id",
+      "IsDeleted",
+      "SystemModstamp"
+     ]
+    ]
+   }
   },
   {
    "tool": "ServiceTitan",
@@ -909,7 +1201,8 @@
     "CRM"
    ],
    "source": "export then files",
-   "export": "Jobs, customers and invoices from reports as CSV."
+   "export": "Jobs, customers and invoices from reports as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Shopify",
@@ -919,7 +1212,20 @@
     "Other"
    ],
    "source": "export then files",
-   "export": "Orders, customers and products as CSV from the admin."
+   "export": "Orders, customers and products as CSV from the admin.",
+   "local_signals": {
+    "csv_header": [
+     [
+      "Handle",
+      "Body (HTML)"
+     ],
+     [
+      "Financial Status",
+      "Fulfillment Status",
+      "Lineitem name"
+     ]
+    ]
+   }
   },
   {
    "tool": "SMRT",
@@ -930,7 +1236,8 @@
     "Other"
    ],
    "source": "export then files",
-   "export": "Customer and transaction reports as CSV."
+   "export": "Customer and transaction reports as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Total Office Manager",
@@ -941,7 +1248,8 @@
     "Project management"
    ],
    "source": "export then files",
-   "export": "Customer, job and invoice reports as CSV."
+   "export": "Customer, job and invoice reports as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Vitally",
@@ -951,7 +1259,8 @@
     "Support"
    ],
    "source": "export then files",
-   "export": "Accounts, users and notes as CSV."
+   "export": "Accounts, users and notes as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Wodify",
@@ -961,7 +1270,8 @@
     "Support"
    ],
    "source": "export then files",
-   "export": "Member, attendance and billing reports as CSV."
+   "export": "Member, attendance and billing reports as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Zoho (Desk, CRM, Cliq)",
@@ -972,7 +1282,8 @@
     "Support"
    ],
    "source": "tickets",
-   "export": "Desk tickets as CSV; CRM modules and Cliq chats via the data backup."
+   "export": "Desk tickets as CSV; CRM modules and Cliq chats via the data backup.",
+   "local_signals": {}
   },
   {
    "tool": "Agicap",
@@ -981,7 +1292,8 @@
     "Finance"
    ],
    "source": "export then files",
-   "export": "Cash-flow transactions as CSV or Excel."
+   "export": "Cash-flow transactions as CSV or Excel.",
+   "local_signals": {}
   },
   {
    "tool": "AppFolio",
@@ -991,7 +1303,8 @@
     "Finance"
    ],
    "source": "export then files",
-   "export": "Property, tenant and ledger reports as CSV."
+   "export": "Property, tenant and ledger reports as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Avalara",
@@ -1000,7 +1313,8 @@
     "Finance"
    ],
    "source": "export then files",
-   "export": "Transaction and filing reports as CSV."
+   "export": "Transaction and filing reports as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Bexio",
@@ -1009,7 +1323,8 @@
     "Finance"
    ],
    "source": "export then files",
-   "export": "Invoices, contacts and bookings as CSV."
+   "export": "Invoices, contacts and bookings as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Bill.com",
@@ -1018,7 +1333,8 @@
     "Finance"
    ],
    "source": "export then files",
-   "export": "Bills, invoices and vendor lists as CSV."
+   "export": "Bills, invoices and vendor lists as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Brex",
@@ -1027,7 +1343,8 @@
     "Finance"
    ],
    "source": "export then files",
-   "export": "Card and account transactions as CSV."
+   "export": "Card and account transactions as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Chase Business",
@@ -1036,7 +1353,8 @@
     "Finance"
    ],
    "source": "export then files",
-   "export": "Account activity downloads as CSV."
+   "export": "Account activity downloads as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "DATEV",
@@ -1045,7 +1363,8 @@
     "Finance"
    ],
    "source": "export then files",
-   "export": "Bookings in the DATEV export format (CSV)."
+   "export": "Bookings in the DATEV export format (CSV).",
+   "local_signals": {}
   },
   {
    "tool": "Epicor ERP",
@@ -1055,7 +1374,8 @@
     "Infra & databases"
    ],
    "source": "export then files",
-   "export": "BAQ or report exports as CSV."
+   "export": "BAQ or report exports as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "FreshBooks",
@@ -1064,7 +1384,8 @@
     "Finance"
    ],
    "source": "export then files",
-   "export": "Invoices, expenses and clients as CSV."
+   "export": "Invoices, expenses and clients as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Inkle",
@@ -1073,7 +1394,8 @@
     "Finance"
    ],
    "source": "export then files",
-   "export": "Bookkeeping and tax reports as CSV."
+   "export": "Bookkeeping and tax reports as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Kick",
@@ -1082,7 +1404,8 @@
     "Finance"
    ],
    "source": "export then files",
-   "export": "Transactions and reports as CSV."
+   "export": "Transactions and reports as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Klarna",
@@ -1091,7 +1414,8 @@
     "Finance"
    ],
    "source": "export then files",
-   "export": "Settlement and order reports as CSV."
+   "export": "Settlement and order reports as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Mercury",
@@ -1100,7 +1424,8 @@
     "Finance"
    ],
    "source": "export then files",
-   "export": "Account transactions as CSV."
+   "export": "Account transactions as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "NetSuite",
@@ -1109,7 +1434,8 @@
     "Finance"
    ],
    "source": "export then files",
-   "export": "Saved searches of transactions and records as CSV."
+   "export": "Saved searches of transactions and records as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Odoo",
@@ -1118,7 +1444,8 @@
     "Finance"
    ],
    "source": "export then files",
-   "export": "Records from any list view exported as CSV or Excel."
+   "export": "Records from any list view exported as CSV or Excel.",
+   "local_signals": {}
   },
   {
    "tool": "PayPal",
@@ -1127,7 +1454,17 @@
     "Finance"
    ],
    "source": "export then files",
-   "export": "Activity downloads as CSV."
+   "export": "Activity downloads as CSV.",
+   "local_signals": {
+    "csv_header": [
+     [
+      "Gross",
+      "Fee",
+      "Net",
+      "Transaction ID"
+     ]
+    ]
+   }
   },
   {
    "tool": "QuickBooks",
@@ -1136,7 +1473,8 @@
     "Finance"
    ],
    "source": "export then files",
-   "export": "Reports (general ledger, transactions) and lists as Excel or CSV."
+   "export": "Reports (general ledger, transactions) and lists as Excel or CSV.",
+   "local_signals": {}
   },
   {
    "tool": "QuickBooks Desktop",
@@ -1145,7 +1483,16 @@
     "Finance"
    ],
    "source": "export then files",
-   "export": "Company file reports exported to Excel or CSV."
+   "export": "Company file reports exported to Excel or CSV.",
+   "local_signals": {
+    "files": [
+     "*.qbw",
+     "*.qbb",
+     "*.qbm",
+     "*.qbx",
+     "*.qby"
+    ]
+   }
   },
   {
    "tool": "Ramp",
@@ -1154,7 +1501,8 @@
     "Finance"
    ],
    "source": "export then files",
-   "export": "Transactions and bills as CSV."
+   "export": "Transactions and bills as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Sage 300 CRE",
@@ -1163,7 +1511,8 @@
     "Finance"
    ],
    "source": "export then files",
-   "export": "Job cost and ledger reports as CSV or Excel."
+   "export": "Job cost and ledger reports as CSV or Excel.",
+   "local_signals": {}
   },
   {
    "tool": "Sage Intacct",
@@ -1172,7 +1521,8 @@
     "Finance"
    ],
    "source": "export then files",
-   "export": "Reports and object lists as CSV."
+   "export": "Reports and object lists as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Square",
@@ -1182,7 +1532,8 @@
     "Finance"
    ],
    "source": "export then files",
-   "export": "Transactions, items and customers as CSV."
+   "export": "Transactions, items and customers as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Stripe",
@@ -1191,7 +1542,15 @@
     "Finance"
    ],
    "source": "export then files",
-   "export": "Payments, customers, invoices and balance reports as CSV."
+   "export": "Payments, customers, invoices and balance reports as CSV.",
+   "local_signals": {
+    "csv_header": [
+     [
+      "Seller Message",
+      "Amount Refunded"
+     ]
+    ]
+   }
   },
   {
    "tool": "Tally",
@@ -1200,7 +1559,8 @@
     "Finance"
    ],
    "source": "export then files",
-   "export": "Vouchers and ledgers exported as Excel or XML."
+   "export": "Vouchers and ledgers exported as Excel or XML.",
+   "local_signals": {}
   },
   {
    "tool": "Unleashed",
@@ -1210,7 +1570,8 @@
     "Other"
    ],
    "source": "export then files",
-   "export": "Inventory, orders and invoices as CSV."
+   "export": "Inventory, orders and invoices as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Xero",
@@ -1219,7 +1580,8 @@
     "Finance"
    ],
    "source": "export then files",
-   "export": "General ledger, invoices and contacts as CSV."
+   "export": "General ledger, invoices and contacts as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Zoho Books",
@@ -1228,7 +1590,8 @@
     "Finance"
    ],
    "source": "export then files",
-   "export": "Transactions and contacts as CSV."
+   "export": "Transactions and contacts as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Amplitude",
@@ -1237,7 +1600,8 @@
     "Analytics"
    ],
    "source": "export then files",
-   "export": "Raw event export (JSON) or charts as CSV."
+   "export": "Raw event export (JSON) or charts as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "BigQuery",
@@ -1247,7 +1611,8 @@
     "Infra & databases"
    ],
    "source": "bigquery",
-   "export": "Table metadata only: `bq ls/show --format=json`, or INFORMATION_SCHEMA rows."
+   "export": "Table metadata only: `bq ls/show --format=json`, or INFORMATION_SCHEMA rows.",
+   "local_signals": {}
   },
   {
    "tool": "Datadog",
@@ -1257,7 +1622,8 @@
     "Infra & databases"
    ],
    "source": "export then files",
-   "export": "Dashboards, monitors and log archive metadata as JSON."
+   "export": "Dashboards, monitors and log archive metadata as JSON.",
+   "local_signals": {}
   },
   {
    "tool": "Google Ads",
@@ -1267,7 +1633,8 @@
     "Other"
    ],
    "source": "export then files",
-   "export": "Campaign, ad group and keyword reports as CSV."
+   "export": "Campaign, ad group and keyword reports as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Google Analytics",
@@ -1276,7 +1643,8 @@
     "Analytics"
    ],
    "source": "export then files",
-   "export": "Reports as CSV, or the BigQuery event export (then use bigquery)."
+   "export": "Reports as CSV, or the BigQuery event export (then use bigquery).",
+   "local_signals": {}
   },
   {
    "tool": "Grafana",
@@ -1285,7 +1653,8 @@
     "Analytics"
    ],
    "source": "export then files",
-   "export": "Dashboard JSON models."
+   "export": "Dashboard JSON models.",
+   "local_signals": {}
   },
   {
    "tool": "Meta Ads",
@@ -1295,7 +1664,8 @@
     "Other"
    ],
    "source": "export then files",
-   "export": "Ads Manager reports as CSV."
+   "export": "Ads Manager reports as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Metabase",
@@ -1304,7 +1674,8 @@
     "Analytics"
    ],
    "source": "export then files",
-   "export": "Saved questions as CSV, plus the app database dump."
+   "export": "Saved questions as CSV, plus the app database dump.",
+   "local_signals": {}
   },
   {
    "tool": "Mixpanel",
@@ -1313,7 +1684,8 @@
     "Analytics"
    ],
    "source": "export then files",
-   "export": "Raw event export (JSONL) per date range."
+   "export": "Raw event export (JSONL) per date range.",
+   "local_signals": {}
   },
   {
    "tool": "PostHog",
@@ -1322,7 +1694,8 @@
     "Analytics"
    ],
    "source": "export then files",
-   "export": "Event export as CSV or JSON, or a batch export to storage."
+   "export": "Event export as CSV or JSON, or a batch export to storage.",
+   "local_signals": {}
   },
   {
    "tool": "Power BI",
@@ -1331,7 +1704,13 @@
     "Analytics"
    ],
    "source": "export then files",
-   "export": "Report data exported as CSV, plus the .pbix files."
+   "export": "Report data exported as CSV, plus the .pbix files.",
+   "local_signals": {
+    "files": [
+     "*.pbix",
+     "*.pbit"
+    ]
+   }
   },
   {
    "tool": "Segment",
@@ -1340,7 +1719,8 @@
     "Analytics"
    ],
    "source": "export then files",
-   "export": "Warehouse or storage destination files."
+   "export": "Warehouse or storage destination files.",
+   "local_signals": {}
   },
   {
    "tool": "Semrush",
@@ -1349,7 +1729,8 @@
     "Analytics"
    ],
    "source": "export then files",
-   "export": "Project and position-tracking reports as CSV."
+   "export": "Project and position-tracking reports as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Sentry",
@@ -1359,7 +1740,8 @@
     "Code management"
    ],
    "source": "export then files",
-   "export": "Issue lists and event data pulled from the API as JSON."
+   "export": "Issue lists and event data pulled from the API as JSON.",
+   "local_signals": {}
   },
   {
    "tool": "Snowflake",
@@ -1369,7 +1751,8 @@
     "Infra & databases"
    ],
    "source": "export then files",
-   "export": "INFORMATION_SCHEMA.TABLES rows as CSV (sizes, row counts, dates)."
+   "export": "INFORMATION_SCHEMA.TABLES rows as CSV (sizes, row counts, dates).",
+   "local_signals": {}
   },
   {
    "tool": "SurveyMonkey",
@@ -1378,7 +1761,8 @@
     "Analytics"
    ],
    "source": "export then files",
-   "export": "Survey responses as CSV."
+   "export": "Survey responses as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Tableau",
@@ -1387,7 +1771,16 @@
     "Analytics"
    ],
    "source": "export then files",
-   "export": "Workbooks (.twbx) and their data extracts."
+   "export": "Workbooks (.twbx) and their data extracts.",
+   "local_signals": {
+    "files": [
+     "*.twb",
+     "*.twbx",
+     "*.hyper",
+     "*.tds",
+     "*.tdsx"
+    ]
+   }
   },
   {
    "tool": "Unity Analytics",
@@ -1396,7 +1789,8 @@
     "Analytics"
    ],
    "source": "export then files",
-   "export": "Raw data export of events as JSON or CSV."
+   "export": "Raw data export of events as JSON or CSV.",
+   "local_signals": {}
   },
   {
    "tool": "YouTube Analytics",
@@ -1406,7 +1800,8 @@
     "Other"
    ],
    "source": "export then files",
-   "export": "Channel reports from YouTube Studio as CSV."
+   "export": "Channel reports from YouTube Studio as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "AWS S3",
@@ -1415,7 +1810,8 @@
     "Infra & databases"
    ],
    "source": "files",
-   "export": "Sync the bucket to a local folder (`aws s3 sync`)."
+   "export": "Sync the bucket to a local folder (`aws s3 sync`).",
+   "local_signals": {}
   },
   {
    "tool": "Azure AI Search",
@@ -1424,7 +1820,8 @@
     "Infra & databases"
    ],
    "source": "export then files",
-   "export": "Index definitions and document counts as JSON."
+   "export": "Index definitions and document counts as JSON.",
+   "local_signals": {}
   },
   {
    "tool": "Cloudflare R2",
@@ -1433,7 +1830,8 @@
     "Infra & databases"
    ],
    "source": "files",
-   "export": "Sync the bucket locally with an S3-compatible client."
+   "export": "Sync the bucket locally with an S3-compatible client.",
+   "local_signals": {}
   },
   {
    "tool": "Databases (generic)",
@@ -1442,7 +1840,25 @@
     "Infra & databases"
    ],
    "source": "sql",
-   "export": "MySQL or PostgreSQL plain-SQL dumps; other engines as table CSVs."
+   "export": "MySQL or PostgreSQL plain-SQL dumps; other engines as table CSVs.",
+   "local_signals": {
+    "files": [
+     "*.sql.gz",
+     "*.sql.bz2",
+     "*.sql.xz",
+     "*.sql.zst"
+    ],
+    "file_head": [
+     {
+      "files": "*.sql",
+      "contains": "-- MySQL dump"
+     },
+     {
+      "files": "*.sql",
+      "contains": "-- MariaDB dump"
+     }
+    ]
+   }
   },
   {
    "tool": "DynamoDB",
@@ -1451,7 +1867,8 @@
     "Infra & databases"
    ],
    "source": "export then files",
-   "export": "Export to S3 (DynamoDB JSON), then sync it locally."
+   "export": "Export to S3 (DynamoDB JSON), then sync it locally.",
+   "local_signals": {}
   },
   {
    "tool": "Firestore",
@@ -1460,7 +1877,8 @@
     "Infra & databases"
    ],
    "source": "export then files",
-   "export": "Managed export to Cloud Storage, or collections dumped as JSON."
+   "export": "Managed export to Cloud Storage, or collections dumped as JSON.",
+   "local_signals": {}
   },
   {
    "tool": "Google Cloud Storage",
@@ -1469,7 +1887,8 @@
     "Infra & databases"
    ],
    "source": "files",
-   "export": "Copy the bucket locally (`gcloud storage cp -r`)."
+   "export": "Copy the bucket locally (`gcloud storage cp -r`).",
+   "local_signals": {}
   },
   {
    "tool": "In-house platform database (generic)",
@@ -1480,7 +1899,8 @@
     "Support"
    ],
    "source": "sql",
-   "export": "A plain SQL dump (MySQL or PostgreSQL)."
+   "export": "A plain SQL dump (MySQL or PostgreSQL).",
+   "local_signals": {}
   },
   {
    "tool": "Member portal",
@@ -1490,7 +1910,8 @@
     "Infra & databases"
    ],
    "source": "sql",
-   "export": "A plain SQL dump of the portal's database."
+   "export": "A plain SQL dump of the portal's database.",
+   "local_signals": {}
   },
   {
    "tool": "MongoDB",
@@ -1499,7 +1920,12 @@
     "Infra & databases"
    ],
    "source": "export then files",
-   "export": "`mongoexport` to JSON per collection."
+   "export": "`mongoexport` to JSON per collection.",
+   "local_signals": {
+    "files": [
+     "*.bson"
+    ]
+   }
   },
   {
    "tool": "MuleSoft",
@@ -1508,7 +1934,8 @@
     "Infra & databases"
    ],
    "source": "export then files",
-   "export": "API specs and flow definitions from the project files."
+   "export": "API specs and flow definitions from the project files.",
+   "local_signals": {}
   },
   {
    "tool": "Noloco",
@@ -1518,7 +1945,8 @@
     "Other"
    ],
    "source": "export then files",
-   "export": "Collections as CSV."
+   "export": "Collections as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "OpenSearch",
@@ -1527,7 +1955,8 @@
     "Infra & databases"
    ],
    "source": "export then files",
-   "export": "Index stats and mappings as JSON, or a snapshot."
+   "export": "Index stats and mappings as JSON, or a snapshot.",
+   "local_signals": {}
   },
   {
    "tool": "PostgreSQL",
@@ -1536,7 +1965,23 @@
     "Infra & databases"
    ],
    "source": "sql",
-   "export": "`pg_dump` plain-SQL dump, gzipped is fine."
+   "export": "`pg_dump` plain-SQL dump, gzipped is fine.",
+   "local_signals": {
+    "file_head": [
+     {
+      "files": "*.sql",
+      "contains": "PostgreSQL database dump"
+     },
+     {
+      "files": "*.dump",
+      "contains": "PGDMP"
+     },
+     {
+      "files": "*.backup",
+      "contains": "PGDMP"
+     }
+    ]
+   }
   },
   {
    "tool": "Redis",
@@ -1545,7 +1990,13 @@
     "Infra & databases"
    ],
    "source": "export then files",
-   "export": "Key counts and an RDB snapshot listing, not raw values."
+   "export": "Key counts and an RDB snapshot listing, not raw values.",
+   "local_signals": {
+    "files": [
+     "dump.rdb",
+     "appendonly.aof"
+    ]
+   }
   },
   {
    "tool": "SQL Server",
@@ -1554,7 +2005,13 @@
     "Infra & databases"
    ],
    "source": "export then files",
-   "export": "Tables as CSV (bcp or the export wizard); measure-data reads MySQL and PostgreSQL dumps only."
+   "export": "Tables as CSV (bcp or the export wizard); measure-data reads MySQL and PostgreSQL dumps only.",
+   "local_signals": {
+    "files": [
+     "*.mdf",
+     "*.ldf"
+    ]
+   }
   },
   {
    "tool": "Supabase",
@@ -1563,7 +2020,8 @@
     "Infra & databases"
    ],
    "source": "sql",
-   "export": "`pg_dump` of the project database (plain SQL)."
+   "export": "`pg_dump` of the project database (plain SQL).",
+   "local_signals": {}
   },
   {
    "tool": "Warehouse / order management system (generic)",
@@ -1573,7 +2031,8 @@
     "Other"
    ],
    "source": "sql",
-   "export": "A plain SQL dump of the system's database, or table CSVs."
+   "export": "A plain SQL dump of the system's database, or table CSVs.",
+   "local_signals": {}
   },
   {
    "tool": "Zilliz Cloud",
@@ -1582,7 +2041,8 @@
     "Infra & databases"
    ],
    "source": "export then files",
-   "export": "Collection stats and schema as JSON."
+   "export": "Collection stats and schema as JSON.",
+   "local_signals": {}
   },
   {
    "tool": "Box",
@@ -1591,7 +2051,8 @@
     "Document storage"
    ],
    "source": "files",
-   "export": "The Box Drive folder or a full folder download."
+   "export": "The Box Drive folder or a full folder download.",
+   "local_signals": {}
   },
   {
    "tool": "Citrix ShareFile",
@@ -1600,7 +2061,8 @@
     "Document storage"
    ],
    "source": "files",
-   "export": "Download the folders, or sync them locally."
+   "export": "Download the folders, or sync them locally.",
+   "local_signals": {}
   },
   {
    "tool": "Coda",
@@ -1610,7 +2072,8 @@
     "Project management"
    ],
    "source": "export then files",
-   "export": "Doc export (Markdown or HTML) and tables as CSV."
+   "export": "Doc export (Markdown or HTML) and tables as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Confluence",
@@ -1619,7 +2082,21 @@
     "Document storage"
    ],
    "source": "export then files",
-   "export": "Space export as HTML or XML."
+   "export": "Space export as HTML or XML.",
+   "local_signals": {
+    "folder_contains": [
+     [
+      "exportDescriptor.properties",
+      "entities.xml"
+     ]
+    ],
+    "zip_contains": [
+     [
+      "exportDescriptor.properties",
+      "entities.xml"
+     ]
+    ]
+   }
   },
   {
    "tool": "DocHub",
@@ -1628,7 +2105,8 @@
     "Document storage"
    ],
    "source": "export then files",
-   "export": "Documents downloaded as PDF."
+   "export": "Documents downloaded as PDF.",
+   "local_signals": {}
   },
   {
    "tool": "DocuSign",
@@ -1637,7 +2115,8 @@
     "Document storage"
    ],
    "source": "export then files",
-   "export": "Completed envelopes downloaded as PDF, plus envelope reports as CSV."
+   "export": "Completed envelopes downloaded as PDF, plus envelope reports as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Dropbox",
@@ -1646,7 +2125,12 @@
     "Document storage"
    ],
    "source": "files",
-   "export": "The synced Dropbox folder, files made available offline."
+   "export": "The synced Dropbox folder, files made available offline.",
+   "local_signals": {
+    "folders": [
+     ".dropbox.cache"
+    ]
+   }
   },
   {
    "tool": "Google Drive",
@@ -1655,7 +2139,8 @@
     "Document storage"
    ],
    "source": "files",
-   "export": "The synced Drive folder, files made available offline (or Takeout)."
+   "export": "The synced Drive folder, files made available offline (or Takeout).",
+   "local_signals": {}
   },
   {
    "tool": "Labstep",
@@ -1665,7 +2150,8 @@
     "Other"
    ],
    "source": "export then files",
-   "export": "Experiments and protocols exported as PDF or JSON."
+   "export": "Experiments and protocols exported as PDF or JSON.",
+   "local_signals": {}
   },
   {
    "tool": "Legal drive",
@@ -1674,7 +2160,8 @@
     "Document storage"
    ],
    "source": "files",
-   "export": "The folder or synced drive holding the documents."
+   "export": "The folder or synced drive holding the documents.",
+   "local_signals": {}
   },
   {
    "tool": "Local storage / PDF files",
@@ -1683,7 +2170,8 @@
     "Document storage"
    ],
    "source": "files",
-   "export": "Point it at the folder."
+   "export": "Point it at the folder.",
+   "local_signals": {}
   },
   {
    "tool": "Loom",
@@ -1692,7 +2180,8 @@
     "Document storage"
    ],
    "source": "export then files",
-   "export": "Video downloads plus transcripts."
+   "export": "Video downloads plus transcripts.",
+   "local_signals": {}
   },
   {
    "tool": "Microsoft Excel",
@@ -1701,7 +2190,15 @@
     "Document storage"
    ],
    "source": "files",
-   "export": "The folder holding the workbooks."
+   "export": "The folder holding the workbooks.",
+   "local_signals": {
+    "files": [
+     "*.xlsx",
+     "*.xls",
+     "*.xlsm",
+     "*.xlsb"
+    ]
+   }
   },
   {
    "tool": "Notion",
@@ -1711,7 +2208,22 @@
     "Project management"
    ],
    "source": "notion",
-   "export": "Workspace export as Markdown & CSV, or page JSON saved from the API."
+   "export": "Workspace export as Markdown & CSV, or page JSON saved from the API.",
+   "local_signals": {
+    "folder_contains": [
+     [
+      "re:.+ [0-9a-f]{32}\\.(md|csv|html)"
+     ]
+    ],
+    "zip_contains": [
+     [
+      "re:.+ [0-9a-f]{32}\\.(md|csv|html)"
+     ]
+    ],
+    "app_data": [
+     "Notion"
+    ]
+   }
   },
   {
    "tool": "Research corpus",
@@ -1720,7 +2232,8 @@
     "Document storage"
    ],
    "source": "files",
-   "export": "The folder holding the papers, notes and datasets."
+   "export": "The folder holding the papers, notes and datasets.",
+   "local_signals": {}
   },
   {
    "tool": "Wiki / documentation (generic)",
@@ -1729,7 +2242,8 @@
     "Document storage"
    ],
    "source": "export then files",
-   "export": "Wiki pages exported as Markdown or HTML."
+   "export": "Wiki pages exported as Markdown or HTML.",
+   "local_signals": {}
   },
   {
    "tool": "Azure DevOps",
@@ -1739,7 +2253,8 @@
     "Project management"
    ],
    "source": "tickets",
-   "export": "Work-item query results as CSV; measure the code itself with measure-code."
+   "export": "Work-item query results as CSV; measure the code itself with measure-code.",
+   "local_signals": {}
   },
   {
    "tool": "Bitbucket",
@@ -1748,7 +2263,8 @@
     "Code management"
    ],
    "source": "tickets",
-   "export": "Issues and pull requests from the API; measure the code itself with measure-code."
+   "export": "Issues and pull requests from the API; measure the code itself with measure-code.",
+   "local_signals": {}
   },
   {
    "tool": "Code repositories (generic, any git host)",
@@ -1757,7 +2273,12 @@
     "Code management"
    ],
    "source": "export then files",
-   "export": "Full clones of every repo; measure them with measure-code."
+   "export": "Full clones of every repo; measure them with measure-code.",
+   "local_signals": {
+    "folders": [
+     ".git"
+    ]
+   }
   },
   {
    "tool": "Cursor",
@@ -1766,7 +2287,12 @@
     "Code management"
    ],
    "source": "export then files",
-   "export": "Local chat and composer history from the app's storage."
+   "export": "Local chat and composer history from the app's storage.",
+   "local_signals": {
+    "app_data": [
+     "Cursor"
+    ]
+   }
   },
   {
    "tool": "GitHub",
@@ -1775,7 +2301,8 @@
     "Code management"
    ],
    "source": "tickets",
-   "export": "Issues and pull requests as JSON from the API; measure the code itself with measure-code."
+   "export": "Issues and pull requests as JSON from the API; measure the code itself with measure-code.",
+   "local_signals": {}
   },
   {
    "tool": "GitLab",
@@ -1784,7 +2311,8 @@
     "Code management"
    ],
    "source": "tickets",
-   "export": "Issues exported as CSV; measure the code itself with measure-code."
+   "export": "Issues exported as CSV; measure the code itself with measure-code.",
+   "local_signals": {}
   },
   {
    "tool": "GitLab wiki",
@@ -1793,7 +2321,8 @@
     "Code management"
    ],
    "source": "export then files",
-   "export": "Clone the wiki repository (it is Markdown in git)."
+   "export": "Clone the wiki repository (it is Markdown in git).",
+   "local_signals": {}
   },
   {
    "tool": "Helix Swarm",
@@ -1802,7 +2331,8 @@
     "Code management"
    ],
    "source": "export then files",
-   "export": "Review records from the API as JSON."
+   "export": "Review records from the API as JSON.",
+   "local_signals": {}
   },
   {
    "tool": "Jenkins",
@@ -1811,7 +2341,16 @@
     "Code management"
    ],
    "source": "export then files",
-   "export": "Job configs and build history (the jobs folder)."
+   "export": "Job configs and build history (the jobs folder).",
+   "local_signals": {
+    "folder_contains": [
+     [
+      "config.xml",
+      "jobs",
+      "plugins"
+     ]
+    ]
+   }
   },
   {
    "tool": "Perforce",
@@ -1820,7 +2359,19 @@
     "Code management"
    ],
    "source": "export then files",
-   "export": "Depot history converted to git (git-p4), then measure-code."
+   "export": "Depot history converted to git (git-p4), then measure-code.",
+   "local_signals": {
+    "files": [
+     ".p4config",
+     ".p4ignore"
+    ],
+    "folder_contains": [
+     [
+      "db.rev",
+      "db.counters"
+     ]
+    ]
+   }
   },
   {
    "tool": "Subversion (SVN)",
@@ -1829,7 +2380,21 @@
     "Code management"
    ],
    "source": "export then files",
-   "export": "Repository converted to git (git svn clone), then measure-code."
+   "export": "Repository converted to git (git svn clone), then measure-code.",
+   "local_signals": {
+    "folders": [
+     ".svn"
+    ],
+    "folder_contains": [
+     [
+      "format",
+      "db",
+      "hooks",
+      "locks",
+      "conf"
+     ]
+    ]
+   }
   },
   {
    "tool": "3D CAD files",
@@ -1839,7 +2404,23 @@
     "Document storage"
    ],
    "source": "files",
-   "export": "The folder or share holding the models; measure-art counts them."
+   "export": "The folder or share holding the models; measure-art counts them.",
+   "local_signals": {
+    "files": [
+     "*.dwg",
+     "*.sldprt",
+     "*.sldasm",
+     "*.slddrw",
+     "*.f3d",
+     "*.3dm",
+     "*.ipt",
+     "*.iam",
+     "*.step",
+     "*.stp",
+     "*.iges",
+     "*.igs"
+    ]
+   }
   },
   {
    "tool": "Adobe After Effects / Creative Cloud",
@@ -1848,7 +2429,31 @@
     "Design"
    ],
    "source": "files",
-   "export": "The project folders; measure-art counts them."
+   "export": "The project folders; measure-art counts them.",
+   "local_signals": {
+    "files": [
+     "*.psd",
+     "*.psb",
+     "*.ai",
+     "*.indd",
+     "*.aep",
+     "*.prproj"
+    ]
+   }
+  },
+  {
+   "tool": "Blender",
+   "category": "Design",
+   "categories": [
+    "Design"
+   ],
+   "source": "files",
+   "export": "The folder holding the .blend files; measure-art counts them.",
+   "local_signals": {
+    "files": [
+     "*.blend"
+    ]
+   }
   },
   {
    "tool": "Canva",
@@ -1857,7 +2462,8 @@
     "Design"
    ],
    "source": "export then files",
-   "export": "Designs downloaded as PDF or PNG; measure-art counts them."
+   "export": "Designs downloaded as PDF or PNG; measure-art counts them.",
+   "local_signals": {}
   },
   {
    "tool": "Centric PLM",
@@ -1868,7 +2474,8 @@
     "Project management"
    ],
    "source": "export then files",
-   "export": "Product, material and style records as CSV or Excel."
+   "export": "Product, material and style records as CSV or Excel.",
+   "local_signals": {}
   },
   {
    "tool": "Figma",
@@ -1877,7 +2484,27 @@
     "Design"
    ],
    "source": "export then files",
-   "export": "Files saved as .fig, plus comments from the API; measure-art counts the files."
+   "export": "Files saved as .fig, plus comments from the API; measure-art counts the files.",
+   "local_signals": {
+    "files": [
+     "*.fig"
+    ]
+   }
+  },
+  {
+   "tool": "Godot",
+   "category": "Design",
+   "categories": [
+    "Design",
+    "Code management"
+   ],
+   "source": "files",
+   "export": "The project folder; measure-art counts the assets and measure-code the scripts.",
+   "local_signals": {
+    "files": [
+     "project.godot"
+    ]
+   }
   },
   {
    "tool": "Lucid",
@@ -1886,7 +2513,8 @@
     "Design"
    ],
    "source": "export then files",
-   "export": "Documents exported as PDF or Visio, plus CSV of shape data."
+   "export": "Documents exported as PDF or Visio, plus CSV of shape data.",
+   "local_signals": {}
   },
   {
    "tool": "Miro",
@@ -1895,7 +2523,8 @@
     "Design"
    ],
    "source": "export then files",
-   "export": "Boards exported as PDF or image, and CSV where offered."
+   "export": "Boards exported as PDF or image, and CSV where offered.",
+   "local_signals": {}
   },
   {
    "tool": "Production asset files",
@@ -1905,7 +2534,56 @@
     "Document storage"
    ],
    "source": "files",
-   "export": "The folder or NAS share; measure-art counts creative formats."
+   "export": "The folder or NAS share; measure-art counts creative formats.",
+   "local_signals": {
+    "files": [
+     "*.ma",
+     "*.mb",
+     "*.max",
+     "*.c4d",
+     "*.hip",
+     "*.ztl",
+     "*.spp",
+     "*.sbs",
+     "*.fbx"
+    ]
+   }
+  },
+  {
+   "tool": "Unity",
+   "category": "Design",
+   "categories": [
+    "Design",
+    "Code management"
+   ],
+   "source": "files",
+   "export": "The project folder; measure-art counts the assets and measure-code the scripts.",
+   "local_signals": {
+    "files": [
+     "*.unitypackage"
+    ],
+    "folder_contains": [
+     [
+      "Assets",
+      "ProjectSettings"
+     ]
+    ]
+   }
+  },
+  {
+   "tool": "Unreal Engine",
+   "category": "Design",
+   "categories": [
+    "Design",
+    "Code management"
+   ],
+   "source": "files",
+   "export": "The project folder; measure-art counts the assets and measure-code the C++ and config.",
+   "local_signals": {
+    "files": [
+     "*.uproject"
+    ]
+   }
   },
   {
    "tool": "Make",
@@ -1914,7 +2592,8 @@
     "Automation"
    ],
    "source": "export then files",
-   "export": "Scenario blueprints (JSON) and execution logs."
+   "export": "Scenario blueprints (JSON) and execution logs.",
+   "local_signals": {}
   },
   {
    "tool": "Zapier",
@@ -1923,7 +2602,8 @@
     "Automation"
    ],
    "source": "export then files",
-   "export": "Zap definitions and task history as JSON or CSV."
+   "export": "Zap definitions and task history as JSON or CSV.",
+   "local_signals": {}
   },
   {
    "tool": "123 Formbuilder",
@@ -1932,7 +2612,8 @@
     "Other"
    ],
    "source": "export then files",
-   "export": "Form submissions as CSV."
+   "export": "Form submissions as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Fathom",
@@ -1941,7 +2622,8 @@
     "Other"
    ],
    "source": "export then files",
-   "export": "Meeting transcripts and summaries."
+   "export": "Meeting transcripts and summaries.",
+   "local_signals": {}
   },
   {
    "tool": "Fireflies",
@@ -1950,7 +2632,8 @@
     "Other"
    ],
    "source": "export then files",
-   "export": "Transcripts exported as text, JSON or DOCX."
+   "export": "Transcripts exported as text, JSON or DOCX.",
+   "local_signals": {}
   },
   {
    "tool": "Google Calendar",
@@ -1959,7 +2642,8 @@
     "Other"
    ],
    "source": "export then files",
-   "export": "Calendars exported as .ics (Takeout)."
+   "export": "Calendars exported as .ics (Takeout).",
+   "local_signals": {}
   },
   {
    "tool": "Hubstaff",
@@ -1968,7 +2652,8 @@
     "Other"
    ],
    "source": "export then files",
-   "export": "Time and activity reports as CSV."
+   "export": "Time and activity reports as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Instagram",
@@ -1977,7 +2662,8 @@
     "Other"
    ],
    "source": "export then files",
-   "export": "Account data download (JSON)."
+   "export": "Account data download (JSON).",
+   "local_signals": {}
   },
   {
    "tool": "LinkedIn",
@@ -1986,7 +2672,8 @@
     "Other"
    ],
    "source": "export then files",
-   "export": "'Get a copy of your data' archive (CSV)."
+   "export": "'Get a copy of your data' archive (CSV).",
+   "local_signals": {}
   },
   {
    "tool": "Linnworks",
@@ -1995,7 +2682,8 @@
     "Other"
    ],
    "source": "export then files",
-   "export": "Orders and stock levels as CSV."
+   "export": "Orders and stock levels as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Nooks",
@@ -2004,7 +2692,8 @@
     "Other"
    ],
    "source": "export then files",
-   "export": "Call logs and transcripts as CSV."
+   "export": "Call logs and transcripts as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Otter",
@@ -2013,7 +2702,8 @@
     "Other"
    ],
    "source": "export then files",
-   "export": "Transcripts exported as text or DOCX."
+   "export": "Transcripts exported as text or DOCX.",
+   "local_signals": {}
   },
   {
    "tool": "Read AI",
@@ -2022,7 +2712,8 @@
     "Other"
    ],
    "source": "export then files",
-   "export": "Meeting transcripts and reports."
+   "export": "Meeting transcripts and reports.",
+   "local_signals": {}
   },
   {
    "tool": "Session transcripts",
@@ -2031,7 +2722,8 @@
     "Other"
    ],
    "source": "files",
-   "export": "The folder holding the transcript files."
+   "export": "The folder holding the transcript files.",
+   "local_signals": {}
   },
   {
    "tool": "ShipStation",
@@ -2040,7 +2732,8 @@
     "Other"
    ],
    "source": "export then files",
-   "export": "Orders and shipments as CSV."
+   "export": "Orders and shipments as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "SkuVault",
@@ -2049,7 +2742,8 @@
     "Other"
    ],
    "source": "export then files",
-   "export": "Inventory and sales reports as CSV."
+   "export": "Inventory and sales reports as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Twilio",
@@ -2058,7 +2752,8 @@
     "Other"
    ],
    "source": "export then files",
-   "export": "Message and call logs exported as CSV or through BulkExport."
+   "export": "Message and call logs exported as CSV or through BulkExport.",
+   "local_signals": {}
   },
   {
    "tool": "Webflow",
@@ -2067,7 +2762,8 @@
     "Other"
    ],
    "source": "export then files",
-   "export": "CMS collections and form submissions as CSV."
+   "export": "CMS collections and form submissions as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Zadarma",
@@ -2076,7 +2772,8 @@
     "Other"
    ],
    "source": "export then files",
-   "export": "Call statistics as CSV."
+   "export": "Call statistics as CSV.",
+   "local_signals": {}
   },
   {
    "tool": "Zoom",
@@ -2085,7 +2782,26 @@
     "Other"
    ],
    "source": "export then files",
-   "export": "Cloud recording transcripts (VTT) and meeting reports as CSV."
+   "export": "Cloud recording transcripts (VTT) and meeting reports as CSV.",
+   "local_signals": {
+    "files": [
+     "double_click_to_convert_*.zoom",
+     "GMT????????-??????_Recording*"
+    ],
+    "app_data": [
+     "zoom.us",
+     "Zoom"
+    ]
+   }
   }
+ ],
+ "local_signal_kinds": [
+  "files",
+  "folders",
+  "folder_contains",
+  "zip_contains",
+  "csv_header",
+  "file_head",
+  "app_data"
  ]
 }

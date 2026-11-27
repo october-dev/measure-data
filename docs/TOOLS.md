@@ -1,6 +1,6 @@
 # Tools data buyers ask about
 
-A checklist of 221 tools and data sources across 13 categories. Go through it with the person who knows the company's stack and mark the ones in use. For each one, the table says which `measure-data` source reads it and what to export.
+A checklist of 226 tools and data sources across 13 categories. Go through it with the person who knows the company's stack and mark the ones in use. For each one, the table says which `measure-data` source reads it and what to export.
 
 - **source** is the `measure_data.py` source to run. `export then files` means there is no direct parser: export the data (CSV, JSON, PDF, ...) into a folder and run `files` on that folder, which counts files, sizes, dates and working documents.
 - **category** lists every category the tool fits; the table is grouped by the first one shown in bold.
@@ -9,10 +9,26 @@ A checklist of 221 tools and data sources across 13 categories. Go through it wi
 
 The same list is in [`tools.json`](tools.json) for scripts and agents.
 
+### Local signals
+
+`tools.json` is the master list. Each tool also has a `local_signals` object: traces the tool leaves on a laptop or drive, used by [measure-disk](https://github.com/october-dev/measure-disk) to say which tools a company uses before anyone exports anything. It is empty when there is no trace we are confident about (most cloud-only tools). Every pattern matches case-insensitively; a pattern starting with `re:` is a regular expression, anything else is a shell-style glob.
+
+| kind | matches | example |
+|---|---|---|
+| `files` | file names | `*.qbw`, `project.godot` |
+| `folders` | folder names | `.svn`, `ChatExport_*` |
+| `folder_contains` | a folder holding entries matching every pattern of one group | `["channels.json", "users.json"]` |
+| `zip_contains` | a `.zip` whose member list (names only, nothing decompressed) matches every pattern of one group | `["messages/index.json", "servers/index.json"]` |
+| `csv_header` | a `.csv` whose header line has every column of one group | `["Summary", "Issue key", "Issue id"]` |
+| `file_head` | a file matching `files` whose first 4 KB contain `contains` | `{"files": "*.sql", "contains": "PostgreSQL database dump"}` |
+| `app_data` | a folder under the desktop app-data roots (Application Support, Containers, Group Containers, `%APPDATA%`, `%LOCALAPPDATA%`, `~/.config`); `/` separates nested folders | `Slack`, `Microsoft/Teams` |
+
+Only names, header lines and the first bytes of a file are read, in memory. Tools that read these signals must output counts only, never the matching names or paths.
+
 ## Categories
 
 - [Messaging](#messaging) (20)
-- [Emailing](#emailing) (14)
+- [Emailing](#emailing) (15)
 - [Project management](#project-management) (19)
 - [Support](#support) (14)
 - [CRM](#crm) (33)
@@ -21,7 +37,7 @@ The same list is in [`tools.json`](tools.json) for scripts and agents.
 - [Infra & databases](#infra--databases) (19)
 - [Document storage](#document-storage) (16)
 - [Code management](#code-management) (11)
-- [Design](#design) (8)
+- [Design](#design) (12)
 - [Automation](#automation) (2)
 - [Other](#other) (18)
 
@@ -57,6 +73,7 @@ The same list is in [`tools.json`](tools.json) for scripts and agents.
 | Attentive | **Emailing**, CRM | `export then files` | Subscriber and campaign performance CSVs. |
 | Cordial | **Emailing** | `export then files` | Contact and message-event exports from the data jobs area. |
 | Customer.io | **Emailing** | `export then files` | People and segment CSVs, plus delivery data exports. |
+| Email archives (generic mbox / eml) | **Emailing** | `mbox` | Any mailbox saved as .mbox or .eml files (Thunderbird, Apple Mail export, old backups). |
 | Gmail | **Emailing** | `mbox` | Google Takeout Mail as .mbox files, one per label. |
 | Google Workspace | **Emailing**, Document storage | `mbox` | Admin data export or Vault: mail as mbox, Drive as a synced folder. |
 | Klaviyo | **Emailing**, CRM | `export then files` | Profiles, lists and campaign or flow metrics as CSV. |
@@ -274,12 +291,16 @@ The same list is in [`tools.json`](tools.json) for scripts and agents.
 |---|---|---|---|
 | 3D CAD files | **Design**, Document storage | `files` | The folder or share holding the models; measure-art counts them. |
 | Adobe After Effects / Creative Cloud | **Design** | `files` | The project folders; measure-art counts them. |
+| Blender | **Design** | `files` | The folder holding the .blend files; measure-art counts them. |
 | Canva | **Design** | `export then files` | Designs downloaded as PDF or PNG; measure-art counts them. |
 | Centric PLM | **Design**, Other, Project management | `export then files` | Product, material and style records as CSV or Excel. |
 | Figma | **Design** | `export then files` | Files saved as .fig, plus comments from the API; measure-art counts the files. |
+| Godot | **Design**, Code management | `files` | The project folder; measure-art counts the assets and measure-code the scripts. |
 | Lucid | **Design** | `export then files` | Documents exported as PDF or Visio, plus CSV of shape data. |
 | Miro | **Design** | `export then files` | Boards exported as PDF or image, and CSV where offered. |
 | Production asset files | **Design**, Document storage | `files` | The folder or NAS share; measure-art counts creative formats. |
+| Unity | **Design**, Code management | `files` | The project folder; measure-art counts the assets and measure-code the scripts. |
+| Unreal Engine | **Design**, Code management | `files` | The project folder; measure-art counts the assets and measure-code the C++ and config. |
 
 ## Automation
 

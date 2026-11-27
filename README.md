@@ -25,7 +25,7 @@ The commands below use `$SKILL` for the folder you cloned into, for example `SKI
 
 ## Use
 
-**Not sure what the company has?** [`docs/TOOLS.md`](docs/TOOLS.md) lists 221 tools and data sources that data buyers commonly ask about, in 13 categories (messaging, email, project management, support, CRM, finance, analytics, databases, document storage, code, design, automation and other), with the source to use for each one and what to export. The agent walks you through it before measuring. [`docs/tools.json`](docs/tools.json) has the same list for scripts.
+**Not sure what the company has?** [`docs/TOOLS.md`](docs/TOOLS.md) lists 226 tools and data sources that data buyers commonly ask about, in 13 categories (messaging, email, project management, support, CRM, finance, analytics, databases, document storage, code, design, automation and other), with the source to use for each one and what to export. The agent walks you through it before measuring. [`docs/tools.json`](docs/tools.json) has the same list for scripts and is the master copy: its `local_signals` field lists the file, folder and app-data traces a tool leaves on disk, which [measure-disk](https://github.com/october-dev/measure-disk) uses to detect tools on a laptop or drive (see [Local signals](docs/TOOLS.md#local-signals)).
 
 **Start with simple mode.** It samples each export, takes minutes, and recommends which sources deserve a full run:
 
@@ -108,7 +108,7 @@ Every source checkpoints finished units (a channel, a mailbox, a dump, a top-lev
 bash tests/selftest.sh
 ```
 
-It builds synthetic exports for every source, measures them and checks the counts and that nothing leaks, and covers dream mode: insert, validation, re-runs and `--no-dream`. It also checks that `docs/tools.json` parses, has no duplicate tools and maps every tool to a valid source.
+It builds synthetic exports for every source, measures them and checks the counts and that nothing leaks, and covers dream mode: insert, validation, re-runs and `--no-dream`. It also checks that `docs/tools.json` parses, has no duplicate tools, maps every tool to a valid source and that every `local_signals` entry is well formed (known kinds, valid globs and regular expressions, no absolute paths).
 
 ## License
 
