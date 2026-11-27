@@ -25,6 +25,10 @@ The same list is in [`tools.json`](tools.json) for scripts and agents.
 
 Only names, header lines and the first bytes of a file are read, in memory. Tools that read these signals must output counts only, never the matching names or paths.
 
+### Web and mail domains
+
+Each tool also has `domains` (hosts of its web app, e.g. `app.hubspot.com` is matched by `hubspot.com`) and `mail_domains` (domains its notification and billing mail comes from, e.g. `slack.com`, `atlassian.net`). A host matches itself and its subdomains, and each host belongs to one tool only. measure-disk's opt-in `--discover-tools` counts browser-history visits and mail by sender domain against these lists, and writes only tool names, counts and years. Both lists are empty where the tool has no dedicated domain (for example, tools that live under a shared google.com or microsoft.com host). Jira and Confluence Cloud share `atlassian.net`; it is listed under Jira.
+
 ## Categories
 
 - [Messaging](#messaging) (20)

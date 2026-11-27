@@ -176,5 +176,30 @@ assert by["QuickBooks Desktop"]["files"] and by["Microsoft Teams"]["app_data"] a
 assert with_signals >= 40, with_signals
 assert "Local signals" in md and "`local_signals`" in md
 print("selftest: local_signals OK (%d of %d tools have local signals)" % (with_signals, len(tools)))
+# domains and mail_domains: bare lowercase host names, each owned by one tool only.
+host_re = re.compile(r"^(?=.{4,253}$)([a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,24}$")
+generic = {"google.com", "microsoft.com", "facebook.com", "amazon.com", "apple.com", "gmail.com", "outlook.com",
+           "live.com", "yahoo.com", "icloud.com", "office.com", "youtube.com", "sendgrid.net", "mcsv.net",
+           "amazonses.com", "mailgun.org", "mandrillapp.com"}
+for key in ("domains", "mail_domains"):
+    owner = {}
+    for t in tools:
+        v = t[key]
+        assert isinstance(v, list) and len(v) == len(set(v)), (t["tool"], key)
+        for h in v:
+            assert host_re.match(h) and h not in generic, (t["tool"], key, h)
+            assert h not in owner, (key, h, owner.get(h), t["tool"])
+            owner[h] = t["tool"]
+    for h in owner:   # no host may sit under another tool's host, or visits would be ambiguous
+        parts = h.split(".")
+        for i in range(1, len(parts) - 1):
+            parent = ".".join(parts[i:])
+            assert parent not in owner or owner[parent] == owner[h], (key, h, parent)
+nd = sum(1 for t in tools if t["domains"]); nm = sum(1 for t in tools if t["mail_domains"])
+assert by["Slack"] and {"HubSpot", "Stripe", "Mixpanel"} <= {t["tool"] for t in tools if t["domains"]}
+assert "slack.com" in [t for t in tools if t["tool"] == "Slack"][0]["mail_domains"]
+assert nd >= 150 and nm >= 90, (nd, nm)
+assert "`domains`" in md and "`mail_domains`" in md
+print("selftest: domains OK (%d tools with web domains, %d with mail sender domains)" % (nd, nm))
 EOF
 echo "selftest: passed"

@@ -1,5 +1,5 @@
 {
- "schema": "october.measure-data.tools/v2",
+ "schema": "october.measure-data.tools/v3",
  "sources": [
   "slack",
   "discord",
@@ -51,7 +51,14 @@
       "chat.html"
      ]
     ]
-   }
+   },
+   "domains": [
+    "chatgpt.com",
+    "chat.openai.com"
+   ],
+   "mail_domains": [
+    "openai.com"
+   ]
   },
   {
    "tool": "Claude",
@@ -62,7 +69,13 @@
    ],
    "source": "export then files",
    "export": "Account data export: the conversations JSON in the zip.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "claude.ai"
+   ],
+   "mail_domains": [
+    "anthropic.com"
+   ]
   },
   {
    "tool": "Connecteam",
@@ -73,7 +86,13 @@
    ],
    "source": "export then files",
    "export": "CSV exports of chats, time clock and task records.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "connecteam.com"
+   ],
+   "mail_domains": [
+    "connecteam.com"
+   ]
   },
   {
    "tool": "Discord",
@@ -100,7 +119,13 @@
     "app_data": [
      "discord"
     ]
-   }
+   },
+   "domains": [
+    "discord.com"
+   ],
+   "mail_domains": [
+    "discord.com"
+   ]
   },
   {
    "tool": "Facebook Messenger",
@@ -111,7 +136,11 @@
    ],
    "source": "export then files",
    "export": "Page inbox conversations via Meta Business data download (JSON).",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "messenger.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Gemini",
@@ -122,7 +151,11 @@
    ],
    "source": "export then files",
    "export": "Google Takeout 'My Activity' for Gemini apps.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "gemini.google.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Google Chat",
@@ -138,7 +171,11 @@
       "Takeout/Google Chat/Groups/*"
      ]
     ]
-   }
+   },
+   "domains": [
+    "chat.google.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Grok",
@@ -149,7 +186,11 @@
    ],
    "source": "export then files",
    "export": "Account data export of conversations.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "grok.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "HipChat",
@@ -159,7 +200,9 @@
    ],
    "source": "export then files",
    "export": "The legacy data export archive, if it was kept before shutdown.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Humanity",
@@ -169,7 +212,11 @@
    ],
    "source": "export then files",
    "export": "CSV reports of shifts, schedules and staff messages.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "humanity.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Lark",
@@ -179,7 +226,13 @@
    ],
    "source": "export then files",
    "export": "Admin data export of chats and docs.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "larksuite.com"
+   ],
+   "mail_domains": [
+    "larksuite.com"
+   ]
   },
   {
    "tool": "Microsoft Teams",
@@ -197,7 +250,12 @@
      "com.microsoft.teams2",
      "Packages/MSTeams_8wekyb3d8bbwe"
     ]
-   }
+   },
+   "domains": [
+    "teams.microsoft.com",
+    "teams.live.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "OneSignal",
@@ -207,7 +265,13 @@
    ],
    "source": "export then files",
    "export": "CSV of notifications sent and delivery stats.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "onesignal.com"
+   ],
+   "mail_domains": [
+    "onesignal.com"
+   ]
   },
   {
    "tool": "Perplexity",
@@ -218,7 +282,13 @@
    ],
    "source": "export then files",
    "export": "Thread export or account data request.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "perplexity.ai"
+   ],
+   "mail_domains": [
+    "perplexity.ai"
+   ]
   },
   {
    "tool": "Pumble",
@@ -228,7 +298,13 @@
    ],
    "source": "export then files",
    "export": "Workspace message export (admin) as JSON or CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "pumble.com"
+   ],
+   "mail_domains": [
+    "pumble.com"
+   ]
   },
   {
    "tool": "Skype",
@@ -242,7 +318,11 @@
     "app_data": [
      "Microsoft/Skype for Desktop"
     ]
-   }
+   },
+   "domains": [
+    "web.skype.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Slack",
@@ -269,7 +349,13 @@
      "Slack",
      "com.tinyspeck.slackmacgap"
     ]
-   }
+   },
+   "domains": [
+    "slack.com"
+   ],
+   "mail_domains": [
+    "slack.com"
+   ]
   },
   {
    "tool": "Telegram",
@@ -292,7 +378,11 @@
      "TelegramDesktop",
      "*.ru.keepcoder.Telegram"
     ]
-   }
+   },
+   "domains": [
+    "web.telegram.org"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "WhatsApp",
@@ -319,7 +409,11 @@
      "group.net.whatsapp.WhatsApp.shared",
      "Packages/5319275A.WhatsAppDesktop_*"
     ]
-   }
+   },
+   "domains": [
+    "web.whatsapp.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Ytel",
@@ -329,7 +423,9 @@
    ],
    "source": "export then files",
    "export": "Call and SMS logs as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Attentive",
@@ -340,7 +436,9 @@
    ],
    "source": "export then files",
    "export": "Subscriber and campaign performance CSVs.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Cordial",
@@ -350,7 +448,9 @@
    ],
    "source": "export then files",
    "export": "Contact and message-event exports from the data jobs area.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Customer.io",
@@ -360,7 +460,13 @@
    ],
    "source": "export then files",
    "export": "People and segment CSVs, plus delivery data exports.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "customer.io"
+   ],
+   "mail_domains": [
+    "customer.io"
+   ]
   },
   {
    "tool": "Email archives (generic mbox / eml)",
@@ -377,7 +483,9 @@
      "*.eml",
      "*.emlx"
     ]
-   }
+   },
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Gmail",
@@ -396,7 +504,11 @@
       "Takeout/Mail/*.mbox"
      ]
     ]
-   }
+   },
+   "domains": [
+    "mail.google.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Google Workspace",
@@ -407,7 +519,11 @@
    ],
    "source": "mbox",
    "export": "Admin data export or Vault: mail as mbox, Drive as a synced folder.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "admin.google.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Klaviyo",
@@ -418,7 +534,13 @@
    ],
    "source": "export then files",
    "export": "Profiles, lists and campaign or flow metrics as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "klaviyo.com"
+   ],
+   "mail_domains": [
+    "klaviyo.com"
+   ]
   },
   {
    "tool": "Mailchimp",
@@ -436,7 +558,13 @@
       "OPTIN_TIME"
      ]
     ]
-   }
+   },
+   "domains": [
+    "mailchimp.com"
+   ],
+   "mail_domains": [
+    "mailchimp.com"
+   ]
   },
   {
    "tool": "Mailmodo",
@@ -446,7 +574,13 @@
    ],
    "source": "export then files",
    "export": "Contact lists and campaign reports as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "mailmodo.com"
+   ],
+   "mail_domains": [
+    "mailmodo.com"
+   ]
   },
   {
    "tool": "Microsoft 365",
@@ -458,7 +592,12 @@
    ],
    "source": "mbox",
    "export": "Mailboxes exported as PST and converted to mbox; OneDrive and SharePoint as a synced folder.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "admin.microsoft.com",
+    "microsoft365.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Outlook / Exchange Online",
@@ -478,7 +617,13 @@
      "UBF8T346G9.Office/Outlook",
      "Microsoft/Outlook"
     ]
-   }
+   },
+   "domains": [
+    "outlook.office.com",
+    "outlook.office365.com",
+    "outlook.live.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Postscript",
@@ -489,7 +634,13 @@
    ],
    "source": "export then files",
    "export": "Subscriber list and campaign report CSVs.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "postscript.io"
+   ],
+   "mail_domains": [
+    "postscript.io"
+   ]
   },
   {
    "tool": "SendGrid",
@@ -499,7 +650,13 @@
    ],
    "source": "export then files",
    "export": "Contacts CSV plus the email activity feed export.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "app.sendgrid.com"
+   ],
+   "mail_domains": [
+    "sendgrid.com"
+   ]
   },
   {
    "tool": "SiteGround Mail",
@@ -509,7 +666,9 @@
    ],
    "source": "mbox",
    "export": "Pull the mailbox over IMAP into a local client, then save it as mbox.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Zoho Mail",
@@ -519,7 +678,11 @@
    ],
    "source": "mbox",
    "export": "Per-folder export in EML or mbox format from the mail settings.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "mail.zoho.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Airtable",
@@ -530,7 +693,13 @@
    ],
    "source": "export then files",
    "export": "Each table's grid view downloaded as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "airtable.com"
+   ],
+   "mail_domains": [
+    "airtable.com"
+   ]
   },
   {
    "tool": "Asana",
@@ -547,7 +716,13 @@
       "Section/Column"
      ]
     ]
-   }
+   },
+   "domains": [
+    "asana.com"
+   ],
+   "mail_domains": [
+    "asana.com"
+   ]
   },
   {
    "tool": "Avaza",
@@ -557,7 +732,13 @@
    ],
    "source": "tickets",
    "export": "Task and timesheet reports as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "avaza.com"
+   ],
+   "mail_domains": [
+    "avaza.com"
+   ]
   },
   {
    "tool": "Basecamp",
@@ -568,7 +749,13 @@
    ],
    "source": "tickets",
    "export": "Account export archive; to-dos and messages as CSV or JSON.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "basecamp.com"
+   ],
+   "mail_domains": [
+    "basecamp.com"
+   ]
   },
   {
    "tool": "ClickUp",
@@ -578,7 +765,13 @@
    ],
    "source": "clickup",
    "export": "Workspace CSV export, or task JSON pulled from the API.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "clickup.com"
+   ],
+   "mail_domains": [
+    "clickup.com"
+   ]
   },
   {
    "tool": "FunctionFox",
@@ -588,7 +781,11 @@
    ],
    "source": "tickets",
    "export": "Project, task and timesheet reports as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "functionfox.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Jira",
@@ -624,7 +821,13 @@
       "contains": "RSS generated by JIRA"
      }
     ]
-   }
+   },
+   "domains": [
+    "atlassian.net"
+   ],
+   "mail_domains": [
+    "atlassian.net"
+   ]
   },
   {
    "tool": "Kantata",
@@ -634,7 +837,11 @@
    ],
    "source": "tickets",
    "export": "Project and task reports as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "kantata.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Linear",
@@ -644,7 +851,13 @@
    ],
    "source": "tickets",
    "export": "Workspace CSV export of issues.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "linear.app"
+   ],
+   "mail_domains": [
+    "linear.app"
+   ]
   },
   {
    "tool": "Mantis",
@@ -654,7 +867,9 @@
    ],
    "source": "tickets",
    "export": "Issues view exported as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Monday.com",
@@ -664,7 +879,13 @@
    ],
    "source": "tickets",
    "export": "Board export to Excel, saved as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "monday.com"
+   ],
+   "mail_domains": [
+    "monday.com"
+   ]
   },
   {
    "tool": "Procore",
@@ -675,7 +896,13 @@
    ],
    "source": "export then files",
    "export": "Project documents and RFI or submittal logs as CSV and PDF.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "procore.com"
+   ],
+   "mail_domains": [
+    "procore.com"
+   ]
   },
   {
    "tool": "Redmine",
@@ -685,7 +912,9 @@
    ],
    "source": "tickets",
    "export": "Issues list exported as CSV with all columns.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Shortcut",
@@ -695,7 +924,13 @@
    ],
    "source": "tickets",
    "export": "Stories CSV export from the workspace settings.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "shortcut.com"
+   ],
+   "mail_domains": [
+    "shortcut.com"
+   ]
   },
   {
    "tool": "Smartsheet",
@@ -705,7 +940,13 @@
    ],
    "source": "tickets",
    "export": "Each sheet exported as CSV or Excel.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "smartsheet.com"
+   ],
+   "mail_domains": [
+    "smartsheet.com"
+   ]
   },
   {
    "tool": "Teamwork",
@@ -715,7 +956,13 @@
    ],
    "source": "tickets",
    "export": "Tasks exported as CSV per project.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "teamwork.com"
+   ],
+   "mail_domains": [
+    "teamwork.com"
+   ]
   },
   {
    "tool": "Ticketing and project management (generic, tool-agnostic)",
@@ -725,7 +972,9 @@
    ],
    "source": "tickets",
    "export": "Any ticket or task CSV with created, status and description columns.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Trello",
@@ -735,7 +984,13 @@
    ],
    "source": "tickets",
    "export": "Board JSON export (or CSV on paid plans).",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "trello.com"
+   ],
+   "mail_domains": [
+    "trello.com"
+   ]
   },
   {
    "tool": "Wrike",
@@ -745,7 +1000,13 @@
    ],
    "source": "tickets",
    "export": "Task table exported to CSV or Excel.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "wrike.com"
+   ],
+   "mail_domains": [
+    "wrike.com"
+   ]
   },
   {
    "tool": "Aircall",
@@ -756,7 +1017,13 @@
    ],
    "source": "export then files",
    "export": "Call history CSV, plus recordings if they are wanted.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "aircall.io"
+   ],
+   "mail_domains": [
+    "aircall.io"
+   ]
   },
   {
    "tool": "Freshchat",
@@ -767,7 +1034,11 @@
    ],
    "source": "tickets",
    "export": "Conversation reports exported as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "freshchat.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Freshdesk",
@@ -777,7 +1048,13 @@
    ],
    "source": "tickets",
    "export": "Ticket export from the tickets view as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "freshdesk.com"
+   ],
+   "mail_domains": [
+    "freshdesk.com"
+   ]
   },
   {
    "tool": "Help Scout",
@@ -788,7 +1065,13 @@
    ],
    "source": "tickets",
    "export": "Conversations exported as CSV from reports or via the API.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "helpscout.net"
+   ],
+   "mail_domains": [
+    "helpscout.net"
+   ]
   },
   {
    "tool": "Helpwise",
@@ -798,7 +1081,13 @@
    ],
    "source": "tickets",
    "export": "Conversation and contact exports as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "helpwise.io"
+   ],
+   "mail_domains": [
+    "helpwise.io"
+   ]
   },
   {
    "tool": "In-house support platform",
@@ -808,7 +1097,9 @@
    ],
    "source": "tickets",
    "export": "A CSV or JSON dump of tickets with created dates and descriptions.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Intercom",
@@ -818,7 +1109,13 @@
    ],
    "source": "tickets",
    "export": "Conversation export (CSV) from the reports or data settings.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "app.intercom.com"
+   ],
+   "mail_domains": [
+    "intercom.io"
+   ]
   },
   {
    "tool": "JustCall",
@@ -829,7 +1126,13 @@
    ],
    "source": "export then files",
    "export": "Call and SMS logs as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "justcall.io"
+   ],
+   "mail_domains": [
+    "justcall.io"
+   ]
   },
   {
    "tool": "LeadDesk",
@@ -840,7 +1143,11 @@
    ],
    "source": "export then files",
    "export": "Call and campaign reports as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "leaddesk.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Plain",
@@ -850,7 +1157,9 @@
    ],
    "source": "tickets",
    "export": "Thread and customer data pulled from the API as JSON.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "ProductFruits",
@@ -860,7 +1169,11 @@
    ],
    "source": "export then files",
    "export": "Usage and feedback reports as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "productfruits.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "RingCentral",
@@ -871,7 +1184,13 @@
    ],
    "source": "export then files",
    "export": "Call log and message reports as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "ringcentral.com"
+   ],
+   "mail_domains": [
+    "ringcentral.com"
+   ]
   },
   {
    "tool": "Ringover",
@@ -882,7 +1201,13 @@
    ],
    "source": "export then files",
    "export": "Call history as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "ringover.com"
+   ],
+   "mail_domains": [
+    "ringover.com"
+   ]
   },
   {
    "tool": "Zendesk",
@@ -892,7 +1217,13 @@
    ],
    "source": "tickets",
    "export": "Admin data export of tickets (JSON or CSV).",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "zendesk.com"
+   ],
+   "mail_domains": [
+    "zendesk.com"
+   ]
   },
   {
    "tool": "Amazon",
@@ -903,7 +1234,11 @@
    ],
    "source": "export then files",
    "export": "Seller Central order, inventory and business reports as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "sellercentral.amazon.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Ankorstore",
@@ -914,7 +1249,11 @@
    ],
    "source": "export then files",
    "export": "Order and retailer exports as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "ankorstore.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Attio",
@@ -924,7 +1263,13 @@
    ],
    "source": "export then files",
    "export": "Each list or object exported as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "attio.com"
+   ],
+   "mail_domains": [
+    "attio.com"
+   ]
   },
   {
    "tool": "BigCommerce",
@@ -935,7 +1280,13 @@
    ],
    "source": "export then files",
    "export": "Orders, customers and products as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "bigcommerce.com"
+   ],
+   "mail_domains": [
+    "bigcommerce.com"
+   ]
   },
   {
    "tool": "Breely",
@@ -946,7 +1297,9 @@
    ],
    "source": "export then files",
    "export": "Bookings and client records as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "ClickFunnels",
@@ -957,7 +1310,12 @@
    ],
    "source": "export then files",
    "export": "Contacts and order data as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "clickfunnels.com",
+    "myclickfunnels.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Close CRM",
@@ -967,7 +1325,13 @@
    ],
    "source": "export then files",
    "export": "Leads, opportunities and activities as CSV or JSON.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "app.close.com"
+   ],
+   "mail_domains": [
+    "close.com"
+   ]
   },
   {
    "tool": "Copper",
@@ -977,7 +1341,13 @@
    ],
    "source": "export then files",
    "export": "Records exported as CSV from settings.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "copper.com"
+   ],
+   "mail_domains": [
+    "copper.com"
+   ]
   },
   {
    "tool": "CRM (generic, any CRM)",
@@ -987,7 +1357,9 @@
    ],
    "source": "export then files",
    "export": "Every object (contacts, companies, deals, activities) as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "DebtManager / CFT Pay",
@@ -998,7 +1370,9 @@
    ],
    "source": "export then files",
    "export": "Account, payment and collections reports as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Deltek Vantagepoint",
@@ -1010,7 +1384,9 @@
    ],
    "source": "export then files",
    "export": "Project, billing and CRM reports as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Dynamics 365",
@@ -1020,7 +1396,11 @@
    ],
    "source": "export then files",
    "export": "Entity views exported to Excel or CSV, or a Dataverse export.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "dynamics.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "FieldRoutes",
@@ -1030,7 +1410,11 @@
    ],
    "source": "export then files",
    "export": "Customer, appointment and billing reports as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "fieldroutes.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "GoHighLevel",
@@ -1041,7 +1425,11 @@
    ],
    "source": "export then files",
    "export": "Contacts, opportunities and conversations as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "gohighlevel.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Gorgias",
@@ -1052,7 +1440,13 @@
    ],
    "source": "tickets",
    "export": "Ticket export as CSV from the views.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "gorgias.com"
+   ],
+   "mail_domains": [
+    "gorgias.com"
+   ]
   },
   {
    "tool": "HousecallPro",
@@ -1062,7 +1456,13 @@
    ],
    "source": "export then files",
    "export": "Customers, jobs and invoices as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "housecallpro.com"
+   ],
+   "mail_domains": [
+    "housecallpro.com"
+   ]
   },
   {
    "tool": "HubSpot",
@@ -1091,7 +1491,13 @@
       "Ticket owner"
      ]
     ]
-   }
+   },
+   "domains": [
+    "hubspot.com"
+   ],
+   "mail_domains": [
+    "hubspot.com"
+   ]
   },
   {
    "tool": "iClosed",
@@ -1101,7 +1507,9 @@
    ],
    "source": "export then files",
    "export": "Bookings and contacts as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "iON Pool Care",
@@ -1112,7 +1520,9 @@
    ],
    "source": "export then files",
    "export": "Customer and service history reports as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "JobNimbus",
@@ -1123,7 +1533,11 @@
    ],
    "source": "export then files",
    "export": "Contacts, jobs and tasks as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "jobnimbus.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "LeadSquared",
@@ -1133,7 +1547,11 @@
    ],
    "source": "export then files",
    "export": "Leads and activities as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "leadsquared.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "LeadTruffle",
@@ -1143,7 +1561,9 @@
    ],
    "source": "export then files",
    "export": "Lead lists as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Luma",
@@ -1154,7 +1574,11 @@
    ],
    "source": "export then files",
    "export": "Event guest lists and registrations as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "lu.ma"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Pipedrive",
@@ -1164,7 +1588,13 @@
    ],
    "source": "export then files",
    "export": "Deals, people, organizations and activities as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "pipedrive.com"
+   ],
+   "mail_domains": [
+    "pipedrive.com"
+   ]
   },
   {
    "tool": "Salesflare",
@@ -1174,7 +1604,11 @@
    ],
    "source": "export then files",
    "export": "Contacts, accounts and opportunities as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "salesflare.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Salesforce",
@@ -1192,7 +1626,14 @@
       "SystemModstamp"
      ]
     ]
-   }
+   },
+   "domains": [
+    "force.com",
+    "salesforce.com"
+   ],
+   "mail_domains": [
+    "salesforce.com"
+   ]
   },
   {
    "tool": "ServiceTitan",
@@ -1202,7 +1643,11 @@
    ],
    "source": "export then files",
    "export": "Jobs, customers and invoices from reports as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "servicetitan.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Shopify",
@@ -1225,7 +1670,14 @@
       "Lineitem name"
      ]
     ]
-   }
+   },
+   "domains": [
+    "admin.shopify.com",
+    "myshopify.com"
+   ],
+   "mail_domains": [
+    "shopify.com"
+   ]
   },
   {
    "tool": "SMRT",
@@ -1237,7 +1689,9 @@
    ],
    "source": "export then files",
    "export": "Customer and transaction reports as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Total Office Manager",
@@ -1249,7 +1703,9 @@
    ],
    "source": "export then files",
    "export": "Customer, job and invoice reports as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Vitally",
@@ -1260,7 +1716,11 @@
    ],
    "source": "export then files",
    "export": "Accounts, users and notes as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "vitally.io"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Wodify",
@@ -1271,7 +1731,11 @@
    ],
    "source": "export then files",
    "export": "Member, attendance and billing reports as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "wodify.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Zoho (Desk, CRM, Cliq)",
@@ -1283,7 +1747,15 @@
    ],
    "source": "tickets",
    "export": "Desk tickets as CSV; CRM modules and Cliq chats via the data backup.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "crm.zoho.com",
+    "desk.zoho.com",
+    "cliq.zoho.com"
+   ],
+   "mail_domains": [
+    "zoho.com"
+   ]
   },
   {
    "tool": "Agicap",
@@ -1293,7 +1765,11 @@
    ],
    "source": "export then files",
    "export": "Cash-flow transactions as CSV or Excel.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "agicap.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "AppFolio",
@@ -1304,7 +1780,11 @@
    ],
    "source": "export then files",
    "export": "Property, tenant and ledger reports as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "appfolio.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Avalara",
@@ -1314,7 +1794,13 @@
    ],
    "source": "export then files",
    "export": "Transaction and filing reports as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "avalara.com"
+   ],
+   "mail_domains": [
+    "avalara.com"
+   ]
   },
   {
    "tool": "Bexio",
@@ -1324,7 +1810,13 @@
    ],
    "source": "export then files",
    "export": "Invoices, contacts and bookings as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "bexio.com"
+   ],
+   "mail_domains": [
+    "bexio.com"
+   ]
   },
   {
    "tool": "Bill.com",
@@ -1334,7 +1826,13 @@
    ],
    "source": "export then files",
    "export": "Bills, invoices and vendor lists as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "bill.com"
+   ],
+   "mail_domains": [
+    "bill.com"
+   ]
   },
   {
    "tool": "Brex",
@@ -1344,7 +1842,13 @@
    ],
    "source": "export then files",
    "export": "Card and account transactions as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "brex.com"
+   ],
+   "mail_domains": [
+    "brex.com"
+   ]
   },
   {
    "tool": "Chase Business",
@@ -1354,7 +1858,13 @@
    ],
    "source": "export then files",
    "export": "Account activity downloads as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "chase.com"
+   ],
+   "mail_domains": [
+    "chase.com"
+   ]
   },
   {
    "tool": "DATEV",
@@ -1364,7 +1874,11 @@
    ],
    "source": "export then files",
    "export": "Bookings in the DATEV export format (CSV).",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "datev.de"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Epicor ERP",
@@ -1375,7 +1889,9 @@
    ],
    "source": "export then files",
    "export": "BAQ or report exports as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "FreshBooks",
@@ -1385,7 +1901,13 @@
    ],
    "source": "export then files",
    "export": "Invoices, expenses and clients as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "freshbooks.com"
+   ],
+   "mail_domains": [
+    "freshbooks.com"
+   ]
   },
   {
    "tool": "Inkle",
@@ -1395,7 +1917,9 @@
    ],
    "source": "export then files",
    "export": "Bookkeeping and tax reports as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Kick",
@@ -1405,7 +1929,9 @@
    ],
    "source": "export then files",
    "export": "Transactions and reports as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Klarna",
@@ -1415,7 +1941,11 @@
    ],
    "source": "export then files",
    "export": "Settlement and order reports as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "klarna.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Mercury",
@@ -1425,7 +1955,13 @@
    ],
    "source": "export then files",
    "export": "Account transactions as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "mercury.com"
+   ],
+   "mail_domains": [
+    "mercury.com"
+   ]
   },
   {
    "tool": "NetSuite",
@@ -1435,7 +1971,13 @@
    ],
    "source": "export then files",
    "export": "Saved searches of transactions and records as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "netsuite.com"
+   ],
+   "mail_domains": [
+    "netsuite.com"
+   ]
   },
   {
    "tool": "Odoo",
@@ -1445,7 +1987,13 @@
    ],
    "source": "export then files",
    "export": "Records from any list view exported as CSV or Excel.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "odoo.com"
+   ],
+   "mail_domains": [
+    "odoo.com"
+   ]
   },
   {
    "tool": "PayPal",
@@ -1464,7 +2012,13 @@
       "Transaction ID"
      ]
     ]
-   }
+   },
+   "domains": [
+    "paypal.com"
+   ],
+   "mail_domains": [
+    "paypal.com"
+   ]
   },
   {
    "tool": "QuickBooks",
@@ -1474,7 +2028,14 @@
    ],
    "source": "export then files",
    "export": "Reports (general ledger, transactions) and lists as Excel or CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "qbo.intuit.com",
+    "quickbooks.intuit.com"
+   ],
+   "mail_domains": [
+    "intuit.com"
+   ]
   },
   {
    "tool": "QuickBooks Desktop",
@@ -1492,7 +2053,9 @@
      "*.qbx",
      "*.qby"
     ]
-   }
+   },
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Ramp",
@@ -1502,7 +2065,13 @@
    ],
    "source": "export then files",
    "export": "Transactions and bills as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "ramp.com"
+   ],
+   "mail_domains": [
+    "ramp.com"
+   ]
   },
   {
    "tool": "Sage 300 CRE",
@@ -1512,7 +2081,9 @@
    ],
    "source": "export then files",
    "export": "Job cost and ledger reports as CSV or Excel.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Sage Intacct",
@@ -1522,7 +2093,11 @@
    ],
    "source": "export then files",
    "export": "Reports and object lists as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "intacct.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Square",
@@ -1533,7 +2108,13 @@
    ],
    "source": "export then files",
    "export": "Transactions, items and customers as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "squareup.com"
+   ],
+   "mail_domains": [
+    "squareup.com"
+   ]
   },
   {
    "tool": "Stripe",
@@ -1550,7 +2131,13 @@
       "Amount Refunded"
      ]
     ]
-   }
+   },
+   "domains": [
+    "stripe.com"
+   ],
+   "mail_domains": [
+    "stripe.com"
+   ]
   },
   {
    "tool": "Tally",
@@ -1560,7 +2147,9 @@
    ],
    "source": "export then files",
    "export": "Vouchers and ledgers exported as Excel or XML.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Unleashed",
@@ -1571,7 +2160,11 @@
    ],
    "source": "export then files",
    "export": "Inventory, orders and invoices as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "unleashedsoftware.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Xero",
@@ -1581,7 +2174,13 @@
    ],
    "source": "export then files",
    "export": "General ledger, invoices and contacts as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "xero.com"
+   ],
+   "mail_domains": [
+    "xero.com"
+   ]
   },
   {
    "tool": "Zoho Books",
@@ -1591,7 +2190,11 @@
    ],
    "source": "export then files",
    "export": "Transactions and contacts as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "books.zoho.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Amplitude",
@@ -1601,7 +2204,13 @@
    ],
    "source": "export then files",
    "export": "Raw event export (JSON) or charts as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "amplitude.com"
+   ],
+   "mail_domains": [
+    "amplitude.com"
+   ]
   },
   {
    "tool": "BigQuery",
@@ -1612,7 +2221,9 @@
    ],
    "source": "bigquery",
    "export": "Table metadata only: `bq ls/show --format=json`, or INFORMATION_SCHEMA rows.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Datadog",
@@ -1623,7 +2234,14 @@
    ],
    "source": "export then files",
    "export": "Dashboards, monitors and log archive metadata as JSON.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "datadoghq.com",
+    "datadoghq.eu"
+   ],
+   "mail_domains": [
+    "datadoghq.com"
+   ]
   },
   {
    "tool": "Google Ads",
@@ -1634,7 +2252,11 @@
    ],
    "source": "export then files",
    "export": "Campaign, ad group and keyword reports as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "ads.google.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Google Analytics",
@@ -1644,7 +2266,11 @@
    ],
    "source": "export then files",
    "export": "Reports as CSV, or the BigQuery event export (then use bigquery).",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "analytics.google.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Grafana",
@@ -1654,7 +2280,14 @@
    ],
    "source": "export then files",
    "export": "Dashboard JSON models.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "grafana.com",
+    "grafana.net"
+   ],
+   "mail_domains": [
+    "grafana.com"
+   ]
   },
   {
    "tool": "Meta Ads",
@@ -1665,7 +2298,11 @@
    ],
    "source": "export then files",
    "export": "Ads Manager reports as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "adsmanager.facebook.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Metabase",
@@ -1675,7 +2312,13 @@
    ],
    "source": "export then files",
    "export": "Saved questions as CSV, plus the app database dump.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "metabase.com"
+   ],
+   "mail_domains": [
+    "metabase.com"
+   ]
   },
   {
    "tool": "Mixpanel",
@@ -1685,7 +2328,13 @@
    ],
    "source": "export then files",
    "export": "Raw event export (JSONL) per date range.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "mixpanel.com"
+   ],
+   "mail_domains": [
+    "mixpanel.com"
+   ]
   },
   {
    "tool": "PostHog",
@@ -1695,7 +2344,13 @@
    ],
    "source": "export then files",
    "export": "Event export as CSV or JSON, or a batch export to storage.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "posthog.com"
+   ],
+   "mail_domains": [
+    "posthog.com"
+   ]
   },
   {
    "tool": "Power BI",
@@ -1710,7 +2365,11 @@
      "*.pbix",
      "*.pbit"
     ]
-   }
+   },
+   "domains": [
+    "powerbi.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Segment",
@@ -1720,7 +2379,13 @@
    ],
    "source": "export then files",
    "export": "Warehouse or storage destination files.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "segment.com"
+   ],
+   "mail_domains": [
+    "segment.com"
+   ]
   },
   {
    "tool": "Semrush",
@@ -1730,7 +2395,13 @@
    ],
    "source": "export then files",
    "export": "Project and position-tracking reports as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "semrush.com"
+   ],
+   "mail_domains": [
+    "semrush.com"
+   ]
   },
   {
    "tool": "Sentry",
@@ -1741,7 +2412,13 @@
    ],
    "source": "export then files",
    "export": "Issue lists and event data pulled from the API as JSON.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "sentry.io"
+   ],
+   "mail_domains": [
+    "sentry.io"
+   ]
   },
   {
    "tool": "Snowflake",
@@ -1752,7 +2429,14 @@
    ],
    "source": "export then files",
    "export": "INFORMATION_SCHEMA.TABLES rows as CSV (sizes, row counts, dates).",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "snowflakecomputing.com",
+    "app.snowflake.com"
+   ],
+   "mail_domains": [
+    "snowflake.com"
+   ]
   },
   {
    "tool": "SurveyMonkey",
@@ -1762,7 +2446,13 @@
    ],
    "source": "export then files",
    "export": "Survey responses as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "surveymonkey.com"
+   ],
+   "mail_domains": [
+    "surveymonkey.com"
+   ]
   },
   {
    "tool": "Tableau",
@@ -1780,7 +2470,11 @@
      "*.tds",
      "*.tdsx"
     ]
-   }
+   },
+   "domains": [
+    "online.tableau.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Unity Analytics",
@@ -1790,7 +2484,9 @@
    ],
    "source": "export then files",
    "export": "Raw data export of events as JSON or CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "YouTube Analytics",
@@ -1801,7 +2497,11 @@
    ],
    "source": "export then files",
    "export": "Channel reports from YouTube Studio as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "studio.youtube.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "AWS S3",
@@ -1811,7 +2511,9 @@
    ],
    "source": "files",
    "export": "Sync the bucket to a local folder (`aws s3 sync`).",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Azure AI Search",
@@ -1821,7 +2523,9 @@
    ],
    "source": "export then files",
    "export": "Index definitions and document counts as JSON.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Cloudflare R2",
@@ -1831,7 +2535,9 @@
    ],
    "source": "files",
    "export": "Sync the bucket locally with an S3-compatible client.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Databases (generic)",
@@ -1858,7 +2564,9 @@
       "contains": "-- MariaDB dump"
      }
     ]
-   }
+   },
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "DynamoDB",
@@ -1868,7 +2576,9 @@
    ],
    "source": "export then files",
    "export": "Export to S3 (DynamoDB JSON), then sync it locally.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Firestore",
@@ -1878,7 +2588,11 @@
    ],
    "source": "export then files",
    "export": "Managed export to Cloud Storage, or collections dumped as JSON.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "console.firebase.google.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Google Cloud Storage",
@@ -1888,7 +2602,9 @@
    ],
    "source": "files",
    "export": "Copy the bucket locally (`gcloud storage cp -r`).",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "In-house platform database (generic)",
@@ -1900,7 +2616,9 @@
    ],
    "source": "sql",
    "export": "A plain SQL dump (MySQL or PostgreSQL).",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Member portal",
@@ -1911,7 +2629,9 @@
    ],
    "source": "sql",
    "export": "A plain SQL dump of the portal's database.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "MongoDB",
@@ -1925,7 +2645,13 @@
     "files": [
      "*.bson"
     ]
-   }
+   },
+   "domains": [
+    "cloud.mongodb.com"
+   ],
+   "mail_domains": [
+    "mongodb.com"
+   ]
   },
   {
    "tool": "MuleSoft",
@@ -1935,7 +2661,11 @@
    ],
    "source": "export then files",
    "export": "API specs and flow definitions from the project files.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "anypoint.mulesoft.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Noloco",
@@ -1946,7 +2676,11 @@
    ],
    "source": "export then files",
    "export": "Collections as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "noloco.io"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "OpenSearch",
@@ -1956,7 +2690,9 @@
    ],
    "source": "export then files",
    "export": "Index stats and mappings as JSON, or a snapshot.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "PostgreSQL",
@@ -1981,7 +2717,9 @@
       "contains": "PGDMP"
      }
     ]
-   }
+   },
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Redis",
@@ -1996,7 +2734,9 @@
      "dump.rdb",
      "appendonly.aof"
     ]
-   }
+   },
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "SQL Server",
@@ -2011,7 +2751,9 @@
      "*.mdf",
      "*.ldf"
     ]
-   }
+   },
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Supabase",
@@ -2021,7 +2763,14 @@
    ],
    "source": "sql",
    "export": "`pg_dump` of the project database (plain SQL).",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "supabase.com"
+   ],
+   "mail_domains": [
+    "supabase.com",
+    "supabase.io"
+   ]
   },
   {
    "tool": "Warehouse / order management system (generic)",
@@ -2032,7 +2781,9 @@
    ],
    "source": "sql",
    "export": "A plain SQL dump of the system's database, or table CSVs.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Zilliz Cloud",
@@ -2042,7 +2793,11 @@
    ],
    "source": "export then files",
    "export": "Collection stats and schema as JSON.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "cloud.zilliz.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Box",
@@ -2052,7 +2807,13 @@
    ],
    "source": "files",
    "export": "The Box Drive folder or a full folder download.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "app.box.com"
+   ],
+   "mail_domains": [
+    "box.com"
+   ]
   },
   {
    "tool": "Citrix ShareFile",
@@ -2062,7 +2823,13 @@
    ],
    "source": "files",
    "export": "Download the folders, or sync them locally.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "sharefile.com"
+   ],
+   "mail_domains": [
+    "sharefile.com"
+   ]
   },
   {
    "tool": "Coda",
@@ -2073,7 +2840,13 @@
    ],
    "source": "export then files",
    "export": "Doc export (Markdown or HTML) and tables as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "coda.io"
+   ],
+   "mail_domains": [
+    "coda.io"
+   ]
   },
   {
    "tool": "Confluence",
@@ -2096,7 +2869,9 @@
       "entities.xml"
      ]
     ]
-   }
+   },
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "DocHub",
@@ -2106,7 +2881,11 @@
    ],
    "source": "export then files",
    "export": "Documents downloaded as PDF.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "dochub.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "DocuSign",
@@ -2116,7 +2895,14 @@
    ],
    "source": "export then files",
    "export": "Completed envelopes downloaded as PDF, plus envelope reports as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "docusign.com",
+    "docusign.net"
+   ],
+   "mail_domains": [
+    "docusign.net"
+   ]
   },
   {
    "tool": "Dropbox",
@@ -2130,7 +2916,13 @@
     "folders": [
      ".dropbox.cache"
     ]
-   }
+   },
+   "domains": [
+    "dropbox.com"
+   ],
+   "mail_domains": [
+    "dropbox.com"
+   ]
   },
   {
    "tool": "Google Drive",
@@ -2140,7 +2932,12 @@
    ],
    "source": "files",
    "export": "The synced Drive folder, files made available offline (or Takeout).",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "drive.google.com",
+    "docs.google.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Labstep",
@@ -2151,7 +2948,11 @@
    ],
    "source": "export then files",
    "export": "Experiments and protocols exported as PDF or JSON.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "labstep.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Legal drive",
@@ -2161,7 +2962,9 @@
    ],
    "source": "files",
    "export": "The folder or synced drive holding the documents.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Local storage / PDF files",
@@ -2171,7 +2974,9 @@
    ],
    "source": "files",
    "export": "Point it at the folder.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Loom",
@@ -2181,7 +2986,13 @@
    ],
    "source": "export then files",
    "export": "Video downloads plus transcripts.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "loom.com"
+   ],
+   "mail_domains": [
+    "loom.com"
+   ]
   },
   {
    "tool": "Microsoft Excel",
@@ -2198,7 +3009,9 @@
      "*.xlsm",
      "*.xlsb"
     ]
-   }
+   },
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Notion",
@@ -2223,7 +3036,14 @@
     "app_data": [
      "Notion"
     ]
-   }
+   },
+   "domains": [
+    "notion.so",
+    "notion.com"
+   ],
+   "mail_domains": [
+    "notion.so"
+   ]
   },
   {
    "tool": "Research corpus",
@@ -2233,7 +3053,9 @@
    ],
    "source": "files",
    "export": "The folder holding the papers, notes and datasets.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Wiki / documentation (generic)",
@@ -2243,7 +3065,9 @@
    ],
    "source": "export then files",
    "export": "Wiki pages exported as Markdown or HTML.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Azure DevOps",
@@ -2254,7 +3078,12 @@
    ],
    "source": "tickets",
    "export": "Work-item query results as CSV; measure the code itself with measure-code.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "dev.azure.com",
+    "visualstudio.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Bitbucket",
@@ -2264,7 +3093,13 @@
    ],
    "source": "tickets",
    "export": "Issues and pull requests from the API; measure the code itself with measure-code.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "bitbucket.org"
+   ],
+   "mail_domains": [
+    "bitbucket.org"
+   ]
   },
   {
    "tool": "Code repositories (generic, any git host)",
@@ -2278,7 +3113,9 @@
     "folders": [
      ".git"
     ]
-   }
+   },
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Cursor",
@@ -2292,7 +3129,13 @@
     "app_data": [
      "Cursor"
     ]
-   }
+   },
+   "domains": [
+    "cursor.com"
+   ],
+   "mail_domains": [
+    "cursor.com"
+   ]
   },
   {
    "tool": "GitHub",
@@ -2302,7 +3145,13 @@
    ],
    "source": "tickets",
    "export": "Issues and pull requests as JSON from the API; measure the code itself with measure-code.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "github.com"
+   ],
+   "mail_domains": [
+    "github.com"
+   ]
   },
   {
    "tool": "GitLab",
@@ -2312,7 +3161,13 @@
    ],
    "source": "tickets",
    "export": "Issues exported as CSV; measure the code itself with measure-code.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "gitlab.com"
+   ],
+   "mail_domains": [
+    "gitlab.com"
+   ]
   },
   {
    "tool": "GitLab wiki",
@@ -2322,7 +3177,9 @@
    ],
    "source": "export then files",
    "export": "Clone the wiki repository (it is Markdown in git).",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Helix Swarm",
@@ -2332,7 +3189,9 @@
    ],
    "source": "export then files",
    "export": "Review records from the API as JSON.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Jenkins",
@@ -2350,7 +3209,9 @@
       "plugins"
      ]
     ]
-   }
+   },
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Perforce",
@@ -2371,7 +3232,9 @@
       "db.counters"
      ]
     ]
-   }
+   },
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Subversion (SVN)",
@@ -2394,7 +3257,9 @@
       "conf"
      ]
     ]
-   }
+   },
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "3D CAD files",
@@ -2420,7 +3285,9 @@
      "*.iges",
      "*.igs"
     ]
-   }
+   },
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Adobe After Effects / Creative Cloud",
@@ -2439,7 +3306,9 @@
      "*.aep",
      "*.prproj"
     ]
-   }
+   },
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Blender",
@@ -2453,7 +3322,9 @@
     "files": [
      "*.blend"
     ]
-   }
+   },
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Canva",
@@ -2463,7 +3334,13 @@
    ],
    "source": "export then files",
    "export": "Designs downloaded as PDF or PNG; measure-art counts them.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "canva.com"
+   ],
+   "mail_domains": [
+    "canva.com"
+   ]
   },
   {
    "tool": "Centric PLM",
@@ -2475,7 +3352,9 @@
    ],
    "source": "export then files",
    "export": "Product, material and style records as CSV or Excel.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Figma",
@@ -2489,7 +3368,13 @@
     "files": [
      "*.fig"
     ]
-   }
+   },
+   "domains": [
+    "figma.com"
+   ],
+   "mail_domains": [
+    "figma.com"
+   ]
   },
   {
    "tool": "Godot",
@@ -2504,7 +3389,9 @@
     "files": [
      "project.godot"
     ]
-   }
+   },
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Lucid",
@@ -2514,7 +3401,12 @@
    ],
    "source": "export then files",
    "export": "Documents exported as PDF or Visio, plus CSV of shape data.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "lucid.app",
+    "lucidchart.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Miro",
@@ -2524,7 +3416,13 @@
    ],
    "source": "export then files",
    "export": "Boards exported as PDF or image, and CSV where offered.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "miro.com"
+   ],
+   "mail_domains": [
+    "miro.com"
+   ]
   },
   {
    "tool": "Production asset files",
@@ -2547,7 +3445,9 @@
      "*.sbs",
      "*.fbx"
     ]
-   }
+   },
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Unity",
@@ -2568,7 +3468,9 @@
       "ProjectSettings"
      ]
     ]
-   }
+   },
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Unreal Engine",
@@ -2583,7 +3485,9 @@
     "files": [
      "*.uproject"
     ]
-   }
+   },
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Make",
@@ -2593,7 +3497,13 @@
    ],
    "source": "export then files",
    "export": "Scenario blueprints (JSON) and execution logs.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "make.com"
+   ],
+   "mail_domains": [
+    "make.com"
+   ]
   },
   {
    "tool": "Zapier",
@@ -2603,7 +3513,13 @@
    ],
    "source": "export then files",
    "export": "Zap definitions and task history as JSON or CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "zapier.com"
+   ],
+   "mail_domains": [
+    "zapier.com"
+   ]
   },
   {
    "tool": "123 Formbuilder",
@@ -2613,7 +3529,11 @@
    ],
    "source": "export then files",
    "export": "Form submissions as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "123formbuilder.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Fathom",
@@ -2623,7 +3543,13 @@
    ],
    "source": "export then files",
    "export": "Meeting transcripts and summaries.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "fathom.video"
+   ],
+   "mail_domains": [
+    "fathom.video"
+   ]
   },
   {
    "tool": "Fireflies",
@@ -2633,7 +3559,13 @@
    ],
    "source": "export then files",
    "export": "Transcripts exported as text, JSON or DOCX.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "fireflies.ai"
+   ],
+   "mail_domains": [
+    "fireflies.ai"
+   ]
   },
   {
    "tool": "Google Calendar",
@@ -2643,7 +3575,11 @@
    ],
    "source": "export then files",
    "export": "Calendars exported as .ics (Takeout).",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "calendar.google.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Hubstaff",
@@ -2653,7 +3589,13 @@
    ],
    "source": "export then files",
    "export": "Time and activity reports as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "hubstaff.com"
+   ],
+   "mail_domains": [
+    "hubstaff.com"
+   ]
   },
   {
    "tool": "Instagram",
@@ -2663,7 +3605,9 @@
    ],
    "source": "export then files",
    "export": "Account data download (JSON).",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "LinkedIn",
@@ -2673,7 +3617,9 @@
    ],
    "source": "export then files",
    "export": "'Get a copy of your data' archive (CSV).",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "Linnworks",
@@ -2683,7 +3629,11 @@
    ],
    "source": "export then files",
    "export": "Orders and stock levels as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "linnworks.net"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Nooks",
@@ -2693,7 +3643,11 @@
    ],
    "source": "export then files",
    "export": "Call logs and transcripts as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "nooks.ai"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Otter",
@@ -2703,7 +3657,13 @@
    ],
    "source": "export then files",
    "export": "Transcripts exported as text or DOCX.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "otter.ai"
+   ],
+   "mail_domains": [
+    "otter.ai"
+   ]
   },
   {
    "tool": "Read AI",
@@ -2713,7 +3673,13 @@
    ],
    "source": "export then files",
    "export": "Meeting transcripts and reports.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "read.ai"
+   ],
+   "mail_domains": [
+    "read.ai"
+   ]
   },
   {
    "tool": "Session transcripts",
@@ -2723,7 +3689,9 @@
    ],
    "source": "files",
    "export": "The folder holding the transcript files.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [],
+   "mail_domains": []
   },
   {
    "tool": "ShipStation",
@@ -2733,7 +3701,13 @@
    ],
    "source": "export then files",
    "export": "Orders and shipments as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "shipstation.com"
+   ],
+   "mail_domains": [
+    "shipstation.com"
+   ]
   },
   {
    "tool": "SkuVault",
@@ -2743,7 +3717,11 @@
    ],
    "source": "export then files",
    "export": "Inventory and sales reports as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "skuvault.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Twilio",
@@ -2753,7 +3731,13 @@
    ],
    "source": "export then files",
    "export": "Message and call logs exported as CSV or through BulkExport.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "twilio.com"
+   ],
+   "mail_domains": [
+    "twilio.com"
+   ]
   },
   {
    "tool": "Webflow",
@@ -2763,7 +3747,13 @@
    ],
    "source": "export then files",
    "export": "CMS collections and form submissions as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "webflow.com"
+   ],
+   "mail_domains": [
+    "webflow.com"
+   ]
   },
   {
    "tool": "Zadarma",
@@ -2773,7 +3763,11 @@
    ],
    "source": "export then files",
    "export": "Call statistics as CSV.",
-   "local_signals": {}
+   "local_signals": {},
+   "domains": [
+    "zadarma.com"
+   ],
+   "mail_domains": []
   },
   {
    "tool": "Zoom",
@@ -2792,7 +3786,13 @@
      "zoom.us",
      "Zoom"
     ]
-   }
+   },
+   "domains": [
+    "zoom.us"
+   ],
+   "mail_domains": [
+    "zoom.us"
+   ]
   }
  ],
  "local_signal_kinds": [
