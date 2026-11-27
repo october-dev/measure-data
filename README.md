@@ -2,7 +2,7 @@
 
 An agent skill for Claude Code, Codex, Grok, Hermes and other coding agents that counts a company's SaaS and business data **from local exports**: Slack, Discord, Notion, ClickUp, Jira (and any ticket CSV), Gmail/mbox, SQL dumps, BigQuery metadata, and Drive or any other folder. It writes counts, date spans, the pre-2025 share and sizes. It never writes content. The report ends with a short, clearly labelled **"Why this is special"** pitch that the agent writes after the report (dream mode).
 
-Part of the October measurement skills: [measure-code](https://github.com/october-dev/measure-code) · **measure-data** · [measure-art](https://github.com/october-dev/measure-art) · [master-valuate](https://github.com/october-dev/master-valuate)
+Part of the October measurement skills: [measure-code](https://github.com/october-dev/measure-code) · **measure-data** · [measure-art](https://github.com/october-dev/measure-art) · [measure-disk](https://github.com/october-dev/measure-disk) · [measure-studio](https://github.com/october-dev/measure-studio)
 
 ## Install
 
@@ -54,7 +54,7 @@ measure-data also covers what a games-studio data assessment asks for:
 - **Category status** (`category_status`): all 18 studio data categories, each `inspected`, `exists_inaccessible`, `self_reported`, `confirmed_not_used` or `unknown`. None is ever dropped.
 - **Connectors check** (`connectors`): telemetry (Mixpanel, Amplitude, GA4/BigQuery, GameAnalytics, Unity Analytics, PostHog), backends (Supabase, Firebase, PlayFab, Nakama, AWS, Google Cloud, Cloudflare R2/D1/Workers), stores (Play Console, App Store Connect, Steam) and ads (AdMob, Google Ads, Meta, AppLovin, Unity Ads), from `connector_prompts` in `docs/tools.json`. Record answers with `status`; `--tag connector:<tool>` marks a measured export.
 - **Restriction flags** (`restrictions`): client-owned, platform NDA, third-party middleware, player personal data, staff personal data, secrets. Recorded, not ruled on; ownership defaults to `own`. `--ownership` and `--flag` take the owner's answers.
-- **Traceable work** (`traceable` on ticket sources): tickets by type (bug, task, story, other), resolved counts, and one-way hashes of resolved ticket keys (`PROJ-123`, `CU-<id>`, `#123`), which master-valuate matches to measure-code's hashed commit references to count bug-to-fix links.
+- **Traceable work** (`traceable` on ticket sources): tickets by type (bug, task, story, other), resolved counts, and one-way hashes of resolved ticket keys (`PROJ-123`, `CU-<id>`, `#123`), which can be matched to measure-code's hashed commit references to count bug-to-fix links.
 - **Studio files** (`studio_files` on the `files` source): build and CI logs, crash dumps and exports, profiling captures (`.utrace`, PIX, RenderDoc, Tracy, Superluminal, Unity profiler), QA and certification documents by file name, Wwise and FMOD projects and banks, localisation files (`.po`, XLIFF, Ink, Yarn, string-table CSVs by header) and engine content counts (`.uasset`, `.umap`, `.unity`, `.prefab`, `.tscn`).
 - **Version history** (`version_history`) for document sources.
 

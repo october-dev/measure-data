@@ -214,7 +214,7 @@ _Note: Dates are file modification times, which copies and syncs can reset. Dupl
 | story | 3,900 | 3,500 | 3,500 |
 | other | 620 | 0 | 0 |
 
-_Traceable work: ticket type and resolution from the export's type, status and resolved-date columns; keys of resolved tickets hashed one-way (link_hash) so master-valuate can match them to commit messages (verified)._
+_Traceable work: ticket type and resolution from the export's type, status and resolved-date columns; keys of resolved tickets hashed one-way (link_hash) so they can be matched to commit messages (verified)._
 
 Restrictions (recorded, not ruled on): ownership own; no flag established.
 

@@ -1,6 +1,6 @@
 ---
 name: measure-data
-description: Count a company's SaaS and business data from local exports (Slack, Discord, Notion, ClickUp, Jira and other ticket CSVs, Gmail/mbox, SQL dumps, BigQuery metadata, Google Drive or any local folder) and write counts only - items and human share, people (hashed, never named) and peak active people per month, date spans, pre-2025 and pre-ChatGPT (2022-11-30) shares, characters and tokens, sizes, a label on every number, restriction flags, hashed resolved-ticket keys for bug-to-fix links, studio file detectors (builds, crashes, profiling, QA, audio middleware, localisation, engine content) and a status for every studio data category and connector (telemetry, backends, stores, ads) - into measure.json + report.md, ending with a short, clearly labelled "Why this is special" pitch written after the report (dream mode, on by default, --no-dream skips it). Full mode is the default; simple mode (optional) is a fast sampled pass, used only when asked to do a quick look. Use when the user asks to "count our Slack/Notion/email/DB", "inventory company data", "how much data do we have and how old is it", or to prepare inputs for master-valuate. Never reads content into the report.
+description: Count a company's SaaS and business data from local exports (Slack, Discord, Notion, ClickUp, Jira and other ticket CSVs, Gmail/mbox, SQL dumps, BigQuery metadata, Google Drive or any local folder) and write counts only - items and human share, people (hashed, never named) and peak active people per month, date spans, pre-2025 and pre-ChatGPT (2022-11-30) shares, characters and tokens, sizes, a label on every number, restriction flags, hashed resolved-ticket keys for bug-to-fix links, studio file detectors (builds, crashes, profiling, QA, audio middleware, localisation, engine content) and a status for every studio data category and connector (telemetry, backends, stores, ads) - into measure.json + report.md, ending with a short, clearly labelled "Why this is special" pitch written after the report (dream mode, on by default, --no-dream skips it). Full mode is the default; simple mode (optional) is a fast sampled pass, used only when asked to do a quick look. Use when the user asks to "count our Slack/Notion/email/DB", "inventory company data", "how much data do we have and how old is it", or to prepare inputs for a studio overview. Never reads content into the report.
 ---
 
 # measure-data
@@ -11,7 +11,7 @@ Counts business data **on this machine** from exports the user already has. The 
 
 | mode | what runs | time |
 |---|---|---|
-| `--mode full` (default) | every record, plus duplicates, zip contents and fingerprints for master-valuate | depends on size |
+| `--mode full` (default) | every record, plus duplicates, zip contents and fingerprints for de-duplication | depends on size |
 | `--mode simple` | **Simple mode (optional): a fast sampled pass, used only when asked to do a quick look.** It parses a seeded sample of up to `--sample-files` files (default 200), or the first `--sample-mb` (default 64) of each mailbox or dump, and scales counts by size. Every figure is labelled `estimated`. | minutes |
 
 Always run full mode unless the user explicitly asks for a quick look. Do not choose simple mode on your own.
@@ -43,7 +43,7 @@ Always run full mode unless the user explicitly asks for a quick look. Do not ch
    - `--tag connector:<tool>` marks a source as the export of a connector (for example `connector:PlayFab`), which makes that connector `inspected`. `--tag category:<key>` overrides the category a source counts for.
    - **Restrictions (record, don't rule).** Ownership defaults to `own`. Ask whether any source holds client-owned work, platform-holder NDA material, third-party middleware or bought assets, player personal data, staff personal data or secrets, and pass `--flag client_owned`, `--flag platform_nda`, `--flag third_party_middleware`, `--flag player_personal_data`, `--flag staff_personal_data` or `--flag secrets` (or `NAME=no`) as the user says. Some flags are also set from the counts (personal-data patterns, user tables, credential-like file names), labelled `estimated`.
    - **Version history.** For wikis, docs and drives, ask whether prior versions are kept and can be exported, and pass `--version-history`.
-   - **Ticket links.** Ticket sources (`jira`, `clickup`, `tickets`) record counts by type (bug, task, story, other), resolved counts, and one-way hashes of resolved ticket keys, so master-valuate can count bug-to-fix commits against measure-code. If the studio uses a `--link-salt`, pass the same one to measure-code.
+   - **Ticket links.** Ticket sources (`jira`, `clickup`, `tickets`) record counts by type (bug, task, story, other), resolved counts, and one-way hashes of resolved ticket keys, so bug-to-fix commits can be counted against measure-code. If the studio uses a `--link-salt`, pass the same one to measure-code.
    `<source>` is one of `slack`, `discord`, `notion`, `clickup`, `jira`, `tickets`, `mbox`, `sql`, `bigquery` or `files`. Use a distinct `--label` when the same tool appears twice, for example `--label crm-db-2023` and `--label crm-db-2024`. For anything big (multi-GB mbox, SQL dumps, whole drives), run it in the background with `nohup ... > run.log 2>&1 &` and check `run.log`. Runs are **resumable**: finished units (channels, files, mailboxes, dumps, top folders) are checkpointed in `<out-dir>/.state/`. `--force` starts over.
 6. **Build the report:**
    ```bash
@@ -55,7 +55,7 @@ Always run full mode unless the user explicitly asks for a quick look. Do not ch
    - **Same privacy rules as everything else**: no names of people, channels, tables or files, no paths, emails, URLs, ids or secrets. Describe the product or genre in general terms.
    - Save it in a draft text file outside the exports, then run `python3 <skill-dir>/scripts/add_dream.py draft.txt --out <out-dir> [--deny "<a name you saw>" ...]`. It checks that the paragraph is not empty, has 4 to 6 sentences and no more than 160 words, holds no email, URL, handle, path, file name, token or denied name, and that every number in it appears in the report or `measure.json`. It warns about superlatives. Then it writes the `dream` block into `measure.json` and adds the **Why this is special** section at the very end of `report.md`, labelled as a pitch and kept apart from the counts. If it refuses, fix what it names and run it again: never loosen a fact to get past a check. `--check` validates without writing. Re-running `report` keeps the paragraph and checks it again. Delete the draft afterwards.
 8. **Review with the user.** Read `report.md` together, including the category status, the connectors check and the pitch. Point out a source that shows `0` where the user expected data, a `dated_share` well under 100%, and `placeholders_not_downloaded` (cloud-only files that were never counted). These usually mean an incomplete export, not a lack of data.
-9. **Hand off.** `measure.json` goes to **master-valuate**. Delete `.state/` before sharing.
+9. **Hand off.** Send `measure.json` to whoever is assembling the overview. Delete `.state/` before sharing.
 
 ## Getting an export (hints, not a tutorial)
 
@@ -90,7 +90,7 @@ Always run full mode unless the user explicitly asks for a quick look. Do not ch
 - `pre_cutoff_share` is the share of *dated* items before `--cutoff`. `dated_share` says how many items carried a date at all.
 - `people.distinct` counts hashed account ids or emails. `top1_share` and `top5_share` show how concentrated the activity is.
 - SQL dates are the first date-like value in each row, so they are year-granular and approximate. Top tables are listed by rank and category (users, orders, events, ...), never by name.
-- `fingerprints` (item sketches, table keys, schema signatures) let master-valuate find the same mailbox, database or folder measured twice.
+- `fingerprints` (item sketches, table keys, schema signatures) let the same mailbox, database or folder be found when it is measured twice.
 - `items_with_email_pattern` and `items_with_phone_pattern` count items that **contain** such a pattern. They help flag PII. Matches are never stored.
 
 ## Hard rules

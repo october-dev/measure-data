@@ -266,7 +266,7 @@ def refresh(out: Path, doc: dict, report: str, a) -> str | None:
         md.atomic_write(out / TARGET_JSON, json.dumps(doc, indent=2))
         md.atomic_write(out / TARGET_REPORT, md.render(doc["sources"], doc.get("cutoff", "2025-01-01"), doc.get("dream")))
         return None
-    # master-valuate: the overview cannot be rebuilt from valuation.json alone, so the section is replaced in place
+    # any other skill: the report cannot be rebuilt from its JSON alone, so the section is replaced in place
     (out / TARGET_JSON).write_text(json.dumps(doc, indent=2), encoding="utf-8")
     body = strip_section(report).rstrip("\n")
     sec = section(doc.get("dream"))

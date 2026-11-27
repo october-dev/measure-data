@@ -1519,7 +1519,7 @@
       "pre_chatgpt_share": 0.869,
       "traceable": {
         "label": "verified",
-        "method": "ticket type and resolution from the export's type, status and resolved-date columns; keys of resolved tickets hashed one-way (link_hash) so master-valuate can match them to commit messages",
+        "method": "ticket type and resolution from the export's type, status and resolved-date columns; keys of resolved tickets hashed one-way (link_hash) so they can be matched to commit messages",
         "key_salt_used": false,
         "by_type": {
           "bug": {
@@ -14494,7 +14494,7 @@
         },
         "traceable.by_type": {
           "label": "verified",
-          "method": "ticket type and resolution from the export's type, status and resolved-date columns; keys of resolved tickets hashed one-way (link_hash) so master-valuate can match them to commit messages"
+          "method": "ticket type and resolution from the export's type, status and resolved-date columns; keys of resolved tickets hashed one-way (link_hash) so they can be matched to commit messages"
         }
       },
       "cutoffs": {

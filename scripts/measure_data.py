@@ -682,7 +682,7 @@ def ticket_row(acc: Acc, created, updated, closed, person, parent, typ, key, com
 
 
 def merge_traces(traces: list) -> dict:
-    """Ticket counts by type and the hashed keys of resolved tickets, for bug -> fix links in master-valuate."""
+    """Ticket counts by type and the hashed keys of resolved tickets, for bug -> fix links against measure-code."""
     by_type = {t: {"total": 0, "resolved": 0} for t in TRACE_TYPES}
     keys = {t: set() for t in TRACE_TYPES}
     unlinkable = 0
@@ -695,7 +695,7 @@ def merge_traces(traces: list) -> dict:
     capped = any(len(v) > TRACE_CAP for v in keys.values())
     return {"label": "estimated" if OPTS.simple else "verified",
             "method": "ticket type and resolution from the export's type, status and resolved-date columns; keys of "
-                      "resolved tickets hashed one-way (link_hash) so master-valuate can match them to commit messages"
+                      "resolved tickets hashed one-way (link_hash) so they can be matched to commit messages"
                       + ("; simple mode reads a sample, so the sets are partial" if OPTS.simple else ""),
             "key_salt_used": bool(OPTS.link_salt), "by_type": by_type,
             "resolved_key_hashes": {t: sorted(v)[:TRACE_CAP] for t, v in keys.items()},
