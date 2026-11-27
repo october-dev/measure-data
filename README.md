@@ -1,6 +1,6 @@
 # measure-data
 
-A Claude Code skill that counts a company's SaaS and business data **from local exports**: Slack, Discord, Notion, ClickUp, Jira (and any ticket CSV), Gmail/mbox, SQL dumps, BigQuery metadata, and Drive or any other folder. It writes counts, date spans, the pre-2025 share and sizes. It never writes content. The report ends with a short, clearly labelled **"Why this is special"** pitch that Claude writes after the report (dream mode).
+An agent skill for Claude Code, Codex, Grok, Hermes and other coding agents that counts a company's SaaS and business data **from local exports**: Slack, Discord, Notion, ClickUp, Jira (and any ticket CSV), Gmail/mbox, SQL dumps, BigQuery metadata, and Drive or any other folder. It writes counts, date spans, the pre-2025 share and sizes. It never writes content. The report ends with a short, clearly labelled **"Why this is special"** pitch that the agent writes after the report (dream mode).
 
 Part of the October measurement skills: [measure-code](https://github.com/october-dev/measure-code) · **measure-data** · [measure-art](https://github.com/october-dev/measure-art) · [master-valuate](https://github.com/october-dev/master-valuate)
 
@@ -8,30 +8,43 @@ Part of the October measurement skills: [measure-code](https://github.com/octobe
 
 Requires Python 3.9+. No pip packages.
 
-```bash
-git clone https://github.com/october-dev/measure-data ~/.claude/skills/measure-data
-```
+This is a plain agent skill: [`SKILL.md`](SKILL.md) holds the instructions and `scripts/` holds the tools, so any coding agent that can read files and run Python can use it.
+
+- **Claude Code**: clone it into your skills folder and it is picked up as the `measure-data` skill:
+  ```bash
+  git clone https://github.com/october-dev/measure-data ~/.claude/skills/measure-data
+  ```
+- **Codex**: clone it into the Codex skills folder:
+  ```bash
+  git clone https://github.com/october-dev/measure-data ~/.codex/skills/measure-data
+  ```
+  Or clone it anywhere and point Codex at `SKILL.md`. When Codex works inside the repo, it reads `AGENTS.md`, which points to `SKILL.md`.
+- **Grok, Hermes and other agents**: clone it anywhere and tell the agent: *"Read `<path>/SKILL.md` and follow it."*
+
+The commands below use `$SKILL` for the folder you cloned into, for example `SKILL=~/.claude/skills/measure-data`.
 
 ## Use
+
+**Not sure what the company has?** [`docs/TOOLS.md`](docs/TOOLS.md) lists 221 tools and data sources that data buyers commonly ask about, in 13 categories (messaging, email, project management, support, CRM, finance, analytics, databases, document storage, code, design, automation and other), with the source to use for each one and what to export. The agent walks you through it before measuring. [`docs/tools.json`](docs/tools.json) has the same list for scripts.
 
 **Start with simple mode.** It samples each export, takes minutes, and recommends which sources deserve a full run:
 
 ```bash
-S=~/.claude/skills/measure-data/scripts/measure_data.py
+S=$SKILL/scripts/measure_data.py
 python3 $S slack ~/exports/slack.zip --out ./measure-out/data-simple --mode simple
 python3 $S report --out ./measure-out/data-simple
 ```
 
 Then run the full pass (the default mode) on the sources worth it.
 
-In Claude Code:
+In your coding agent (Claude Code, Codex, Grok, Hermes ...):
 
 > Use measure-data to count our Slack export at ~/exports/slack.zip, the Gmail Takeout in ~/exports/mail, and the shop database dump at ~/backups/shop.sql.gz
 
 Full runs, directly:
 
 ```bash
-S=~/.claude/skills/measure-data/scripts/measure_data.py
+S=$SKILL/scripts/measure_data.py
 python3 $S slack ~/exports/slack.zip       --out ./measure-out/data
 python3 $S mbox  ~/exports/mail            --out ./measure-out/data --label founder-mail
 python3 $S sql   ~/backups/shop.sql.gz     --out ./measure-out/data --label shop-db --tag project:shop
@@ -50,6 +63,8 @@ python3 $S report --out ./measure-out/data
 | `bigquery` | table metadata from `bq ls/show --format=json` or `INFORMATION_SCHEMA` |
 | `files` | any folder |
 
+Tools without a direct parser (CRMs, finance, analytics and most others in [`docs/TOOLS.md`](docs/TOOLS.md)) are measured as `export then files`: export their data into a folder and run `files` on it.
+
 What each source reports: the headline unit, human items and share, distinct people (hashed), peak active people per month, date span and last human item, pre-cutoff share, characters and token estimate, export size and referenced attachment bytes. Source-specific extras: unique mail after Message-ID dedupe, ticket description share, SQL table categories and long-text volume, BigQuery projects, datasets and daily-shard span, and for local folders working documents, media share and zip contents.
 
 Output:
@@ -67,12 +82,12 @@ See [`examples/`](examples/) for output built from **synthetic** data.
 
 ## Dream mode: "Why this is special"
 
-Counts miss ambition, complexity and craft. So after the report, Claude re-reads it and writes a 4-6 sentence founder-style pitch for the company's data. It is on by default; `report --no-dream` (or telling Claude you don't want a pitch) skips it.
+Counts miss ambition, complexity and craft. So after the report, the agent re-reads it and writes a 4-6 sentence founder-style pitch for the company's data. It is on by default; `report --no-dream` (or telling the agent you don't want a pitch) skips it.
 
 The pitch must be grounded only in what the run saw and in the counts; message text is never read, so it never describes what people said. `scripts/add_dream.py` validates it before inserting it: 4-6 sentences and no more than 160 words, no emails, URLs, handles, paths, file names, tokens or names you pass with `--deny`, and every number must already appear in the report. It is written to `measure.json` as `dream` and rendered as the last section of `report.md`, labelled as a pitch, so the counts stay neutral and credible. See [`examples/`](examples/) for a synthetic one.
 
 ```bash
-python3 ~/.claude/skills/measure-data/scripts/add_dream.py draft.txt --out ./measure-out/data
+python3 $SKILL/scripts/add_dream.py draft.txt --out ./measure-out/data
 ```
 
 ## Privacy
@@ -93,7 +108,7 @@ Every source checkpoints finished units (a channel, a mailbox, a dump, a top-lev
 bash tests/selftest.sh
 ```
 
-It builds synthetic exports for every source, measures them and checks the counts and that nothing leaks, and covers dream mode: insert, validation, re-runs and `--no-dream`.
+It builds synthetic exports for every source, measures them and checks the counts and that nothing leaks, and covers dream mode: insert, validation, re-runs and `--no-dream`. It also checks that `docs/tools.json` parses, has no duplicate tools and maps every tool to a valid source.
 
 ## License
 

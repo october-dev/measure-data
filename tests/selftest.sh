@@ -108,4 +108,30 @@ assert dc["dream"]["status"] == "skipped" and "Why this is special" not in (w / 
 assert json.loads((w / "bigsimple/sources/slack--slack.json").read_text()).get("dream") is None, "the pitch belongs to the report, not a source"
 print("selftest: dream mode OK")
 EOF
+# Buyer tool list: docs/tools.json parses, has no duplicates, and maps every tool to a real source.
+"$PY" - "$HERE" <<'EOF'
+import json, sys, pathlib, importlib.util
+here = pathlib.Path(sys.argv[1])
+spec = importlib.util.spec_from_file_location("measure_data", here / "scripts" / "measure_data.py")
+m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
+valid = set(m.SOURCES) | {"export then files"}
+doc = json.loads((here / "docs" / "tools.json").read_text(encoding="utf-8"))
+tools, cats = doc["tools"], doc["categories"]
+assert len(tools) >= 200 and set(doc["sources"]) == valid, (len(tools), doc["sources"])
+names = [t["tool"].strip().lower() for t in tools]
+dupes = sorted({n for n in names if names.count(n) > 1})
+assert not dupes, dupes
+assert len(set(cats)) == len(cats)
+for t in tools:
+    assert t["tool"] and t["tool"] == t["tool"].strip() and not t["tool"].lower().startswith(("http://", "https://")), t
+    assert t["source"] in valid, t
+    assert t["category"] in t["categories"] and set(t["categories"]) <= set(cats), t
+    assert t["export"].strip() and "\n" not in t["export"], t
+md = (here / "docs" / "TOOLS.md").read_text(encoding="utf-8")
+rows = [l for l in md.splitlines() if l.startswith("| ") and not l.startswith("| tool |")]
+assert len(rows) == len(tools), (len(rows), len(tools))
+for t in tools:
+    assert "| %s |" % t["tool"] in md and "`%s`" % t["source"] in md, t["tool"]
+print("selftest: tool list OK (%d tools, %d categories)" % (len(tools), len(cats)))
+EOF
 echo "selftest: passed"

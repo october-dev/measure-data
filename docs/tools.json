@@ -1,0 +1,2091 @@
+{
+ "schema": "october.measure-data.tools/v1",
+ "sources": [
+  "slack",
+  "discord",
+  "notion",
+  "clickup",
+  "jira",
+  "tickets",
+  "mbox",
+  "sql",
+  "bigquery",
+  "files",
+  "export then files"
+ ],
+ "categories": [
+  "Messaging",
+  "Emailing",
+  "Project management",
+  "Support",
+  "CRM",
+  "Finance",
+  "Analytics",
+  "Infra & databases",
+  "Document storage",
+  "Code management",
+  "Design",
+  "Automation",
+  "Other"
+ ],
+ "tools": [
+  {
+   "tool": "ChatGPT",
+   "category": "Messaging",
+   "categories": [
+    "Messaging",
+    "Other"
+   ],
+   "source": "export then files",
+   "export": "Settings data export: the conversations JSON in the zip."
+  },
+  {
+   "tool": "Claude",
+   "category": "Messaging",
+   "categories": [
+    "Messaging",
+    "Other"
+   ],
+   "source": "export then files",
+   "export": "Account data export: the conversations JSON in the zip."
+  },
+  {
+   "tool": "Connecteam",
+   "category": "Messaging",
+   "categories": [
+    "Messaging",
+    "Other"
+   ],
+   "source": "export then files",
+   "export": "CSV exports of chats, time clock and task records."
+  },
+  {
+   "tool": "Discord",
+   "category": "Messaging",
+   "categories": [
+    "Messaging"
+   ],
+   "source": "discord",
+   "export": "Per-channel JSON from DiscordChatExporter, or the account data package."
+  },
+  {
+   "tool": "Facebook Messenger",
+   "category": "Messaging",
+   "categories": [
+    "Messaging",
+    "Support"
+   ],
+   "source": "export then files",
+   "export": "Page inbox conversations via Meta Business data download (JSON)."
+  },
+  {
+   "tool": "Gemini",
+   "category": "Messaging",
+   "categories": [
+    "Messaging",
+    "Other"
+   ],
+   "source": "export then files",
+   "export": "Google Takeout 'My Activity' for Gemini apps."
+  },
+  {
+   "tool": "Google Chat",
+   "category": "Messaging",
+   "categories": [
+    "Messaging"
+   ],
+   "source": "export then files",
+   "export": "Google Takeout (or Vault) export of spaces and DMs as JSON."
+  },
+  {
+   "tool": "Grok",
+   "category": "Messaging",
+   "categories": [
+    "Messaging",
+    "Other"
+   ],
+   "source": "export then files",
+   "export": "Account data export of conversations."
+  },
+  {
+   "tool": "HipChat",
+   "category": "Messaging",
+   "categories": [
+    "Messaging"
+   ],
+   "source": "export then files",
+   "export": "The legacy data export archive, if it was kept before shutdown."
+  },
+  {
+   "tool": "Humanity",
+   "category": "Messaging",
+   "categories": [
+    "Messaging"
+   ],
+   "source": "export then files",
+   "export": "CSV reports of shifts, schedules and staff messages."
+  },
+  {
+   "tool": "Lark",
+   "category": "Messaging",
+   "categories": [
+    "Messaging"
+   ],
+   "source": "export then files",
+   "export": "Admin data export of chats and docs."
+  },
+  {
+   "tool": "Microsoft Teams",
+   "category": "Messaging",
+   "categories": [
+    "Messaging"
+   ],
+   "source": "export then files",
+   "export": "Admin eDiscovery or Graph export of chats and channel posts as JSON or HTML."
+  },
+  {
+   "tool": "OneSignal",
+   "category": "Messaging",
+   "categories": [
+    "Messaging"
+   ],
+   "source": "export then files",
+   "export": "CSV of notifications sent and delivery stats."
+  },
+  {
+   "tool": "Perplexity",
+   "category": "Messaging",
+   "categories": [
+    "Messaging",
+    "Other"
+   ],
+   "source": "export then files",
+   "export": "Thread export or account data request."
+  },
+  {
+   "tool": "Pumble",
+   "category": "Messaging",
+   "categories": [
+    "Messaging"
+   ],
+   "source": "export then files",
+   "export": "Workspace message export (admin) as JSON or CSV."
+  },
+  {
+   "tool": "Skype",
+   "category": "Messaging",
+   "categories": [
+    "Messaging"
+   ],
+   "source": "export then files",
+   "export": "Account data export of conversations (JSON inside a tar)."
+  },
+  {
+   "tool": "Slack",
+   "category": "Messaging",
+   "categories": [
+    "Messaging"
+   ],
+   "source": "slack",
+   "export": "Workspace export zip from the admin settings; DMs and private channels need a plan that allows them."
+  },
+  {
+   "tool": "Telegram",
+   "category": "Messaging",
+   "categories": [
+    "Messaging"
+   ],
+   "source": "export then files",
+   "export": "Telegram Desktop 'Export chat history' in machine-readable JSON."
+  },
+  {
+   "tool": "WhatsApp",
+   "category": "Messaging",
+   "categories": [
+    "Messaging"
+   ],
+   "source": "export then files",
+   "export": "Per-chat 'Export chat' text files, or the Business API message log."
+  },
+  {
+   "tool": "Ytel",
+   "category": "Messaging",
+   "categories": [
+    "Messaging"
+   ],
+   "source": "export then files",
+   "export": "Call and SMS logs as CSV."
+  },
+  {
+   "tool": "Attentive",
+   "category": "Emailing",
+   "categories": [
+    "CRM",
+    "Emailing"
+   ],
+   "source": "export then files",
+   "export": "Subscriber and campaign performance CSVs."
+  },
+  {
+   "tool": "Cordial",
+   "category": "Emailing",
+   "categories": [
+    "Emailing"
+   ],
+   "source": "export then files",
+   "export": "Contact and message-event exports from the data jobs area."
+  },
+  {
+   "tool": "Customer.io",
+   "category": "Emailing",
+   "categories": [
+    "Emailing"
+   ],
+   "source": "export then files",
+   "export": "People and segment CSVs, plus delivery data exports."
+  },
+  {
+   "tool": "Gmail",
+   "category": "Emailing",
+   "categories": [
+    "Emailing"
+   ],
+   "source": "mbox",
+   "export": "Google Takeout Mail as .mbox files, one per label."
+  },
+  {
+   "tool": "Google Workspace",
+   "category": "Emailing",
+   "categories": [
+    "Document storage",
+    "Emailing"
+   ],
+   "source": "mbox",
+   "export": "Admin data export or Vault: mail as mbox, Drive as a synced folder."
+  },
+  {
+   "tool": "Klaviyo",
+   "category": "Emailing",
+   "categories": [
+    "CRM",
+    "Emailing"
+   ],
+   "source": "export then files",
+   "export": "Profiles, lists and campaign or flow metrics as CSV."
+  },
+  {
+   "tool": "Mailchimp",
+   "category": "Emailing",
+   "categories": [
+    "Emailing"
+   ],
+   "source": "export then files",
+   "export": "Audience, campaign and report CSV exports."
+  },
+  {
+   "tool": "Mailmodo",
+   "category": "Emailing",
+   "categories": [
+    "Emailing"
+   ],
+   "source": "export then files",
+   "export": "Contact lists and campaign reports as CSV."
+  },
+  {
+   "tool": "Microsoft 365",
+   "category": "Emailing",
+   "categories": [
+    "Document storage",
+    "Emailing",
+    "Messaging"
+   ],
+   "source": "mbox",
+   "export": "Mailboxes exported as PST and converted to mbox; OneDrive and SharePoint as a synced folder."
+  },
+  {
+   "tool": "Outlook / Exchange Online",
+   "category": "Emailing",
+   "categories": [
+    "Emailing"
+   ],
+   "source": "mbox",
+   "export": "Export mailboxes to PST, then convert each to mbox."
+  },
+  {
+   "tool": "Postscript",
+   "category": "Emailing",
+   "categories": [
+    "CRM",
+    "Emailing"
+   ],
+   "source": "export then files",
+   "export": "Subscriber list and campaign report CSVs."
+  },
+  {
+   "tool": "SendGrid",
+   "category": "Emailing",
+   "categories": [
+    "Emailing"
+   ],
+   "source": "export then files",
+   "export": "Contacts CSV plus the email activity feed export."
+  },
+  {
+   "tool": "SiteGround Mail",
+   "category": "Emailing",
+   "categories": [
+    "Emailing"
+   ],
+   "source": "mbox",
+   "export": "Pull the mailbox over IMAP into a local client, then save it as mbox."
+  },
+  {
+   "tool": "Zoho Mail",
+   "category": "Emailing",
+   "categories": [
+    "Emailing"
+   ],
+   "source": "mbox",
+   "export": "Per-folder export in EML or mbox format from the mail settings."
+  },
+  {
+   "tool": "Airtable",
+   "category": "Project management",
+   "categories": [
+    "Other",
+    "Project management"
+   ],
+   "source": "export then files",
+   "export": "Each table's grid view downloaded as CSV."
+  },
+  {
+   "tool": "Asana",
+   "category": "Project management",
+   "categories": [
+    "Project management"
+   ],
+   "source": "tickets",
+   "export": "Per-project CSV export of tasks."
+  },
+  {
+   "tool": "Avaza",
+   "category": "Project management",
+   "categories": [
+    "Project management"
+   ],
+   "source": "tickets",
+   "export": "Task and timesheet reports as CSV."
+  },
+  {
+   "tool": "Basecamp",
+   "category": "Project management",
+   "categories": [
+    "Messaging",
+    "Project management"
+   ],
+   "source": "tickets",
+   "export": "Account export archive; to-dos and messages as CSV or JSON."
+  },
+  {
+   "tool": "ClickUp",
+   "category": "Project management",
+   "categories": [
+    "Project management"
+   ],
+   "source": "clickup",
+   "export": "Workspace CSV export, or task JSON pulled from the API."
+  },
+  {
+   "tool": "FunctionFox",
+   "category": "Project management",
+   "categories": [
+    "Project management"
+   ],
+   "source": "tickets",
+   "export": "Project, task and timesheet reports as CSV."
+  },
+  {
+   "tool": "Jira",
+   "category": "Project management",
+   "categories": [
+    "Project management"
+   ],
+   "source": "jira",
+   "export": "Issue search export as CSV with all fields, or XML."
+  },
+  {
+   "tool": "Kantata",
+   "category": "Project management",
+   "categories": [
+    "Project management"
+   ],
+   "source": "tickets",
+   "export": "Project and task reports as CSV."
+  },
+  {
+   "tool": "Linear",
+   "category": "Project management",
+   "categories": [
+    "Project management"
+   ],
+   "source": "tickets",
+   "export": "Workspace CSV export of issues."
+  },
+  {
+   "tool": "Mantis",
+   "category": "Project management",
+   "categories": [
+    "Project management"
+   ],
+   "source": "tickets",
+   "export": "Issues view exported as CSV."
+  },
+  {
+   "tool": "Monday.com",
+   "category": "Project management",
+   "categories": [
+    "Project management"
+   ],
+   "source": "tickets",
+   "export": "Board export to Excel, saved as CSV."
+  },
+  {
+   "tool": "Procore",
+   "category": "Project management",
+   "categories": [
+    "Document storage",
+    "Project management"
+   ],
+   "source": "export then files",
+   "export": "Project documents and RFI or submittal logs as CSV and PDF."
+  },
+  {
+   "tool": "Redmine",
+   "category": "Project management",
+   "categories": [
+    "Project management"
+   ],
+   "source": "tickets",
+   "export": "Issues list exported as CSV with all columns."
+  },
+  {
+   "tool": "Shortcut",
+   "category": "Project management",
+   "categories": [
+    "Project management"
+   ],
+   "source": "tickets",
+   "export": "Stories CSV export from the workspace settings."
+  },
+  {
+   "tool": "Smartsheet",
+   "category": "Project management",
+   "categories": [
+    "Project management"
+   ],
+   "source": "tickets",
+   "export": "Each sheet exported as CSV or Excel."
+  },
+  {
+   "tool": "Teamwork",
+   "category": "Project management",
+   "categories": [
+    "Project management"
+   ],
+   "source": "tickets",
+   "export": "Tasks exported as CSV per project."
+  },
+  {
+   "tool": "Ticketing and project management (generic, tool-agnostic)",
+   "category": "Project management",
+   "categories": [
+    "Project management"
+   ],
+   "source": "tickets",
+   "export": "Any ticket or task CSV with created, status and description columns."
+  },
+  {
+   "tool": "Trello",
+   "category": "Project management",
+   "categories": [
+    "Project management"
+   ],
+   "source": "tickets",
+   "export": "Board JSON export (or CSV on paid plans)."
+  },
+  {
+   "tool": "Wrike",
+   "category": "Project management",
+   "categories": [
+    "Project management"
+   ],
+   "source": "tickets",
+   "export": "Task table exported to CSV or Excel."
+  },
+  {
+   "tool": "Aircall",
+   "category": "Support",
+   "categories": [
+    "Other",
+    "Support"
+   ],
+   "source": "export then files",
+   "export": "Call history CSV, plus recordings if they are wanted."
+  },
+  {
+   "tool": "Freshchat",
+   "category": "Support",
+   "categories": [
+    "Messaging",
+    "Support"
+   ],
+   "source": "tickets",
+   "export": "Conversation reports exported as CSV."
+  },
+  {
+   "tool": "Freshdesk",
+   "category": "Support",
+   "categories": [
+    "Support"
+   ],
+   "source": "tickets",
+   "export": "Ticket export from the tickets view as CSV."
+  },
+  {
+   "tool": "Help Scout",
+   "category": "Support",
+   "categories": [
+    "Emailing",
+    "Support"
+   ],
+   "source": "tickets",
+   "export": "Conversations exported as CSV from reports or via the API."
+  },
+  {
+   "tool": "Helpwise",
+   "category": "Support",
+   "categories": [
+    "Support"
+   ],
+   "source": "tickets",
+   "export": "Conversation and contact exports as CSV."
+  },
+  {
+   "tool": "In-house support platform",
+   "category": "Support",
+   "categories": [
+    "Support"
+   ],
+   "source": "tickets",
+   "export": "A CSV or JSON dump of tickets with created dates and descriptions."
+  },
+  {
+   "tool": "Intercom",
+   "category": "Support",
+   "categories": [
+    "Support"
+   ],
+   "source": "tickets",
+   "export": "Conversation export (CSV) from the reports or data settings."
+  },
+  {
+   "tool": "JustCall",
+   "category": "Support",
+   "categories": [
+    "Messaging",
+    "Support"
+   ],
+   "source": "export then files",
+   "export": "Call and SMS logs as CSV."
+  },
+  {
+   "tool": "LeadDesk",
+   "category": "Support",
+   "categories": [
+    "Other",
+    "Support"
+   ],
+   "source": "export then files",
+   "export": "Call and campaign reports as CSV."
+  },
+  {
+   "tool": "Plain",
+   "category": "Support",
+   "categories": [
+    "Support"
+   ],
+   "source": "tickets",
+   "export": "Thread and customer data pulled from the API as JSON."
+  },
+  {
+   "tool": "ProductFruits",
+   "category": "Support",
+   "categories": [
+    "Support"
+   ],
+   "source": "export then files",
+   "export": "Usage and feedback reports as CSV."
+  },
+  {
+   "tool": "RingCentral",
+   "category": "Support",
+   "categories": [
+    "Other",
+    "Support"
+   ],
+   "source": "export then files",
+   "export": "Call log and message reports as CSV."
+  },
+  {
+   "tool": "Ringover",
+   "category": "Support",
+   "categories": [
+    "Other",
+    "Support"
+   ],
+   "source": "export then files",
+   "export": "Call history as CSV."
+  },
+  {
+   "tool": "Zendesk",
+   "category": "Support",
+   "categories": [
+    "Support"
+   ],
+   "source": "tickets",
+   "export": "Admin data export of tickets (JSON or CSV)."
+  },
+  {
+   "tool": "Amazon",
+   "category": "CRM",
+   "categories": [
+    "CRM",
+    "Support"
+   ],
+   "source": "export then files",
+   "export": "Seller Central order, inventory and business reports as CSV."
+  },
+  {
+   "tool": "Ankorstore",
+   "category": "CRM",
+   "categories": [
+    "CRM",
+    "Other"
+   ],
+   "source": "export then files",
+   "export": "Order and retailer exports as CSV."
+  },
+  {
+   "tool": "Attio",
+   "category": "CRM",
+   "categories": [
+    "CRM"
+   ],
+   "source": "export then files",
+   "export": "Each list or object exported as CSV."
+  },
+  {
+   "tool": "BigCommerce",
+   "category": "CRM",
+   "categories": [
+    "CRM",
+    "Other"
+   ],
+   "source": "export then files",
+   "export": "Orders, customers and products as CSV."
+  },
+  {
+   "tool": "Breely",
+   "category": "CRM",
+   "categories": [
+    "CRM",
+    "Support"
+   ],
+   "source": "export then files",
+   "export": "Bookings and client records as CSV."
+  },
+  {
+   "tool": "ClickFunnels",
+   "category": "CRM",
+   "categories": [
+    "CRM",
+    "Other"
+   ],
+   "source": "export then files",
+   "export": "Contacts and order data as CSV."
+  },
+  {
+   "tool": "Close CRM",
+   "category": "CRM",
+   "categories": [
+    "CRM"
+   ],
+   "source": "export then files",
+   "export": "Leads, opportunities and activities as CSV or JSON."
+  },
+  {
+   "tool": "Copper",
+   "category": "CRM",
+   "categories": [
+    "CRM"
+   ],
+   "source": "export then files",
+   "export": "Records exported as CSV from settings."
+  },
+  {
+   "tool": "CRM (generic, any CRM)",
+   "category": "CRM",
+   "categories": [
+    "CRM"
+   ],
+   "source": "export then files",
+   "export": "Every object (contacts, companies, deals, activities) as CSV."
+  },
+  {
+   "tool": "DebtManager / CFT Pay",
+   "category": "CRM",
+   "categories": [
+    "CRM",
+    "Finance"
+   ],
+   "source": "export then files",
+   "export": "Account, payment and collections reports as CSV."
+  },
+  {
+   "tool": "Deltek Vantagepoint",
+   "category": "CRM",
+   "categories": [
+    "CRM",
+    "Finance",
+    "Project management"
+   ],
+   "source": "export then files",
+   "export": "Project, billing and CRM reports as CSV."
+  },
+  {
+   "tool": "Dynamics 365",
+   "category": "CRM",
+   "categories": [
+    "CRM"
+   ],
+   "source": "export then files",
+   "export": "Entity views exported to Excel or CSV, or a Dataverse export."
+  },
+  {
+   "tool": "FieldRoutes",
+   "category": "CRM",
+   "categories": [
+    "CRM"
+   ],
+   "source": "export then files",
+   "export": "Customer, appointment and billing reports as CSV."
+  },
+  {
+   "tool": "GoHighLevel",
+   "category": "CRM",
+   "categories": [
+    "CRM",
+    "Emailing"
+   ],
+   "source": "export then files",
+   "export": "Contacts, opportunities and conversations as CSV."
+  },
+  {
+   "tool": "Gorgias",
+   "category": "CRM",
+   "categories": [
+    "CRM",
+    "Support"
+   ],
+   "source": "tickets",
+   "export": "Ticket export as CSV from the views."
+  },
+  {
+   "tool": "HousecallPro",
+   "category": "CRM",
+   "categories": [
+    "CRM"
+   ],
+   "source": "export then files",
+   "export": "Customers, jobs and invoices as CSV."
+  },
+  {
+   "tool": "HubSpot",
+   "category": "CRM",
+   "categories": [
+    "CRM"
+   ],
+   "source": "export then files",
+   "export": "Export all records per object (contacts, companies, deals, tickets) as CSV."
+  },
+  {
+   "tool": "iClosed",
+   "category": "CRM",
+   "categories": [
+    "CRM"
+   ],
+   "source": "export then files",
+   "export": "Bookings and contacts as CSV."
+  },
+  {
+   "tool": "iON Pool Care",
+   "category": "CRM",
+   "categories": [
+    "CRM",
+    "Support"
+   ],
+   "source": "export then files",
+   "export": "Customer and service history reports as CSV."
+  },
+  {
+   "tool": "JobNimbus",
+   "category": "CRM",
+   "categories": [
+    "CRM",
+    "Project management"
+   ],
+   "source": "export then files",
+   "export": "Contacts, jobs and tasks as CSV."
+  },
+  {
+   "tool": "LeadSquared",
+   "category": "CRM",
+   "categories": [
+    "CRM"
+   ],
+   "source": "export then files",
+   "export": "Leads and activities as CSV."
+  },
+  {
+   "tool": "LeadTruffle",
+   "category": "CRM",
+   "categories": [
+    "CRM"
+   ],
+   "source": "export then files",
+   "export": "Lead lists as CSV."
+  },
+  {
+   "tool": "Luma",
+   "category": "CRM",
+   "categories": [
+    "CRM",
+    "Other"
+   ],
+   "source": "export then files",
+   "export": "Event guest lists and registrations as CSV."
+  },
+  {
+   "tool": "Pipedrive",
+   "category": "CRM",
+   "categories": [
+    "CRM"
+   ],
+   "source": "export then files",
+   "export": "Deals, people, organizations and activities as CSV."
+  },
+  {
+   "tool": "Salesflare",
+   "category": "CRM",
+   "categories": [
+    "CRM"
+   ],
+   "source": "export then files",
+   "export": "Contacts, accounts and opportunities as CSV."
+  },
+  {
+   "tool": "Salesforce",
+   "category": "CRM",
+   "categories": [
+    "CRM"
+   ],
+   "source": "export then files",
+   "export": "Setup > Data Export: the weekly CSV zip of all objects."
+  },
+  {
+   "tool": "ServiceTitan",
+   "category": "CRM",
+   "categories": [
+    "CRM"
+   ],
+   "source": "export then files",
+   "export": "Jobs, customers and invoices from reports as CSV."
+  },
+  {
+   "tool": "Shopify",
+   "category": "CRM",
+   "categories": [
+    "CRM",
+    "Other"
+   ],
+   "source": "export then files",
+   "export": "Orders, customers and products as CSV from the admin."
+  },
+  {
+   "tool": "SMRT",
+   "category": "CRM",
+   "categories": [
+    "CRM",
+    "Finance",
+    "Other"
+   ],
+   "source": "export then files",
+   "export": "Customer and transaction reports as CSV."
+  },
+  {
+   "tool": "Total Office Manager",
+   "category": "CRM",
+   "categories": [
+    "CRM",
+    "Other",
+    "Project management"
+   ],
+   "source": "export then files",
+   "export": "Customer, job and invoice reports as CSV."
+  },
+  {
+   "tool": "Vitally",
+   "category": "CRM",
+   "categories": [
+    "CRM",
+    "Support"
+   ],
+   "source": "export then files",
+   "export": "Accounts, users and notes as CSV."
+  },
+  {
+   "tool": "Wodify",
+   "category": "CRM",
+   "categories": [
+    "CRM",
+    "Support"
+   ],
+   "source": "export then files",
+   "export": "Member, attendance and billing reports as CSV."
+  },
+  {
+   "tool": "Zoho (Desk, CRM, Cliq)",
+   "category": "CRM",
+   "categories": [
+    "CRM",
+    "Messaging",
+    "Support"
+   ],
+   "source": "tickets",
+   "export": "Desk tickets as CSV; CRM modules and Cliq chats via the data backup."
+  },
+  {
+   "tool": "Agicap",
+   "category": "Finance",
+   "categories": [
+    "Finance"
+   ],
+   "source": "export then files",
+   "export": "Cash-flow transactions as CSV or Excel."
+  },
+  {
+   "tool": "AppFolio",
+   "category": "Finance",
+   "categories": [
+    "CRM",
+    "Finance"
+   ],
+   "source": "export then files",
+   "export": "Property, tenant and ledger reports as CSV."
+  },
+  {
+   "tool": "Avalara",
+   "category": "Finance",
+   "categories": [
+    "Finance"
+   ],
+   "source": "export then files",
+   "export": "Transaction and filing reports as CSV."
+  },
+  {
+   "tool": "Bexio",
+   "category": "Finance",
+   "categories": [
+    "Finance"
+   ],
+   "source": "export then files",
+   "export": "Invoices, contacts and bookings as CSV."
+  },
+  {
+   "tool": "Bill.com",
+   "category": "Finance",
+   "categories": [
+    "Finance"
+   ],
+   "source": "export then files",
+   "export": "Bills, invoices and vendor lists as CSV."
+  },
+  {
+   "tool": "Brex",
+   "category": "Finance",
+   "categories": [
+    "Finance"
+   ],
+   "source": "export then files",
+   "export": "Card and account transactions as CSV."
+  },
+  {
+   "tool": "Chase Business",
+   "category": "Finance",
+   "categories": [
+    "Finance"
+   ],
+   "source": "export then files",
+   "export": "Account activity downloads as CSV."
+  },
+  {
+   "tool": "DATEV",
+   "category": "Finance",
+   "categories": [
+    "Finance"
+   ],
+   "source": "export then files",
+   "export": "Bookings in the DATEV export format (CSV)."
+  },
+  {
+   "tool": "Epicor ERP",
+   "category": "Finance",
+   "categories": [
+    "Finance",
+    "Infra & databases"
+   ],
+   "source": "export then files",
+   "export": "BAQ or report exports as CSV."
+  },
+  {
+   "tool": "FreshBooks",
+   "category": "Finance",
+   "categories": [
+    "Finance"
+   ],
+   "source": "export then files",
+   "export": "Invoices, expenses and clients as CSV."
+  },
+  {
+   "tool": "Inkle",
+   "category": "Finance",
+   "categories": [
+    "Finance"
+   ],
+   "source": "export then files",
+   "export": "Bookkeeping and tax reports as CSV."
+  },
+  {
+   "tool": "Kick",
+   "category": "Finance",
+   "categories": [
+    "Finance"
+   ],
+   "source": "export then files",
+   "export": "Transactions and reports as CSV."
+  },
+  {
+   "tool": "Klarna",
+   "category": "Finance",
+   "categories": [
+    "Finance"
+   ],
+   "source": "export then files",
+   "export": "Settlement and order reports as CSV."
+  },
+  {
+   "tool": "Mercury",
+   "category": "Finance",
+   "categories": [
+    "Finance"
+   ],
+   "source": "export then files",
+   "export": "Account transactions as CSV."
+  },
+  {
+   "tool": "NetSuite",
+   "category": "Finance",
+   "categories": [
+    "Finance"
+   ],
+   "source": "export then files",
+   "export": "Saved searches of transactions and records as CSV."
+  },
+  {
+   "tool": "Odoo",
+   "category": "Finance",
+   "categories": [
+    "Finance"
+   ],
+   "source": "export then files",
+   "export": "Records from any list view exported as CSV or Excel."
+  },
+  {
+   "tool": "PayPal",
+   "category": "Finance",
+   "categories": [
+    "Finance"
+   ],
+   "source": "export then files",
+   "export": "Activity downloads as CSV."
+  },
+  {
+   "tool": "QuickBooks",
+   "category": "Finance",
+   "categories": [
+    "Finance"
+   ],
+   "source": "export then files",
+   "export": "Reports (general ledger, transactions) and lists as Excel or CSV."
+  },
+  {
+   "tool": "QuickBooks Desktop",
+   "category": "Finance",
+   "categories": [
+    "Finance"
+   ],
+   "source": "export then files",
+   "export": "Company file reports exported to Excel or CSV."
+  },
+  {
+   "tool": "Ramp",
+   "category": "Finance",
+   "categories": [
+    "Finance"
+   ],
+   "source": "export then files",
+   "export": "Transactions and bills as CSV."
+  },
+  {
+   "tool": "Sage 300 CRE",
+   "category": "Finance",
+   "categories": [
+    "Finance"
+   ],
+   "source": "export then files",
+   "export": "Job cost and ledger reports as CSV or Excel."
+  },
+  {
+   "tool": "Sage Intacct",
+   "category": "Finance",
+   "categories": [
+    "Finance"
+   ],
+   "source": "export then files",
+   "export": "Reports and object lists as CSV."
+  },
+  {
+   "tool": "Square",
+   "category": "Finance",
+   "categories": [
+    "CRM",
+    "Finance"
+   ],
+   "source": "export then files",
+   "export": "Transactions, items and customers as CSV."
+  },
+  {
+   "tool": "Stripe",
+   "category": "Finance",
+   "categories": [
+    "Finance"
+   ],
+   "source": "export then files",
+   "export": "Payments, customers, invoices and balance reports as CSV."
+  },
+  {
+   "tool": "Tally",
+   "category": "Finance",
+   "categories": [
+    "Finance"
+   ],
+   "source": "export then files",
+   "export": "Vouchers and ledgers exported as Excel or XML."
+  },
+  {
+   "tool": "Unleashed",
+   "category": "Finance",
+   "categories": [
+    "Finance",
+    "Other"
+   ],
+   "source": "export then files",
+   "export": "Inventory, orders and invoices as CSV."
+  },
+  {
+   "tool": "Xero",
+   "category": "Finance",
+   "categories": [
+    "Finance"
+   ],
+   "source": "export then files",
+   "export": "General ledger, invoices and contacts as CSV."
+  },
+  {
+   "tool": "Zoho Books",
+   "category": "Finance",
+   "categories": [
+    "Finance"
+   ],
+   "source": "export then files",
+   "export": "Transactions and contacts as CSV."
+  },
+  {
+   "tool": "Amplitude",
+   "category": "Analytics",
+   "categories": [
+    "Analytics"
+   ],
+   "source": "export then files",
+   "export": "Raw event export (JSON) or charts as CSV."
+  },
+  {
+   "tool": "BigQuery",
+   "category": "Analytics",
+   "categories": [
+    "Analytics",
+    "Infra & databases"
+   ],
+   "source": "bigquery",
+   "export": "Table metadata only: `bq ls/show --format=json`, or INFORMATION_SCHEMA rows."
+  },
+  {
+   "tool": "Datadog",
+   "category": "Analytics",
+   "categories": [
+    "Analytics",
+    "Infra & databases"
+   ],
+   "source": "export then files",
+   "export": "Dashboards, monitors and log archive metadata as JSON."
+  },
+  {
+   "tool": "Google Ads",
+   "category": "Analytics",
+   "categories": [
+    "Analytics",
+    "Other"
+   ],
+   "source": "export then files",
+   "export": "Campaign, ad group and keyword reports as CSV."
+  },
+  {
+   "tool": "Google Analytics",
+   "category": "Analytics",
+   "categories": [
+    "Analytics"
+   ],
+   "source": "export then files",
+   "export": "Reports as CSV, or the BigQuery event export (then use bigquery)."
+  },
+  {
+   "tool": "Grafana",
+   "category": "Analytics",
+   "categories": [
+    "Analytics"
+   ],
+   "source": "export then files",
+   "export": "Dashboard JSON models."
+  },
+  {
+   "tool": "Meta Ads",
+   "category": "Analytics",
+   "categories": [
+    "Analytics",
+    "Other"
+   ],
+   "source": "export then files",
+   "export": "Ads Manager reports as CSV."
+  },
+  {
+   "tool": "Metabase",
+   "category": "Analytics",
+   "categories": [
+    "Analytics"
+   ],
+   "source": "export then files",
+   "export": "Saved questions as CSV, plus the app database dump."
+  },
+  {
+   "tool": "Mixpanel",
+   "category": "Analytics",
+   "categories": [
+    "Analytics"
+   ],
+   "source": "export then files",
+   "export": "Raw event export (JSONL) per date range."
+  },
+  {
+   "tool": "PostHog",
+   "category": "Analytics",
+   "categories": [
+    "Analytics"
+   ],
+   "source": "export then files",
+   "export": "Event export as CSV or JSON, or a batch export to storage."
+  },
+  {
+   "tool": "Power BI",
+   "category": "Analytics",
+   "categories": [
+    "Analytics"
+   ],
+   "source": "export then files",
+   "export": "Report data exported as CSV, plus the .pbix files."
+  },
+  {
+   "tool": "Segment",
+   "category": "Analytics",
+   "categories": [
+    "Analytics"
+   ],
+   "source": "export then files",
+   "export": "Warehouse or storage destination files."
+  },
+  {
+   "tool": "Semrush",
+   "category": "Analytics",
+   "categories": [
+    "Analytics"
+   ],
+   "source": "export then files",
+   "export": "Project and position-tracking reports as CSV."
+  },
+  {
+   "tool": "Sentry",
+   "category": "Analytics",
+   "categories": [
+    "Analytics",
+    "Code management"
+   ],
+   "source": "export then files",
+   "export": "Issue lists and event data pulled from the API as JSON."
+  },
+  {
+   "tool": "Snowflake",
+   "category": "Analytics",
+   "categories": [
+    "Analytics",
+    "Infra & databases"
+   ],
+   "source": "export then files",
+   "export": "INFORMATION_SCHEMA.TABLES rows as CSV (sizes, row counts, dates)."
+  },
+  {
+   "tool": "SurveyMonkey",
+   "category": "Analytics",
+   "categories": [
+    "Analytics"
+   ],
+   "source": "export then files",
+   "export": "Survey responses as CSV."
+  },
+  {
+   "tool": "Tableau",
+   "category": "Analytics",
+   "categories": [
+    "Analytics"
+   ],
+   "source": "export then files",
+   "export": "Workbooks (.twbx) and their data extracts."
+  },
+  {
+   "tool": "Unity Analytics",
+   "category": "Analytics",
+   "categories": [
+    "Analytics"
+   ],
+   "source": "export then files",
+   "export": "Raw data export of events as JSON or CSV."
+  },
+  {
+   "tool": "YouTube Analytics",
+   "category": "Analytics",
+   "categories": [
+    "Analytics",
+    "Other"
+   ],
+   "source": "export then files",
+   "export": "Channel reports from YouTube Studio as CSV."
+  },
+  {
+   "tool": "AWS S3",
+   "category": "Infra & databases",
+   "categories": [
+    "Infra & databases"
+   ],
+   "source": "files",
+   "export": "Sync the bucket to a local folder (`aws s3 sync`)."
+  },
+  {
+   "tool": "Azure AI Search",
+   "category": "Infra & databases",
+   "categories": [
+    "Infra & databases"
+   ],
+   "source": "export then files",
+   "export": "Index definitions and document counts as JSON."
+  },
+  {
+   "tool": "Cloudflare R2",
+   "category": "Infra & databases",
+   "categories": [
+    "Infra & databases"
+   ],
+   "source": "files",
+   "export": "Sync the bucket locally with an S3-compatible client."
+  },
+  {
+   "tool": "Databases (generic)",
+   "category": "Infra & databases",
+   "categories": [
+    "Infra & databases"
+   ],
+   "source": "sql",
+   "export": "MySQL or PostgreSQL plain-SQL dumps; other engines as table CSVs."
+  },
+  {
+   "tool": "DynamoDB",
+   "category": "Infra & databases",
+   "categories": [
+    "Infra & databases"
+   ],
+   "source": "export then files",
+   "export": "Export to S3 (DynamoDB JSON), then sync it locally."
+  },
+  {
+   "tool": "Firestore",
+   "category": "Infra & databases",
+   "categories": [
+    "Infra & databases"
+   ],
+   "source": "export then files",
+   "export": "Managed export to Cloud Storage, or collections dumped as JSON."
+  },
+  {
+   "tool": "Google Cloud Storage",
+   "category": "Infra & databases",
+   "categories": [
+    "Infra & databases"
+   ],
+   "source": "files",
+   "export": "Copy the bucket locally (`gcloud storage cp -r`)."
+  },
+  {
+   "tool": "In-house platform database (generic)",
+   "category": "Infra & databases",
+   "categories": [
+    "CRM",
+    "Infra & databases",
+    "Support"
+   ],
+   "source": "sql",
+   "export": "A plain SQL dump (MySQL or PostgreSQL)."
+  },
+  {
+   "tool": "Member portal",
+   "category": "Infra & databases",
+   "categories": [
+    "CRM",
+    "Infra & databases"
+   ],
+   "source": "sql",
+   "export": "A plain SQL dump of the portal's database."
+  },
+  {
+   "tool": "MongoDB",
+   "category": "Infra & databases",
+   "categories": [
+    "Infra & databases"
+   ],
+   "source": "export then files",
+   "export": "`mongoexport` to JSON per collection."
+  },
+  {
+   "tool": "MuleSoft",
+   "category": "Infra & databases",
+   "categories": [
+    "Infra & databases"
+   ],
+   "source": "export then files",
+   "export": "API specs and flow definitions from the project files."
+  },
+  {
+   "tool": "Noloco",
+   "category": "Infra & databases",
+   "categories": [
+    "Infra & databases",
+    "Other"
+   ],
+   "source": "export then files",
+   "export": "Collections as CSV."
+  },
+  {
+   "tool": "OpenSearch",
+   "category": "Infra & databases",
+   "categories": [
+    "Infra & databases"
+   ],
+   "source": "export then files",
+   "export": "Index stats and mappings as JSON, or a snapshot."
+  },
+  {
+   "tool": "PostgreSQL",
+   "category": "Infra & databases",
+   "categories": [
+    "Infra & databases"
+   ],
+   "source": "sql",
+   "export": "`pg_dump` plain-SQL dump, gzipped is fine."
+  },
+  {
+   "tool": "Redis",
+   "category": "Infra & databases",
+   "categories": [
+    "Infra & databases"
+   ],
+   "source": "export then files",
+   "export": "Key counts and an RDB snapshot listing, not raw values."
+  },
+  {
+   "tool": "SQL Server",
+   "category": "Infra & databases",
+   "categories": [
+    "Infra & databases"
+   ],
+   "source": "export then files",
+   "export": "Tables as CSV (bcp or the export wizard); measure-data reads MySQL and PostgreSQL dumps only."
+  },
+  {
+   "tool": "Supabase",
+   "category": "Infra & databases",
+   "categories": [
+    "Infra & databases"
+   ],
+   "source": "sql",
+   "export": "`pg_dump` of the project database (plain SQL)."
+  },
+  {
+   "tool": "Warehouse / order management system (generic)",
+   "category": "Infra & databases",
+   "categories": [
+    "Infra & databases",
+    "Other"
+   ],
+   "source": "sql",
+   "export": "A plain SQL dump of the system's database, or table CSVs."
+  },
+  {
+   "tool": "Zilliz Cloud",
+   "category": "Infra & databases",
+   "categories": [
+    "Infra & databases"
+   ],
+   "source": "export then files",
+   "export": "Collection stats and schema as JSON."
+  },
+  {
+   "tool": "Box",
+   "category": "Document storage",
+   "categories": [
+    "Document storage"
+   ],
+   "source": "files",
+   "export": "The Box Drive folder or a full folder download."
+  },
+  {
+   "tool": "Citrix ShareFile",
+   "category": "Document storage",
+   "categories": [
+    "Document storage"
+   ],
+   "source": "files",
+   "export": "Download the folders, or sync them locally."
+  },
+  {
+   "tool": "Coda",
+   "category": "Document storage",
+   "categories": [
+    "Document storage",
+    "Project management"
+   ],
+   "source": "export then files",
+   "export": "Doc export (Markdown or HTML) and tables as CSV."
+  },
+  {
+   "tool": "Confluence",
+   "category": "Document storage",
+   "categories": [
+    "Document storage"
+   ],
+   "source": "export then files",
+   "export": "Space export as HTML or XML."
+  },
+  {
+   "tool": "DocHub",
+   "category": "Document storage",
+   "categories": [
+    "Document storage"
+   ],
+   "source": "export then files",
+   "export": "Documents downloaded as PDF."
+  },
+  {
+   "tool": "DocuSign",
+   "category": "Document storage",
+   "categories": [
+    "Document storage"
+   ],
+   "source": "export then files",
+   "export": "Completed envelopes downloaded as PDF, plus envelope reports as CSV."
+  },
+  {
+   "tool": "Dropbox",
+   "category": "Document storage",
+   "categories": [
+    "Document storage"
+   ],
+   "source": "files",
+   "export": "The synced Dropbox folder, files made available offline."
+  },
+  {
+   "tool": "Google Drive",
+   "category": "Document storage",
+   "categories": [
+    "Document storage"
+   ],
+   "source": "files",
+   "export": "The synced Drive folder, files made available offline (or Takeout)."
+  },
+  {
+   "tool": "Labstep",
+   "category": "Document storage",
+   "categories": [
+    "Document storage",
+    "Other"
+   ],
+   "source": "export then files",
+   "export": "Experiments and protocols exported as PDF or JSON."
+  },
+  {
+   "tool": "Legal drive",
+   "category": "Document storage",
+   "categories": [
+    "Document storage"
+   ],
+   "source": "files",
+   "export": "The folder or synced drive holding the documents."
+  },
+  {
+   "tool": "Local storage / PDF files",
+   "category": "Document storage",
+   "categories": [
+    "Document storage"
+   ],
+   "source": "files",
+   "export": "Point it at the folder."
+  },
+  {
+   "tool": "Loom",
+   "category": "Document storage",
+   "categories": [
+    "Document storage"
+   ],
+   "source": "export then files",
+   "export": "Video downloads plus transcripts."
+  },
+  {
+   "tool": "Microsoft Excel",
+   "category": "Document storage",
+   "categories": [
+    "Document storage"
+   ],
+   "source": "files",
+   "export": "The folder holding the workbooks."
+  },
+  {
+   "tool": "Notion",
+   "category": "Document storage",
+   "categories": [
+    "Document storage",
+    "Project management"
+   ],
+   "source": "notion",
+   "export": "Workspace export as Markdown & CSV, or page JSON saved from the API."
+  },
+  {
+   "tool": "Research corpus",
+   "category": "Document storage",
+   "categories": [
+    "Document storage"
+   ],
+   "source": "files",
+   "export": "The folder holding the papers, notes and datasets."
+  },
+  {
+   "tool": "Wiki / documentation (generic)",
+   "category": "Document storage",
+   "categories": [
+    "Document storage"
+   ],
+   "source": "export then files",
+   "export": "Wiki pages exported as Markdown or HTML."
+  },
+  {
+   "tool": "Azure DevOps",
+   "category": "Code management",
+   "categories": [
+    "Code management",
+    "Project management"
+   ],
+   "source": "tickets",
+   "export": "Work-item query results as CSV; measure the code itself with measure-code."
+  },
+  {
+   "tool": "Bitbucket",
+   "category": "Code management",
+   "categories": [
+    "Code management"
+   ],
+   "source": "tickets",
+   "export": "Issues and pull requests from the API; measure the code itself with measure-code."
+  },
+  {
+   "tool": "Code repositories (generic, any git host)",
+   "category": "Code management",
+   "categories": [
+    "Code management"
+   ],
+   "source": "export then files",
+   "export": "Full clones of every repo; measure them with measure-code."
+  },
+  {
+   "tool": "Cursor",
+   "category": "Code management",
+   "categories": [
+    "Code management"
+   ],
+   "source": "export then files",
+   "export": "Local chat and composer history from the app's storage."
+  },
+  {
+   "tool": "GitHub",
+   "category": "Code management",
+   "categories": [
+    "Code management"
+   ],
+   "source": "tickets",
+   "export": "Issues and pull requests as JSON from the API; measure the code itself with measure-code."
+  },
+  {
+   "tool": "GitLab",
+   "category": "Code management",
+   "categories": [
+    "Code management"
+   ],
+   "source": "tickets",
+   "export": "Issues exported as CSV; measure the code itself with measure-code."
+  },
+  {
+   "tool": "GitLab wiki",
+   "category": "Code management",
+   "categories": [
+    "Code management"
+   ],
+   "source": "export then files",
+   "export": "Clone the wiki repository (it is Markdown in git)."
+  },
+  {
+   "tool": "Helix Swarm",
+   "category": "Code management",
+   "categories": [
+    "Code management"
+   ],
+   "source": "export then files",
+   "export": "Review records from the API as JSON."
+  },
+  {
+   "tool": "Jenkins",
+   "category": "Code management",
+   "categories": [
+    "Code management"
+   ],
+   "source": "export then files",
+   "export": "Job configs and build history (the jobs folder)."
+  },
+  {
+   "tool": "Perforce",
+   "category": "Code management",
+   "categories": [
+    "Code management"
+   ],
+   "source": "export then files",
+   "export": "Depot history converted to git (git-p4), then measure-code."
+  },
+  {
+   "tool": "Subversion (SVN)",
+   "category": "Code management",
+   "categories": [
+    "Code management"
+   ],
+   "source": "export then files",
+   "export": "Repository converted to git (git svn clone), then measure-code."
+  },
+  {
+   "tool": "3D CAD files",
+   "category": "Design",
+   "categories": [
+    "Design",
+    "Document storage"
+   ],
+   "source": "files",
+   "export": "The folder or share holding the models; measure-art counts them."
+  },
+  {
+   "tool": "Adobe After Effects / Creative Cloud",
+   "category": "Design",
+   "categories": [
+    "Design"
+   ],
+   "source": "files",
+   "export": "The project folders; measure-art counts them."
+  },
+  {
+   "tool": "Canva",
+   "category": "Design",
+   "categories": [
+    "Design"
+   ],
+   "source": "export then files",
+   "export": "Designs downloaded as PDF or PNG; measure-art counts them."
+  },
+  {
+   "tool": "Centric PLM",
+   "category": "Design",
+   "categories": [
+    "Design",
+    "Other",
+    "Project management"
+   ],
+   "source": "export then files",
+   "export": "Product, material and style records as CSV or Excel."
+  },
+  {
+   "tool": "Figma",
+   "category": "Design",
+   "categories": [
+    "Design"
+   ],
+   "source": "export then files",
+   "export": "Files saved as .fig, plus comments from the API; measure-art counts the files."
+  },
+  {
+   "tool": "Lucid",
+   "category": "Design",
+   "categories": [
+    "Design"
+   ],
+   "source": "export then files",
+   "export": "Documents exported as PDF or Visio, plus CSV of shape data."
+  },
+  {
+   "tool": "Miro",
+   "category": "Design",
+   "categories": [
+    "Design"
+   ],
+   "source": "export then files",
+   "export": "Boards exported as PDF or image, and CSV where offered."
+  },
+  {
+   "tool": "Production asset files",
+   "category": "Design",
+   "categories": [
+    "Design",
+    "Document storage"
+   ],
+   "source": "files",
+   "export": "The folder or NAS share; measure-art counts creative formats."
+  },
+  {
+   "tool": "Make",
+   "category": "Automation",
+   "categories": [
+    "Automation"
+   ],
+   "source": "export then files",
+   "export": "Scenario blueprints (JSON) and execution logs."
+  },
+  {
+   "tool": "Zapier",
+   "category": "Automation",
+   "categories": [
+    "Automation"
+   ],
+   "source": "export then files",
+   "export": "Zap definitions and task history as JSON or CSV."
+  },
+  {
+   "tool": "123 Formbuilder",
+   "category": "Other",
+   "categories": [
+    "Other"
+   ],
+   "source": "export then files",
+   "export": "Form submissions as CSV."
+  },
+  {
+   "tool": "Fathom",
+   "category": "Other",
+   "categories": [
+    "Other"
+   ],
+   "source": "export then files",
+   "export": "Meeting transcripts and summaries."
+  },
+  {
+   "tool": "Fireflies",
+   "category": "Other",
+   "categories": [
+    "Other"
+   ],
+   "source": "export then files",
+   "export": "Transcripts exported as text, JSON or DOCX."
+  },
+  {
+   "tool": "Google Calendar",
+   "category": "Other",
+   "categories": [
+    "Other"
+   ],
+   "source": "export then files",
+   "export": "Calendars exported as .ics (Takeout)."
+  },
+  {
+   "tool": "Hubstaff",
+   "category": "Other",
+   "categories": [
+    "Other"
+   ],
+   "source": "export then files",
+   "export": "Time and activity reports as CSV."
+  },
+  {
+   "tool": "Instagram",
+   "category": "Other",
+   "categories": [
+    "Other"
+   ],
+   "source": "export then files",
+   "export": "Account data download (JSON)."
+  },
+  {
+   "tool": "LinkedIn",
+   "category": "Other",
+   "categories": [
+    "Other"
+   ],
+   "source": "export then files",
+   "export": "'Get a copy of your data' archive (CSV)."
+  },
+  {
+   "tool": "Linnworks",
+   "category": "Other",
+   "categories": [
+    "Other"
+   ],
+   "source": "export then files",
+   "export": "Orders and stock levels as CSV."
+  },
+  {
+   "tool": "Nooks",
+   "category": "Other",
+   "categories": [
+    "Other"
+   ],
+   "source": "export then files",
+   "export": "Call logs and transcripts as CSV."
+  },
+  {
+   "tool": "Otter",
+   "category": "Other",
+   "categories": [
+    "Other"
+   ],
+   "source": "export then files",
+   "export": "Transcripts exported as text or DOCX."
+  },
+  {
+   "tool": "Read AI",
+   "category": "Other",
+   "categories": [
+    "Other"
+   ],
+   "source": "export then files",
+   "export": "Meeting transcripts and reports."
+  },
+  {
+   "tool": "Session transcripts",
+   "category": "Other",
+   "categories": [
+    "Other"
+   ],
+   "source": "files",
+   "export": "The folder holding the transcript files."
+  },
+  {
+   "tool": "ShipStation",
+   "category": "Other",
+   "categories": [
+    "Other"
+   ],
+   "source": "export then files",
+   "export": "Orders and shipments as CSV."
+  },
+  {
+   "tool": "SkuVault",
+   "category": "Other",
+   "categories": [
+    "Other"
+   ],
+   "source": "export then files",
+   "export": "Inventory and sales reports as CSV."
+  },
+  {
+   "tool": "Twilio",
+   "category": "Other",
+   "categories": [
+    "Other"
+   ],
+   "source": "export then files",
+   "export": "Message and call logs exported as CSV or through BulkExport."
+  },
+  {
+   "tool": "Webflow",
+   "category": "Other",
+   "categories": [
+    "Other"
+   ],
+   "source": "export then files",
+   "export": "CMS collections and form submissions as CSV."
+  },
+  {
+   "tool": "Zadarma",
+   "category": "Other",
+   "categories": [
+    "Other"
+   ],
+   "source": "export then files",
+   "export": "Call statistics as CSV."
+  },
+  {
+   "tool": "Zoom",
+   "category": "Other",
+   "categories": [
+    "Other"
+   ],
+   "source": "export then files",
+   "export": "Cloud recording transcripts (VTT) and meeting reports as CSV."
+  }
+ ]
+}

@@ -5,7 +5,7 @@ description: Count a company's SaaS and business data from local exports (Slack,
 
 # measure-data
 
-Counts business data **on this machine** from exports the user already has. The script makes **no network calls**. It reads files, folders or zips and writes numbers. Message text, page titles, subjects, file names, table names, channel names, people and ids never reach the output.
+Counts business data **on this machine** from exports the user already has. The script makes **no network calls**. It reads files, folders or zips and writes numbers. Message text, page titles, subjects, file names, table names, channel names, people and ids never reach the output. `<skill-dir>` below is the folder holding this SKILL.md.
 
 ## Two modes
 
@@ -16,9 +16,10 @@ Counts business data **on this machine** from exports the user already has. The 
 
 ## Steps
 
-1. **List the sources.** Ask which systems the company used and where each export lives. One source is one tool plus one location, for example "Slack export zip from the old workspace". If there is no export yet, give the matching hint from *Getting an export* below. Do not log into anything on the user's behalf.
-2. **Pick an output folder** outside the data, for example `./measure-out/data/`. Use one output folder for the whole company, because the `report` step merges everything inside it.
-3. **Simple pass first, one command per source:**
+1. **Walk through the tool list.** Open [`docs/TOOLS.md`](docs/TOOLS.md) (or [`docs/tools.json`](docs/tools.json)): 221 tools and data sources that data buyers commonly ask about, grouped into 13 categories. Go through it category by category and ask "which of these do you use?", then "anything else in this category?". Keep it quick: skip a category the user rules out, and do not read out every row unless they want it. For each tool in use, the list gives the `measure-data` source and a one-line hint on what to export. `export then files` means there is no direct parser: the user exports the data into a folder and you run `files` on it. Code, art and design files go to measure-code and measure-art.
+2. **List the sources.** Ask which systems the company used and where each export lives. One source is one tool plus one location, for example "Slack export zip from the old workspace". If there is no export yet, give the matching hint from *Getting an export* below. Do not log into anything on the user's behalf.
+3. **Pick an output folder** outside the data, for example `./measure-out/data/`. Use one output folder for the whole company, because the `report` step merges everything inside it.
+4. **Simple pass first, one command per source:**
    ```bash
    python3 <skill-dir>/scripts/measure_data.py <source> <path> --out <out-dir>/simple --label <label> --mode simple
    python3 <skill-dir>/scripts/measure_data.py report --out <out-dir>/simple
@@ -28,17 +29,17 @@ Counts business data **on this machine** from exports the user already has. The 
    python3 <skill-dir>/scripts/measure_data.py <source> <path> --out <out-dir> --label <label> [--tag project:<name>] [--cutoff 2025-01-01]
    ```
    `<source>` is one of `slack`, `discord`, `notion`, `clickup`, `jira`, `tickets`, `mbox`, `sql`, `bigquery` or `files`. Use a distinct `--label` when the same tool appears twice, for example `--label crm-db-2023` and `--label crm-db-2024`. For anything big (multi-GB mbox, SQL dumps, whole drives), run it in the background with `nohup ... > run.log 2>&1 &` and check `run.log`. Runs are **resumable**: finished units (channels, files, mailboxes, dumps, top folders) are checkpointed in `<out-dir>/.state/`. `--force` starts over.
-4. **Build the report:**
+5. **Build the report:**
    ```bash
    python3 <skill-dir>/scripts/measure_data.py report --out <out-dir>
    ```
-5. **Dream: "Why this is special"** (on by default). Skip this step only if the user passed or asked for `--no-dream` (no pitch); then record the skip with `python3 <skill-dir>/scripts/add_dream.py --no-dream --out <out-dir>`, or pass `--no-dream` to the `report` step. Otherwise, once the full report is complete, dream: re-read `report.md` and recall what you actually saw during the run (which systems the company used, the volumes, the spans, how many people were active), then write a short founder-style pitch for the company's data.
+6. **Dream: "Why this is special"** (on by default). Skip this step only if the user passed or asked for `--no-dream` (no pitch); then record the skip with `python3 <skill-dir>/scripts/add_dream.py --no-dream --out <out-dir>`, or pass `--no-dream` to the `report` step. Otherwise, once the full report is complete, dream: re-read `report.md` and recall what you actually saw during the run (which systems the company used, the volumes, the spans, how many people were active), then write a short founder-style pitch for the company's data.
    - **4 to 6 sentences, casual and simple**, not verbose. Say what the counts miss: ambition, complexity and craft. For example years of a team planning in the open, a live-ops economy whose analytics run for years, or a player base big enough to need a sharded warehouse.
    - **Grounded only in what you saw in this run** and in the counts. You never read message text, so never describe what people said. No invented facts. No number that is not in the report (quote figures as the report shows them). No superlatives about things you did not inspect.
    - **Same privacy rules as everything else**: no names of people, channels, tables or files, no paths, emails, URLs, ids or secrets. Describe the product or genre in general terms.
    - Save it in a draft text file outside the exports, then run `python3 <skill-dir>/scripts/add_dream.py draft.txt --out <out-dir> [--deny "<a name you saw>" ...]`. It checks that the paragraph is not empty, has 4 to 6 sentences and no more than 160 words, holds no email, URL, handle, path, file name, token or denied name, and that every number in it appears in the report or `measure.json`. It warns about superlatives. Then it writes the `dream` block into `measure.json` and adds the **Why this is special** section at the very end of `report.md`, labelled as a pitch and kept apart from the counts. If it refuses, fix what it names and run it again: never loosen a fact to get past a check. `--check` validates without writing. Re-running `report` keeps the paragraph and checks it again. Delete the draft afterwards.
-6. **Review with the user.** Read `report.md` together, including the pitch. Point out a source that shows `0` where the user expected data, a `dated_share` well under 100%, and `placeholders_not_downloaded` (cloud-only files that were never counted). These usually mean an incomplete export, not a lack of data.
-7. **Hand off.** `measure.json` goes to **master-valuate**. Delete `.state/` before sharing.
+7. **Review with the user.** Read `report.md` together, including the pitch. Point out a source that shows `0` where the user expected data, a `dated_share` well under 100%, and `placeholders_not_downloaded` (cloud-only files that were never counted). These usually mean an incomplete export, not a lack of data.
+8. **Hand off.** `measure.json` goes to **master-valuate**. Delete `.state/` before sharing.
 
 ## Getting an export (hints, not a tutorial)
 
@@ -54,6 +55,7 @@ Counts business data **on this machine** from exports the user already has. The 
 | MySQL / PostgreSQL | `mysqldump` / `pg_dump` plain-SQL dumps, gzipped is fine |
 | BigQuery | `bq ls --format=json` / `bq show --format=json` output, or `INFORMATION_SCHEMA.TABLES` / `TABLE_STORAGE` rows saved as CSV/JSON; metadata only, no table data |
 | Drive, Dropbox, OneDrive, NAS | the synced folder; make files available offline first, or they show up as `placeholders_not_downloaded` |
+| anything else | see [`docs/TOOLS.md`](docs/TOOLS.md): one line per tool, with the source to use |
 
 ## Reading the numbers
 
