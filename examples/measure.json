@@ -3,7 +3,7 @@
   "kind": "data",
   "tool": "measure-data",
   "tool_version": "0.4.0",
-  "measured_at": "2026-11-27T21:41:14Z",
+  "measured_at": "2026-11-27T22:10:36Z",
   "cutoff": "2025-01-01",
   "cutoff_early": "2022-11-30",
   "category_status": {
@@ -15872,12 +15872,11 @@
       "by_year": {
         "2020": 6100000,
         "2021": 13900000,
-        "2022": 11800000,
-        "2023": 7200000
+        "2022": 13100000
       },
       "active_months": 44,
       "last_12_months": 1572000,
-      "pre_cutoff": 39000000,
+      "pre_cutoff": 33100000,
       "pre_cutoff_share": 1.0,
       "people": {
         "distinct": 0,
@@ -16216,25 +16215,25 @@
         {
           "schema_signature": "57405cff4f3b40dabea5041c",
           "tables": 48,
-          "rows": 39300000,
+          "rows": 33100000,
           "top_tables": [
             {
               "rank": 1,
               "category": "events",
-              "rows": 31200000,
+              "rows": 26300000,
               "columns": 9,
               "dated_rows": 31200000,
               "first_year": 2020,
-              "last_year": 2023
+              "last_year": 2022
             },
             {
               "rank": 2,
               "category": "games",
-              "rows": 6400000,
+              "rows": 5400000,
               "columns": 14,
               "dated_rows": 6400000,
               "first_year": 2020,
-              "last_year": 2023
+              "last_year": 2022
             },
             {
               "rank": 3,
@@ -16243,7 +16242,7 @@
               "columns": 22,
               "dated_rows": 1170000,
               "first_year": 2020,
-              "last_year": 2023
+              "last_year": 2022
             },
             {
               "rank": 4,
@@ -16252,15 +16251,15 @@
               "columns": 11,
               "dated_rows": 214000,
               "first_year": 2020,
-              "last_year": 2023
+              "last_year": 2022
             }
           ]
         }
       ],
       "note": "A row's date is the first date-like value in it, so dates are an approximation of when rows were written.",
       "cutoff_early": "2022-11-30",
-      "pre_chatgpt": 20000000,
-      "pre_chatgpt_share": 0.513,
+      "pre_chatgpt": 31987397,
+      "pre_chatgpt_share": 0.966,
       "labels": {
         "primary_count": {
           "label": "verified",
@@ -16308,14 +16307,14 @@
       "cutoffs": {
         "pre_2025": {
           "date": "2025-01-01",
-          "count": 39000000,
+          "count": 33100000,
           "share": 1.0,
           "label": "estimated"
         },
         "pre_chatgpt": {
           "date": "2022-11-30",
-          "count": 20000000,
-          "share": 0.513,
+          "count": 31987397,
+          "share": 0.966,
           "label": "estimated"
         }
       },

@@ -25,7 +25,7 @@ Pre-cutoff = share of dated items before 2025-01-01. Tokens = characters / 4.
 | mbox | founder-mail | 60,700 | 99.2% | 51,516 | 84.2% | verified |
 | notion | studio-wiki | 3,890 | 100.0% | 3,284 | 84.4% | verified |
 | slack | studio-slack | 412,300 | 100.0% | 360,652 | 87.5% | verified |
-| sql | players-db-2022-backup | 39,000,000 | 100.0% | 20,000,000 | 51.3% | estimated |
+| sql | players-db-2022-backup | 33,100,000 | 100.0% | 31,987,397 | 96.6% | estimated |
 | sql | players-db-2023 | 39,000,000 | 100.0% | 20,000,000 | 51.3% | estimated |
 
 Pre-2025 = before 2025-01-01; pre-ChatGPT = before 2022-11-30. Unknown is shown as n/a, never as 0.
@@ -379,17 +379,16 @@ Restrictions (recorded, not ruled on): ownership own; flags: player personal dat
 |---|---|
 | 2020 | 6,100,000 |
 | 2021 | 13,900,000 |
-| 2022 | 11,800,000 |
-| 2023 | 7,200,000 |
+| 2022 | 13,100,000 |
 
-Dump with 48 tables and 39,300,000 rows. Largest tables (names withheld):
+Dump with 48 tables and 33,100,000 rows. Largest tables (names withheld):
 
 | rank | category | rows | columns | years |
 |---|---|---|---|---|
-| 1 | events | 31,200,000 | 9 | 2020-2023 |
-| 2 | games | 6,400,000 | 14 | 2020-2023 |
-| 3 | users | 1,180,000 | 22 | 2020-2023 |
-| 4 | payments | 214,000 | 11 | 2020-2023 |
+| 1 | events | 26,300,000 | 9 | 2020-2022 |
+| 2 | games | 5,400,000 | 14 | 2020-2022 |
+| 3 | users | 1,180,000 | 22 | 2020-2022 |
+| 4 | payments | 214,000 | 11 | 2020-2022 |
 
 
 _Note: A row's date is the first date-like value in it, so dates are an approximation of when rows were written._
